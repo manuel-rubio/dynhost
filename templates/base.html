@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="es-ES">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="/static/images/favicon.ico"/>
+	{% block meta %}{% endblock %}
+	<meta name="robots" content="index,follow" />
+	<meta name="description" content="DynHost, dynamic hostnames, nombres de máquina dinámicos." />
+	<meta name="keywords" content="dns,dynamic,host,hostname" />
+	<title>DynHost</title>
+	<link rel="stylesheet" href="/static/css/dynhost.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div id="borrador"><img src="/static/images/draft.jpg" /></div>
+    <a href="/">
+        <img src="/static/images/dynhost.png" width="236px" height="60px" alt="DynHost" />
+    </a>
+	<hr />
+	{% block full_right %}
+	<div id="right">
+		<div class="marco_gris">
+            {% block right %}
+            {% if not user.is_authenticated %}
+            <form action="{% url django.contrib.auth.views.login %}" method="post">
+            {% csrf_token %}
+            Inicio de Sesi&oacute;n
+            <hr />
+            <p class="key">Usuario</p>
+            <p class="val">{{ form.username }}{{ form.username.errors }}</p>
+            <p class="key">Clave</p>
+            <p class="val">{{ form.password }}{{ form.password.errors }}</p>
+            <hr />
+            <input type="submit" value="Entrar" />
+            <input type="hidden" name="next" value="account" />
+            <p id="subopciones">
+                <a href="">Olvid&oacute; la clave</a> |
+                <a href="/user/register/">Nuevo usuario</a>
+            </p>
+            </form>
+            {% else %}
+            <h1>Bienvenido</h1>
+            <hr />
+            {% if usados >= 0 or disponibles >= 0 %}
+            <div class="key">
+                <div class="data">{{ usados|default:0 }}</div>
+                Total de {{ tipo|safe }}:
+            </div>
+            <div class="key">
+                <div class="data">{{ disponibles|default:0 }}</div>
+                {{ tipo|safe }} disponibles:
+            </div>
+            <hr />
+            {% endif %}
+            <p class="key"> o <a href="{% url billing.views.index %}">Mi Cuenta</a></p>
+            <p class="key"> o <a href="{% url billing.views.pricing %}">Planes</a></p>
+            <hr />
+            <p class="key"> o <a href="{% url dynhost.views.domains.index %}">Listado de <strong>DynHost</strong></a></p>
+            <p class="key"> o <a href="{% url dns.views.domains.index %}">Listado de Dominios</a></p>
+            <p class="key"> o <a href="{% url ftp.views.index %}">Accesos FTP</a></p>
+            <hr />
+            <p class="key"> o <a href="{% url database.views.databases.index %}">Bases de Datos</a></p>
+            <p class="key"> o <a href="{% url database.views.users.index %}">Usuarios de Bases de Datos</a></p>
+            <hr />
+            <p class="key"> o <a href="/dynamic/help/">Ayuda: Servicios Web</a></p>
+            <hr />
+            <p id="subopciones"><a href="/logout/">Salir</a></p>
+            {% endif %}
+            {% endblock %}
+		</div>
+	</div>
+	{% endblock %}
+	<div id="content">
+        {% if mensaje or form.non_field_errors %}
+        <div id="mensaje">
+            <div class="marco_gris">
+            {% firstof mensaje form.non_field_errors %}
+            </div>
+        </div>
+        {% endif %}
+        {% block content %}
+		{% endblock %}
+	</div>
+	<div class="clr"></div>
+	<hr />
+	<p id="firma">
+        <a href="https://www.djangoproject.com/" target="_blank">
+            <img src="/static/images/powered.png" alt="Powered by Django" />
+        </a>
+        <br />
+        &copy; 2011-{% now "Y" %}, <a href="http://bosqueviejo.net" target="_blank">
+            <strong>Bosque</strong>Viejo
+        </a>
+    </p>
+</body>
+</html>

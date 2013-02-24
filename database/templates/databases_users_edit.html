@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        <a href="{% url database.views.users.index %}">
+            <img width="32px" height="32px" src="/static/images/32/left.png" alt="back" title="Volver" />
+        </a>
+        &nbsp;
+        <a href="#" onclick="forms[0].submit();">
+            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
+        </a>
+        &nbsp;
+        <a href="{% url database.views.databases.index %}">
+            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+
+<h1>Información de Usuario de Base de Datos</h1>
+<form name="main" method="post">
+    {% csrf_token %}
+    <table id="formulario">
+        <tbody>
+            {{ form.as_table }}
+        </tbody>
+    </table>
+</form>
+
+<br />
+
+{% if show %}
+
+<h1>Permisos sobre Base de Datos</h1>
+
+<table id="listado">
+<thead>
+    <th>Base de Datos</th>
+    <th align="center">acciones</th>
+</thead>
+<tbody>
+    {% for link in links %}
+    <tr>
+        <td>{{ link.database.database }}</td>
+        <td align="center" nowrap="nowrap">
+            <a href="{% url database.views.databases.execute link.id %}">
+                <img src="/static/images/32/computer.png" alt="X" title="Shell SQL" />
+            </a>
+            &nbsp;
+            <a href="{% url database.views.databases.show link.database.id %}">
+                <img src="/static/images/32/notepad.png" alt="E" title="Editar Base de Datos" />
+            </a>
+            &nbsp;
+            <a href="{% url database.views.users.unlink link.id %}" onclick="return confirm('¿Está seguro de que dese revocar los permisos a este usuario?\n\nNOTA: esto no borrará el usuario, solo lo desligará de la base de datos.');">
+                <img src="/static/images/32/remove.png" alt="S" title="Suprimir Acceso a esta Base de Datos" />
+            </a>
+            &nbsp;
+        </td>
+    <tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" align="center">No hay base de datos a las que pueda acceder este usuario</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<form name="addDatabase" method="post" action="{% url database.views.users.link user_id %}">
+{% csrf_token %}
+Agregar base de datos: {{ database.database }} <a href="#" onclick="document.addDatabase.submit();"><img src="/static/images/16/up.png" title="Agregar" /></a>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        <a href="#" onclick="forms[0].submit();">
+            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
+        </a>
+        &nbsp;
+        <a href="{% url dynhost.views.domains.index %}">
+            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+<h1>Información de registro</h1>
+<form method="post">
+    {% csrf_token %}
+    <table id="formulario">
+        <tbody>
+            {{ form.as_table }}
+        </tbody>
+    </table>
+</form>
+{% endblock %}

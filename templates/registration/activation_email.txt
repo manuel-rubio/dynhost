@@ -1,0 +1,12 @@
+Bienvenido/a,
+
+si ha accedido a la web dynhost.es y se ha dado de alta, puede continuar
+el proceso siguiendo la siguiente URL:
+
+http://dynhost.es/user/activate/{{ activation_key }}/
+
+Tiene {{ expiration_days }} días para completar el proceso, sino su cuenta
+será invalidada y deberá de volver a crearla.
+
+Un saludo.
+El equipo de DynHost.

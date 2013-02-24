@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>En construcción</h1>
+<p>Al estar en formato DRAFT, no tenemos abierto de momento forma para contratar los serivicios
+    que se pueden prestar, no obstante, si desea probar servicios tales como Hosting Web,
+    Buzones de correo, Base de Datos, etc. podemos proveerle de un acceso de prueba.</p>
+{% comment %}
+{% if user.is_authenticated %}
+<h1>¿Cómo contrato?</h1>
+<p>De momento no tenemos ningún método automatizado para el pago y la contratación de servicios, por lo que deberá de solicitarlos a <a href="mailto:soporte@dynhost.es">soporte al usuario</a>.</p>
+{% endif %}
+<p>Estos planes están ideados para contratación y ampliación rápida, no obstante, si desea un paquete específico que se adecue mejor a su necesidad, podemos hacerle una oferta a medida.</p>
+<div class="bloque"{% if cuenta.limit_dynhost == 5 %} id="selected"{% endif %}>
+    <img src="/static/images/conejo.jpg" />
+    <h1>Conejo</h1>
+    <h2>Gratis</h2>
+    <p class="titulo">Dominios</p>
+    <table class="plan">
+        <tr><th>DynHost</th><td>5</td></tr>
+        <tr><th>Dominios</th><td>0</td></tr>
+    </table>
+    <p class="titulo">Email</p>
+    <table class="plan">
+        <tr><th>Buzones</th><td>0</td></tr>
+        <tr><th>GiB por unidad</th><td>0</td></tr>
+        <tr><th>Redirecciones</th><td>5</td></tr>
+    </table>
+    <p class="titulo">Bases de Datos</p>
+    <table class="plan">
+        <tr><th>MariaDB</th><td>0</td></tr>
+        <tr><th>GiB por unidad</th><td>0</td></tr>
+    </table>
+    <p class="titulo">Web</p>
+    <table class="plan">
+        <tr><th>Hosting</th><td>0</td></tr>
+        <tr><th>GiB por unidad</th><td>0</td></tr>
+        <tr><th>Redirecciones</th><td>5</td></tr>
+    </table>
+    <p class="titulo">FTP</p>
+    <table class="plan">
+        <tr><th>Cuentas FTP</th><td>0</td></tr>
+    </table>
+</div>
+<div class="bloque"{% if cuenta.limit_dynhost > 5 and cuenta.limit_dynhost < 50 %} id="selected"{% endif %}>
+    <img src="/static/images/ardilla.jpg" />
+    <h1>Ardilla</h1>
+    <h2>10 &euro; / mes</h2>
+    <p class="titulo">Dominios</p>
+    <table class="plan">
+        <tr><th>DynHost</th><td>20</td></tr>
+        <tr><th>Dominios</th><td>5</td></tr>
+    </table>
+    <p class="titulo">Email</p>
+    <table class="plan">
+        <tr><th>Buzones</th><td>10</td></tr>
+        <tr><th>GiB por unidad</th><td>1</td></tr>
+        <tr><th>Redirecciones</th><td>20</td></tr>
+    </table>
+    <p class="titulo">Bases de Datos</p>
+    <table class="plan">
+        <tr><th>MariaDB</th><td>5</td></tr>
+        <tr><th>GiB por unidad</th><td>1</td></tr>
+    </table>
+    <p class="titulo">Web</p>
+    <table class="plan">
+        <tr><th>Hosting</th><td>5</td></tr>
+        <tr><th>GiB por unidad</th><td>1</td></tr>
+        <tr><th>Redirecciones</th><td>20</td></tr>
+    </table>
+    <p class="titulo">FTP</p>
+    <table class="plan">
+        <tr><th>Cuentas FTP</th><td>20</td></tr>
+    </table>
+</div>
+<div class="bloque"{% if cuenta.limit_dynhost >= 50 %} id="selected"{% endif %}>
+    <img src="/static/images/colibri.jpg" />
+    <h1>Colibrí</h1>
+    <h2>50 &euro; / mes</h2>
+    <p class="titulo">Dominios</p>
+    <table class="plan">
+        <tr><th>DynHost</th><td>50</td></tr>
+        <tr><th>Dominios</th><td>20</td></tr>
+    </table>
+    <p class="titulo">Email</p>
+    <table class="plan">
+        <tr><th>Buzones</th><td>20</td></tr>
+        <tr><th>GiB por unidad</th><td>2</td></tr>
+        <tr><th>Redirecciones</th><td>100</td></tr>
+    </table>
+    <p class="titulo">Bases de Datos</p>
+    <table class="plan">
+        <tr><th>MariaDB</th><td>20</td></tr>
+        <tr><th>GiB por unidad</th><td>2</td></tr>
+    </table>
+    <p class="titulo">Web</p>
+    <table class="plan">
+        <tr><th>Hosting</th><td>20</td></tr>
+        <tr><th>GiB por unidad</th><td>1</td></tr>
+        <tr><th>Redirecciones</th><td>50</td></tr>
+    </table>
+    <p class="titulo">FTP</p>
+    <table class="plan">
+        <tr><th>Cuentas FTP</th><td>50</td></tr>
+    </table>
+</div>
+<p id="footnote">Precios sin IVA.</p>
+{% endcomment %}
+{% endblock %}

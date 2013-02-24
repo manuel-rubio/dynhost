@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        <a href="#" onclick="forms[0].submit();">
+            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
+        </a>
+        &nbsp;
+        <a href="{% url database.views.databases.index %}">
+            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+<h1>Consulta a Base de Datos {{database.database}}</h1>
+<form method="post">
+    {% csrf_token %}
+    <table id="formulario">
+        <tbody>
+            <tr><th>Query</th></tr>
+            <tr><td><textarea name="query" cols="80" rows="5">{{ query }}</textarea></td></tr>
+        </tbody>
+    </table>
+    {% if result %}
+    <br />
+    <table id="formulario">
+    <tr>
+        {% for head in heads %}
+        <th>{{ head }}</th>
+        {% endfor %}
+    </tr>
+    {% for res in result %}
+    <tr>
+        {% for r in res %}
+        <td>{{ r }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</form>
+{% endblock %}

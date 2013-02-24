@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        {% if servicios|length >= total %}
+        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más bases de datos.')">
+        {% else %}
+        <a href="{% url database.views.databases.new %}">
+        {% endif %}
+            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+<h1>Bases de Datos</h1>
+<table id="listado">
+<thead>
+    <th>Base de Datos</th>
+    <th align="center">acciones</th>
+</thead>
+<tbody>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{ servicio.database }}</td>
+        <td align="center">
+            <a href="{% url database.views.databases.show servicio.id %}">
+                <img src="/static/images/32/notepad.png" alt="W" title="Mostrar" />
+            </a>
+            &nbsp;
+            <a href="{% url database.views.databases.delete servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar esta base de datos?\n\nLa base de datos se eliminará junto con todas las tablas y datos que almacene y no podrá ser recuperada a posteriori.');">
+                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
+            </a>
+            &nbsp;
+        </td>
+    <tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" align="center">No hay bases de datos</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}

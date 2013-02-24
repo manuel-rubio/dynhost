@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        {% if servicios|length >= total %}
+        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más dynhost.')">
+        {% else %}
+        <a href="{% url dynhost.views.domains.new %}">
+        {% endif %}
+            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+<h1>Listado de DynHost</h1>
+<table id="listado">
+<thead>
+    <th>dynhost</th>
+    <th>IP</th>
+    <th align="center">acciones</th>
+</thead>
+<tbody>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{ servicio.domain }}.dynhost.es</td>
+        <td>{{ servicio.ip }}</td>
+        <td align="center">
+            <a href="{% url mail.views.redirects_dynamic.index servicio.record.id %}">
+                <img src="/static/images/32/redirect.png" alt="M" title="Redirecciones" />
+            </a>
+            &nbsp;
+            <a href="{% url web.views.redirects_dynamic.index servicio.record.id %}">
+                <img src="/static/images/32/redirect_web.png" alt="M" title="Redirecciones" />
+            </a>
+            &nbsp;
+            <a href="{% url dynhost.views.domains.edit servicio.id %}">
+                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
+            </a>
+            &nbsp;
+            <a href="{% url dynhost.views.domains.delete servicio.id %}" onclick="return confirm('¿Está seguro de que dese eliminar este registro?');">
+                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
+            </a>
+            &nbsp;
+        </td>
+    <tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" align="center">No hay registros</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        <a href="{% url dns.views.domains.index %}">
+            <img width="32px" height="32px" src="/static/images/32/left.png" alt="cancel" title="Volver" />
+        </a>
+        &nbsp;
+        <img src="/static/images/separador.png" />
+        &nbsp;
+        {% if servicios|length >= total %}
+        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más hostings web.')">
+        {% else %}
+        <a href="{% url web.views.hostings.new dom_id %}">
+        {% endif %}
+            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+<h1>Listado de Hostings Web en {{ dom }}</h1>
+<table id="listado">
+<thead>
+    <th>Nombre</th>
+    <th>URI</th>
+    <th align="center">acciones</th>
+</thead>
+<tbody>
+    {% for servicio in servicios %}
+    <tr>
+        <td>{{ servicio.name }}</td>
+        <td>{{ servicio.uri }}</td>
+        <td align="center">
+            <a href="{% url web.views.hostings.edit servicio.id %}">
+                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
+            </a>
+            &nbsp;
+            <a href="{% url web.views.hostings.delete servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar este hosting web?\n\nSolo se eliminará el hosting, no el espacio ni los ficheros que tenga alojados.');">
+                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
+            </a>
+            &nbsp;
+        </td>
+    <tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" align="center">No hay hostings web</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+{% endblock %}

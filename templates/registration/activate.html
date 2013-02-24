@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block full_right %}
+{% endblock %}
+
+{% block content %}
+{% if account %}
+<p><strong>Enhorabuena</strong>. Su cuenta ya ha sido verificada. Puede realizar el inicio de sesión con el usuario y la clave proporcionados.</p>
+{% else %}
+<p>La clave <em>{{ activation_key }}</em> no es v&aacute;lida. Si ha copiado el enlace tal cual le llegó, asegúrese de que todos los carácteres son correctos.</p>
+{% endif %}
+{% endblock %}

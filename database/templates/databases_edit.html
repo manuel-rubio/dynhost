@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        {% if show %}
+        <a href="{% url database.views.databases.index %}">
+            <img width="32px" height="32px" src="/static/images/32/left.png" alt="back" title="Volver" />
+        </a>
+        &nbsp;
+        {% else %}
+        <a href="#" onclick="forms[0].submit();">
+            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
+        </a>
+        &nbsp;
+        <a href="{% url database.views.databases.index %}">
+            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
+        </a>
+        &nbsp;
+        {% endif %}
+    </div>
+</div>
+<br />
+
+<h1>Información de Base de Datos</h1>
+<form method="post">
+    {% csrf_token %}
+    <table id="formulario">
+        <tbody>
+            {% if show %}
+            <tr><th>Base de Datos</th><td>{{ database.database }}</td></tr>
+            {% else %}
+            {{ form.as_table }}
+            {% endif %}
+        </tbody>
+    </table>
+</form>
+
+<br />
+
+{% if show %}
+<h1>Usuarios con Permisos a esta Base de Datos</h1>
+
+<table id="listado">
+<thead>
+    <th>Nombre</th>
+    <th align="center">acciones</th>
+</thead>
+<tbody>
+    {% for link in links %}
+    <tr>
+        <td>{{ link.user.username }}</td>
+        <td align="center" nowrap="nowrap">
+            <a href="{% url database.views.databases.execute link.id %}">
+                <img src="/static/images/32/computer.png" alt="X" title="Shell SQL" />
+            </a>
+            &nbsp;
+            <a href="{% url database.views.users.edit link.user.id %}">
+                <img src="/static/images/32/notepad.png" alt="E" title="Editar Usuario" />
+            </a>
+            &nbsp;
+            <a href="{% url database.views.databases.unlink link.id %}" onclick="return confirm('¿Está seguro de que dese revocar los permisos a este usuario?\n\nNOTA: esto no borrará el usuario, solo lo desligará de la base de datos.');">
+                <img src="/static/images/32/remove.png" alt="S" title="Suprimir Acceso a esta Base de Datos" />
+            </a>
+            &nbsp;
+        </td>
+    <tr>
+    {% empty %}
+    <tr>
+        <td colspan="3" align="center">No hay usuarios permitidos</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<form name="addUser" method="post" action="{% url database.views.databases.link db_id %}">
+{% csrf_token %}
+Agregar usuarios: {{ users.user }} <a href="#" onclick="document.addUser.submit();"><img src="/static/images/16/up.png" title="Agregar" /></a>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block meta %}
+    <script type="text/javascript" src="/static/js/records.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="info">
+    <div class="marco_gris">
+        <a href="#" onclick="forms[0].submit();">
+            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
+        </a>
+        &nbsp;
+        <a href="{% url dns.views.domains.edit dom_id %}">
+            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
+        </a>
+        &nbsp;
+    </div>
+</div>
+<br />
+
+<h1>Información de Registro de {{ dom }}
+<form method="post">
+    {% csrf_token %}
+    <table id="formulario">
+        <tbody>
+            <tr><th>{{ form.type.label_tag }}</th><td>{{ form.type.errors }}{{ form.type }}</td></tr>
+            <tr><th>{{ form.ttl.label_tag }}</th><td>{{ form.ttl.errors }}{{ form.ttl }}</td></tr>
+            <tr id="mx"><th>{{ form.mx_priority.label_tag }}</th><td>{{ form.mx_priority.errors }}{{ form.mx_priority }}</td></tr>
+            <tr id="cname"><th>{{ form.host.label_tag }}</th><td>{{ form.host.errors }}{{ form.host }}</td></tr>
+            <tr><th>{{ form.data.label_tag }}</th><td>{{ form.data.errors }}{{ form.data }}</td></tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
