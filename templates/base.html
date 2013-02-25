@@ -1,95 +1,168 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="es-ES">
+<!DOCTYPE html>
+<html lang="es-ES">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="shortcut icon" href="/static/images/favicon.ico"/>
+	<meta charset="utf-8" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico"/>
 	{% block meta %}{% endblock %}
 	<meta name="robots" content="index,follow" />
 	<meta name="description" content="DynHost, dynamic hostnames, nombres de máquina dinámicos." />
 	<meta name="keywords" content="dns,dynamic,host,hostname" />
 	<title>DynHost</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5.js"></script>
+    <![endif]-->
+    <!--[if eq IE 7]>
+      <link href="/static/css/font-awesome-ie7.min.css" rel="stylesheet">
+    <![endif]-->
+
 	<link rel="stylesheet" href="/static/css/dynhost.css" type="text/css" media="screen" />
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
 </head>
 <body>
-    <div id="borrador"><img src="/static/images/draft.jpg" /></div>
-    <a href="/">
-        <img src="/static/images/dynhost.png" width="236px" height="60px" alt="DynHost" />
-    </a>
-	<hr />
-	{% block full_right %}
-	<div id="right">
-		<div class="marco_gris">
-            {% block right %}
-            {% if not user.is_authenticated %}
-            <form action="{% url django.contrib.auth.views.login %}" method="post">
-            {% csrf_token %}
-            Inicio de Sesi&oacute;n
-            <hr />
-            <p class="key">Usuario</p>
-            <p class="val">{{ form.username }}{{ form.username.errors }}</p>
-            <p class="key">Clave</p>
-            <p class="val">{{ form.password }}{{ form.password.errors }}</p>
-            <hr />
-            <input type="submit" value="Entrar" />
-            <input type="hidden" name="next" value="account" />
+    {% if not user.is_authenticated %}
+    <form class="form-horizontal" action="{% url django.contrib.auth.views.login %}" method="post">
+    <input type="hidden" name="next" value="account" />
+    {% csrf_token %}
+    <div class="modal hide fade" id="loginForm">
+        <div class="modal-header">Inicio de Sesi&oacute;n</div>
+        <div class="modal-body">
+            <div class="control-group{% if form.username.errors %} error{% endif %}">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-user"></i></span>
+                    {{ form.username }}
+                </div>
+                {% for error in form.username.errors %}
+                <span class="help-inline">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="control-group{% if form.password.errors %} error{% endif %}">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-lock"></i></span>
+                    {{ form.password }}
+                </div>
+                {% for error in form.password.errors %}
+                <span class="help-inline">{{ error }}</span>
+                {% endfor %}
+            </div>
             <p id="subopciones">
                 <a href="">Olvid&oacute; la clave</a> |
                 <a href="/user/register/">Nuevo usuario</a>
             </p>
-            </form>
-            {% else %}
-            <h1>Bienvenido</h1>
-            <hr />
-            {% if usados >= 0 or disponibles >= 0 %}
-            <div class="key">
-                <div class="data">{{ usados|default:0 }}</div>
-                Total de {{ tipo|safe }}:
-            </div>
-            <div class="key">
-                <div class="data">{{ disponibles|default:0 }}</div>
-                {{ tipo|safe }} disponibles:
-            </div>
-            <hr />
-            {% endif %}
-            <p class="key"> o <a href="{% url billing.views.index %}">Mi Cuenta</a></p>
-            <p class="key"> o <a href="{% url billing.views.pricing %}">Planes</a></p>
-            <hr />
-            <p class="key"> o <a href="{% url dynhost.views.domains.index %}">Listado de <strong>DynHost</strong></a></p>
-            <p class="key"> o <a href="{% url dns.views.domains.index %}">Listado de Dominios</a></p>
-            <p class="key"> o <a href="{% url ftp.views.index %}">Accesos FTP</a></p>
-            <hr />
-            <p class="key"> o <a href="{% url database.views.databases.index %}">Bases de Datos</a></p>
-            <p class="key"> o <a href="{% url database.views.users.index %}">Usuarios de Bases de Datos</a></p>
-            <hr />
-            <p class="key"> o <a href="/dynamic/help/">Ayuda: Servicios Web</a></p>
-            <hr />
-            <p id="subopciones"><a href="/logout/">Salir</a></p>
-            {% endif %}
-            {% endblock %}
-		</div>
-	</div>
-	{% endblock %}
-	<div id="content">
-        {% if mensaje or form.non_field_errors %}
-        <div id="mensaje">
-            <div class="marco_gris">
-            {% firstof mensaje form.non_field_errors %}
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+            <button type="submit" class="btn btn-primary">Inicia Sesi&oacute;n</a>
+        </div>
+    </div>
+    </form>
+    {% endif %}
+
+    {% if form.username.errors or form.password.errors %}
+    <script type="text/javascript"><!--
+
+    $('#loginForm').modal('show');
+
+    // --></script>
+    {% endif %}
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div id="logo">
+                    <a href="/"><img alt="DynHOST" src="/static/img/dynhost.png" width="175px" /></a>
+                </div>
+                <div id="borrador"><img src="/static/img/draft.png" /></div>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        {% if user.is_authenticated %}
+                        <li{% if menu == 'index' %} class="active"{% endif %}>
+                            <a href="{% url billing.views.pricing %}">Planes</a>
+                        </li>
+                        <li{% if menu == 'index' %} class="active"{% endif %}>
+                            <a href="{% url dynhost.views.domains.index %}">DynHost</a>
+                        </li>
+                        <li{% if menu == 'index' %} class="active"{% endif %}>
+                            <a href="{% url dns.views.domains.index %}">Dominios</a>
+                        </li>
+                        <li{% if menu == 'index' %} class="active"{% endif %}>
+                            <a href="{% url ftp.views.index %}">Accesos FTP</a>
+                        </li>
+                        <li class="dropdown{% if menu == 'index' %} active{% endif %}">
+                            <a class="dropdown-toggle" id="database" role="button" data-toggle="dropdown">
+                                Bases de Datos
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="{% url database.views.databases.index %}">Listado de Bases de Datos</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="{% url database.views.users.index %}">Usuarios de Bases de Datos</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li{% if menu == 'index' %} class="active"{% endif %}>
+                            <a href="/dynamic/help/">Ayuda</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="nav-collapse pull-right">
+                    <div class="btn-group">
+                        {% if user.is_authenticated %}
+                        <a class="btn btn-small btn-info" href="{% url billing.views.index %}"><i class="icon-user icon-white"></i> {{ user.username }}</a>
+                        <a class="btn btn-small btn-info" href="/logout/"><i class="icon-off icon-white"></i></a>
+                        {% else %}
+                        <a class="btn btn-small btn-info" href="#loginForm" data-toggle="modal"><i class="icon-user icon-white"></i> Login</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
+	<div id="content">
+        {% if mensaje or form.non_field_errors %}
+        {% for mensaje in form.non_field_errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <strong>Error</strong>
+            {{ mensaje }}
+        </div>
+        {% endfor %}
         {% endif %}
+
         {% block content %}
 		{% endblock %}
 	</div>
-	<div class="clr"></div>
-	<hr />
-	<p id="firma">
-        <a href="https://www.djangoproject.com/" target="_blank">
-            <img src="/static/images/powered.png" alt="Powered by Django" />
-        </a>
-        <br />
-        &copy; 2011-{% now "Y" %}, <a href="http://bosqueviejo.net" target="_blank">
-            <strong>Bosque</strong>Viejo
-        </a>
-    </p>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="https://www.djangoproject.com/" target="_blank">
+                <img src="/static/img/powered.png" alt="Powered by Django" />
+            </a>
+            <br />
+            &copy; 2011-{% now "Y" %}, <a href="http://bosqueviejo.net" target="_blank">
+                <strong>Bosque</strong>Viejo
+            </a>
+        </div>
+    </footer>
 </body>
 </html>

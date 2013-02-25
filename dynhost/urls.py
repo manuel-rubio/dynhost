@@ -2,6 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
 from dynhost.forms import RecaptchaRegistrationForm
+from dynhost import settings
 
 urlpatterns = patterns('',
     # ver templateresponse y extra_context para agregar funcionalidad
@@ -101,3 +102,9 @@ urlpatterns = patterns('',
     url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'index.html'}),
 )
 
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^404/$', 'django.views.defaults.page_not_found'),
+        (r'^500/$', 'django.views.defaults.server_error'),
+        (r'^media/', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT} ),
+    )
