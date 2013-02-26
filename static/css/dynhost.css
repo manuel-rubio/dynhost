@@ -7,11 +7,14 @@
          url('../fonts/chocolate_covered_raindrops-webfont.svg#chocolate_covered_raindropsMd') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 label {
     font-size: 14px;
+}
+
+pre {
+    font-size: 12px;
 }
 
 .footer {
@@ -31,7 +34,6 @@ label {
 
 .btn {
     font-family: serif;
-    font-weight: bold;
     font-size: 12px;
 }
 
@@ -44,6 +46,15 @@ label {
 }
 
 .btn-group > .btn-small {
+    font-family: serif;
+    font-size: 14px;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], 
+input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], 
+input[type="week"], input[type="number"], input[type="email"], input[type="url"], 
+input[type="search"], input[type="tel"], input[type="color"], .uneditable-input 
+{
     font-family: serif;
     font-size: 14px;
 }
@@ -76,7 +87,7 @@ label {
         width: 50px;
     }
     body {
-        padding-top: 40px;
+        padding-top: 60px;
     }
     .banner {
         border: 2px dotted #808080;
@@ -150,12 +161,17 @@ tt {
 
 #listado {
     margin: 5px;
+    padding: 5px;
     border: 1px solid black;
     width: 500px;
 }
 #listado th {
     background-color: #f0f0f0;
     padding: 5px;
+}
+#listado tbody tr td {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 ul.errorlist {
@@ -180,11 +196,12 @@ ul.errorlist {
     padding: 5px;
 }
 .bloque {
-    width: 200px;
     border: 2px dotted #808080;
-    float: left;
-    margin: 5px;
     text-align: center;
+}
+.bloque table tbody tr td {
+    text-align: right;
+    margin-right: 2px;
 }
 #selected {
     border: 2px solid #8080ff;
@@ -202,7 +219,7 @@ ul.errorlist {
 }
 #footnote {
     clear:both;
-    font-size: 20px;
+    font-size: 10px;
 }
 p.titulo {
     font-size: 20px;

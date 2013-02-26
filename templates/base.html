@@ -31,6 +31,7 @@
     <script src="/static/js/bootstrap.js"></script>
 </head>
 <body>
+    {% block login %}
     {% if not user.is_authenticated %}
     <form class="form-horizontal" action="{% url django.contrib.auth.views.login %}" method="post">
     <input type="hidden" name="next" value="account" />
@@ -56,10 +57,6 @@
                 <span class="help-inline">{{ error }}</span>
                 {% endfor %}
             </div>
-            <p id="subopciones">
-                <a href="">Olvid&oacute; la clave</a> |
-                <a href="/user/register/">Nuevo usuario</a>
-            </p>
         </div>
         <div class="modal-footer">
             <a href="#" class="btn" data-dismiss="modal">Cancela</a>
@@ -76,6 +73,7 @@
 
     // --></script>
     {% endif %}
+    {% endblock %}
 
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
@@ -124,16 +122,20 @@
                         {% endif %}
                     </ul>
                 </div>
+                {% block login_button %}
                 <div class="nav-collapse pull-right">
                     <div class="btn-group">
                         {% if user.is_authenticated %}
                         <a class="btn btn-small btn-info" href="{% url billing.views.index %}"><i class="icon-user icon-white"></i> {{ user.username }}</a>
                         <a class="btn btn-small btn-info" href="/logout/"><i class="icon-off icon-white"></i></a>
                         {% else %}
-                        <a class="btn btn-small btn-info" href="#loginForm" data-toggle="modal"><i class="icon-user icon-white"></i> Login</a>
+                        <a class="btn btn-small btn-info" title="¿Olvidó su clave?" href=""><i class="icon-lock icon-white"></i></a>
+                        <a class="btn btn-small btn-info" title="Crear cuenta nueva" href="/user/register/"><i class="icon-signin icon-white"></i></a>
+                        <a class="btn btn-small btn-info" href="#loginForm" data-toggle="modal"><i class="icon-user icon-white"></i> Entrar</a>
                         {% endif %}
                     </div>
                 </div>
+                {% endblock %}
             </div>
         </div>
     </div>
