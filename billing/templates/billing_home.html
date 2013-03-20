@@ -71,10 +71,6 @@ $('#passwordForm').modal('show');
         </table>
         <br />
         <div class="pull-right">
-            <a href="{% url billing.views.pricing %}" class="btn btn-info">
-                <i class="icon-money icon-white"></i>
-                Modifica Plan
-            </a>
             <a href="#passwordForm" class="btn btn-danger" data-toggle="modal">
                 <i class="icon-lock icon-white"></i>
                 Cambia Clave
@@ -88,6 +84,7 @@ $('#passwordForm').modal('show');
             <th colspan="2">Servicio</th>
             <th>Usados</th>
             <th>Total</th>
+            <th>Suscripción</th>
         </thead>
         <tbody>
             <tr>
@@ -95,6 +92,11 @@ $('#passwordForm').modal('show');
                 <td>DynHosts</td>
                 <td align="right">{{ dynhosts }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_dynhost }}&nbsp;</td>
+                <td align="center">
+                    <div class="btn-group">
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -102,6 +104,11 @@ $('#passwordForm').modal('show');
                 <td>Redirecciones</td>
                 <td align="right">{{ redirects_mail_dynhost }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_email_redirect }}&nbsp;</td>
+                <td align="center">
+                    <div class="btn-group">
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -109,6 +116,11 @@ $('#passwordForm').modal('show');
                 <td>Redirecciones Web</td>
                 <td align="right">{{ redirects_web_dynhost }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_web_redirect }}&nbsp;</td>
+                <td align="center">
+                    <div class="btn-group">
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
+                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
+                    </div>
                 </td>
             </tr>
         </tbody>

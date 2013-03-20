@@ -91,9 +91,6 @@
                     <ul class="nav">
                         {% if user.is_authenticated %}
                         <li{% if menu == 'index' %} class="active"{% endif %}>
-                            <a href="{% url billing.views.pricing %}">Planes</a>
-                        </li>
-                        <li{% if menu == 'index' %} class="active"{% endif %}>
                             <a href="{% url dynhost.views.domains.index %}">DynHost</a>
                         </li>
                         <li{% if menu == 'index' %} class="active"{% endif %}>

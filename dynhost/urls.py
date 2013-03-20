@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     url(r'^user/', include('registration.urls')),
     
     url(r'^account/$', 'billing.views.index'),
-    url(r'^pricing/$', 'billing.views.pricing'),
 
     url(r'^dns/$', 'dns.views.domains.index'),
     url(r'^dns/(?P<page_id>\d+)/$', 'dns.views.domains.index'),
