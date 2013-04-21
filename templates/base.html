@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8" />
     <link rel="shortcut icon" href="/static/img/favicon.ico"/>
-	{% block meta %}{% endblock %}
 	<meta name="robots" content="index,follow" />
 	<meta name="description" content="DynHost, dynamic hostnames, nombres de máquina dinámicos." />
 	<meta name="keywords" content="dns,dynamic,host,hostname" />
@@ -29,6 +28,7 @@
 	<link rel="stylesheet" href="/static/css/dynhost.css" type="text/css" media="screen" />
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.js"></script>
+    {% block meta %}{% endblock %}
 </head>
 <body>
     {% block login %}

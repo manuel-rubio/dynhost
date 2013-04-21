@@ -1,72 +1,101 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="info">
-    <div class="marco_gris">
-        {% if not nuevo %}
-        <a href="{% url dns.views.records.new dom_id %}">
-            <img width="32px" height="32px" src="/static/images/32/add.png" alt="add" title="Agregar Registro" />
-        </a>
-        &nbsp;
-        <img src="/static/images/separador.png" />
-        &nbsp;
-        {% endif %}
-        <a href="#" onclick="forms[0].submit();">
-            <img width="32px" height="32px" src="/static/images/32/tick.png" alt="ok" title="Aceptar" />
-        </a>
-        &nbsp;
-        <a href="{% url dns.views.domains.index %}">
-            <img width="32px" height="32px" src="/static/images/32/error.png" alt="cancel" title="Cancelar" />
-        </a>
-        &nbsp;
-    </div>
-</div>
-<br />
-
 <h1>Información de Dominio</h1>
-<form method="post">
+<form class="form-horizontal" method="post">
     {% csrf_token %}
-    <table id="formulario">
-        <tbody>
-            {{ dom_form.as_table }}
-            {{ soa_form.as_table }}
-        </tbody>
-    </table>
+    <div class="control-group{% if dom_form.domain.errors %} error{% endif %}">
+        <label class="control-label" for="id_domain">{{ dom_form.domain.label }}</label>
+        <div class="controls">
+            {{ dom_form.domain }}
+            {% for error in dom_form.domain.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group{% if dom_form.email_type.errors %} error{% endif %}">
+        <label class="control-label" for="id_email_type">{{ dom_form.email_type.label }}</label>
+        <div class="controls">
+            {{ dom_form.email_type }}
+            {% for error in dom_form.email_type.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group{% if soa_form.ttl.errors %} error{% endif %}">
+        <label class="control-label" for="id_ttl">{{ soa_form.ttl.label }}</label>
+        <div class="controls">
+            {{ soa_form.ttl }}
+            {% for error in soa_form.ttl.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group{% if soa_form.email.errors %} error{% endif %}">
+        <label class="control-label" for="id_email">{{ soa_form.email.label }}</label>
+        <div class="controls">
+            {{ soa_form.email }}
+            {% for error in soa_form.email.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <a href="{% url dns.views.domains.index %}" class="btn">Volver al listado</a>
+            <input type="submit" class="btn btn-primary" value="Actualiza datos"/>
+        </div>
+    </div>
 </form>
 
-<br />
-
 {% if not nuevo %}
-<table id="listado">
-<thead>
-	<th>Nombre</th>
-    <th>Tipo</th>
-    <th>Valor</th>
-    <th align="center">acciones</th>
-</thead>
-<tbody>
-    {% for registro in registros %}
-    <tr>
-		<td>{{ registro.host }}</td>
-        <td>{{ registro.type }}</td>
-        <td>{{ registro.data }}</td>
-        <td align="center" nowrap="nowrap">
-            <a href="{% url dns.views.records.edit registro.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
-            </a>
-            &nbsp;
-            <a href="{% url dns.views.records.delete registro.id %}" onclick="return confirm('¿Está seguro de que dese eliminar este registro?');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
-        </td>
-    <tr>
-    {% empty %}
-    <tr>
-        <td colspan="3" align="center">No hay registros</td>
-    </tr>
-    {% endfor %}
-</tbody>
-</table>
+<div class="tab-pane fade in" id="dns-records">
+    <h1>Listado de Registros</h1>
+    <table class="table table-condensed">
+    <thead>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Valor</th>
+        <th align="center">acciones</th>
+    </thead>
+    <tbody>
+        {% for registro in registros %}
+        <tr>
+            <td>{{ registro.host }}</td>
+            <td>{{ registro.type }}</td>
+            <td>{{ registro.data }}</td>
+            <td align="center" nowrap="nowrap">
+                <div class="btn-group">
+                    <a class="btn btn-mini btn-info" title="editar" href="{% url dns.views.records.edit registro.id %}">
+                        <i class="icon-edit"></i>
+                    </a>
+                    <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ registro.id }}" data-toggle="modal">
+                        <i class="icon-remove"></i>
+                    </a>
+                </div>
+                <div class="modal hide fade" id="confirm_{{ registro.id }}">
+                    <div class="modal-header">Eliminar registro</div>
+                    <div class="modal-body">
+                        ¿Está seguro de que dese eliminar el registro <strong>{{ registro.host }}.{{ registro.domain }}</strong>?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                        <a href="{% url dns.views.records.delete registro.id %}" class="btn btn-danger">Elimina</a>
+                    </div>
+                </div>
+            </td>
+        <tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" align="center">No hay registros</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+</div>
+
+<a class="btn pull-right btn-primary" href="{% url dns.views.records.new dom_id %}"><i class="icon-file"></i> Nuevo Registro</a>
+
 {% endif %}
 {% endblock %}

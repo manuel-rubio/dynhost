@@ -30,16 +30,17 @@ def new(request):
     domain = Domains()
     domain.user_id = request.user.id
     if request.method == 'POST':
-        form = DomainsForm(request.POST, instance=domain, auto_id=False)
+        form = DomainsForm(request.POST, instance=domain, auto_id=True)
         if form.is_valid():
             form.save()
             return redirect(reverse('dynhost.views.domains.index'))
     else:
         domain.ip = request.META['REMOTE_ADDR']
-        form = DomainsForm(instance=domain, auto_id=False)
+        form = DomainsForm(instance=domain, auto_id=True)
     return render_to_response('dynhost_edit.html', {
         'cuenta': cuenta,
         'form': form,
+        'myip': request.META['REMOTE_ADDR'],
         'empleados': empleados,
         'disponibles': cuenta.limit_dynhost - empleados,
         'total': cuenta.limit_dynhost,
@@ -55,15 +56,16 @@ def edit(request, dom_id):
         if domain.user_id != request.user.id:
             return redirect(reverse('dynhost.views.domains.index'))
         if request.method == 'POST':
-            form = DomainsForm(request.POST, instance=domain, auto_id=False)
+            form = DomainsForm(request.POST, instance=domain, auto_id=True)
             if form.is_valid():
                 form.save()
                 return redirect(reverse('dynhost.views.domains.index'))
         else:
-            form = DomainsForm(instance=domain, auto_id=False)
+            form = DomainsForm(instance=domain, auto_id=True)
         return render_to_response('dynhost_edit.html', {
             'cuenta': cuenta,
             'form': form,
+            'myip': request.META['REMOTE_ADDR'],
             'empleados': empleados,
             'disponibles': cuenta.limit_dynhost - empleados,
             'total': cuenta.limit_dynhost,

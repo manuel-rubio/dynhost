@@ -19,7 +19,8 @@ def index(request, page=None):
         'usados': usados,
         'disponibles': cuenta.limit_sql - usados,
         'total': cuenta.limit_sql,
-        'tipo': 'Base de Datos'
+        'tipo': 'Base de Datos',
+        'form': DatabasesForm(instance=Databases(), auto_id=True)
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -29,13 +30,13 @@ def new(request):
     database = Databases()
     database.accounts_id = cuenta.id
     if request.method == 'POST':
-        form = DatabasesForm(request.POST, instance=database, auto_id=False)
+        form = DatabasesForm(request.POST, instance=database, auto_id=True)
         #form.fields['links'].queryset = Users.objects.filter(accounts__id=cuenta.id)
         if form.is_valid():
             form.save()
             return redirect(reverse('database.views.databases.index'))
     else:
-        form = DatabasesForm(instance=database, auto_id=False)
+        form = DatabasesForm(instance=database, auto_id=True)
         #form.fields['links'].queryset = Users.objects.filter(accounts__id=cuenta.id)
     return render_to_response('databases_edit.html', {
         'form': form,

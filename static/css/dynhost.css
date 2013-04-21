@@ -77,6 +77,9 @@ input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
         margin-bottom: 5px;
         height: 145px;
     }
+    .footer {
+        text-align: center;
+    }
 }
 @media (min-width: 980px) {
     #borrador {
@@ -95,6 +98,17 @@ input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
         padding: 10px 20px;
         margin-bottom: 5px;
         height: 125px;
+    }
+    #content {
+        padding-bottom: 150px;
+    }
+    .footer {
+        position: fixed;
+        right: 0;
+        left: 0;
+        margin-bottom: 0;
+        z-index: 1030;
+        bottom: 0;
     }
 }
 

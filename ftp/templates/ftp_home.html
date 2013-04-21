@@ -1,21 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="info">
-    <div class="marco_gris">
-        {% if servicios|length >= total %}
-        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más buzones.')">
-        {% else %}
-        <a href="{% url ftp.views.new %}">
-        {% endif %}
-            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
-        </a>
-        &nbsp;
-    </div>
-</div>
-<br />
 <h1>Listado de Accesos FTP</h1>
-<table id="listado">
+<table class="table table-condensed">
 <thead>
     <th>Buz&oacute;n</th>
     <th align="center">acciones</th>
@@ -24,15 +11,25 @@
     {% for servicio in servicios %}
     <tr>
         <td>{{ servicio.userid }}</td>
-        <td align="center">
-            <a href="{% url ftp.views.edit servicio.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
-            </a>
-            &nbsp;
-            <a href="{% url ftp.views.delete servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar este acceso FTP?');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
+        <td>
+            <div class="btn-group">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url ftp.views.edit servicio.id %}">
+                    <i class="icon-edit"></i>
+                </a>
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <i class="icon-remove"></i>
+                </a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
+                <div class="modal-header">Eliminar registro</div>
+                <div class="modal-body">
+                    ¿Está seguro de que dese eliminar el usuario de FTP <strong>{{servicio.userid}}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url ftp.views.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
@@ -42,4 +39,10 @@
     {% endfor %}
 </tbody>
 </table>
+
+{% if servicios|length >= total %}
+<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más usuarios FTP.')"><i class="icon-file"></i> Nuevo Usuario</a>
+{% else %}
+<a class="btn pull-right btn-primary" href="{% url ftp.views.new %}"><i class="icon-file"></i> Nuevo Usuario</a>
+{% endif %}
 {% endblock %}

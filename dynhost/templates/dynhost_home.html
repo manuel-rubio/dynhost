@@ -21,14 +21,14 @@
                 <a class="btn btn-mini" title="redirección web" href="{% url web.views.redirects_dynamic.index servicio.record.id %}">
                     <i class="icon-share"></i>
                 </a>
-                <a class="btn btn-mini" title="editar" href="{% url dynhost.views.domains.edit servicio.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url dynhost.views.domains.edit servicio.id %}">
                     <i class="icon-edit"></i>
                 </a>
-                <a class="btn btn-mini" title="eliminar" href="#confirm_{{servicio.domain}}" data-toggle="modal">
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
                     <i class="icon-remove"></i>
                 </a>
             </div>
-            <div class="modal hide fade" id="confirm_{{servicio.domain}}">
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
                 <div class="modal-header">Eliminar registro</div>
                 <div class="modal-body">
                     ¿Está seguro de que dese eliminar el dominio <strong>{{servicio.domain}}</strong>?

@@ -1,21 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="info">
-    <div class="marco_gris">
-        {% if servicios|length >= total %}
-        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más dominios.')">
-        {% else %}
-        <a href="{% url dns.views.domains.new %}">
-        {% endif %}
-            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
-        </a>
-        &nbsp;
-    </div>
-</div>
-<br />
 <h1>Listado de Dominios</h1>
-<table id="listado">
+<table class="table table-condensed">
 <thead>
     <th>Zona</th>
     <th align="center">acciones</th>
@@ -25,38 +12,48 @@
     <tr>
         <td>{{ servicio.domain }}</td>
         <td align="center">
-            {% if servicio.email_type == 'R' %}
-            <a href="{% url mail.views.mailboxes.index servicio.id %}">
-                <img src="/static/images/32/mail.png" alt="M" title="Mailboxes" />
-            </a>
-            {% else %}
-            <img src="/static/images/blank.jpg" />
-            {% endif %}
-            &nbsp;
-            {% if servicio.email_type %}
-            <a href="{% url mail.views.redirects.index servicio.id %}">
-                <img src="/static/images/32/redirect.png" alt="M" title="Redirecciones" />
-            </a>
-            {% else %}
-            <img src="/static/images/blank.jpg" />
-            {% endif %}
-            &nbsp;
-            <a href="{% url web.views.hostings.index servicio.id %}">
-                <img src="/static/images/32/computer.png" alt="M" title="Hosting" />
-            </a>
-            &nbsp;
-            <a href="{% url web.views.redirects.index servicio.id %}">
-                <img src="/static/images/32/redirect_web.png" alt="M" title="Redirecciones" />
-            </a>
-            &nbsp;
-            <a href="{% url dns.views.domains.edit servicio.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
-            </a>
-            &nbsp;
-            <a href="{% url dns.views.domains.delete servicio.id %}" onclick="return confirm('¿Está seguro de que dese eliminar esta zona DNS?');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
+            <div class="btn-group">
+                {% if servicio.email_type == 'R' %}
+                <a class="btn btn-mini btn-inverse disabled" title="buzones de email" href="{% url mail.views.mailboxes.index servicio.id %}">
+                    <i class="icon-envelope"></i>
+                </a>
+                {% else %}
+                <button class="btn btn-mini btn-inverse disabled" title="buzones de email">
+                    <i class="icon-envelope"></i>
+                </button>
+                {% endif %}
+                {% if servicio.email_type %}
+                <a class="btn btn-mini" title="redirección de email" href="{% url mail.views.redirects.index servicio.id %}">
+                    <i class="icon-envelope"></i>
+                </a>
+                {% else %}
+                <button class="btn btn-mini btn-inverse disabled" title="redirección de email">
+                    <i class="icon-envelope"></i>
+                </button>
+                {% endif %}
+                <a class="btn btn-mini" title="hosting web" href="{% url web.views.hostings.index servicio.id %}">
+                    <i class="icon-share"></i>
+                </a>
+                <a class="btn btn-mini" title="redirección web" href="{% url web.views.redirects.index servicio.id %}">
+                    <i class="icon-share"></i>
+                </a>
+                <a class="btn btn-mini btn-info" title="editar" href="{% url dns.views.domains.edit servicio.id %}">
+                    <i class="icon-edit"></i>
+                </a>
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <i class="icon-remove"></i>
+                </a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
+                <div class="modal-header">Eliminar registro</div>
+                <div class="modal-body">
+                    ¿Está seguro de que dese eliminar el dominio <strong>{{servicio.domain}}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url dynhost.views.domains.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
@@ -66,4 +63,10 @@
     {% endfor %}
 </tbody>
 </table>
+
+{% if servicios|length >= total %}
+<button class="btn pull-right btn-inverse disabled" type="button" onclick="alert('Ha superado el máximo, no puede crear más dominios.')"><i class="icon-file"></i> Nuevo Dominio</button>
+{% else %}
+<a class="btn pull-right btn-primary" href="{% url dns.views.domains.new %}"><i class="icon-file"></i> Nuevo Dominio</a>
+{% endif %}
 {% endblock %}
