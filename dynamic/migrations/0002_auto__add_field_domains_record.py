@@ -9,13 +9,13 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding field 'Domains.record'
-        db.add_column('dynhost_domains', 'record', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['dns.Records']), keep_default=False)
+        db.add_column('dynamic_domains', 'record', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['dns.Records']), keep_default=False)
 
 
     def backwards(self, orm):
         
         # Deleting field 'Domains.record'
-        db.delete_column('dynhost_domains', 'record_id')
+        db.delete_column('dynamic_domains', 'record_id')
 
 
     models = {
@@ -94,7 +94,7 @@ class Migration(SchemaMigration):
             'ttl': ('django.db.models.fields.IntegerField', [], {'default': '38400'}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '6'})
         },
-        'dynhost.domains': {
+        'dynamic.domains': {
             'Meta': {'object_name': 'Domains'},
             'domain': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -104,4 +104,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['dynhost']
+    complete_apps = ['dynamic']

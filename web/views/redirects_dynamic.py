@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from billing.models import Accounts
 from dns.models import Records
-from dynhost.models import Domains as DynHosts
+from dynamic.models import Domains as DynHosts
 from ..models import RedirectDynHost, RedirectDynHostForm
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -23,7 +23,7 @@ def check_owner(rec_id, user_id):
 def index(request, rec_id, page=None):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, request.user.id):
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
     servicios = RedirectDynHost.objects.filter(dynhost__record__id=rec_id)
     usados = servicios.count()
     return render_to_response('web_redirects_dynhost_home.html', {
@@ -41,7 +41,7 @@ def index(request, rec_id, page=None):
 def new(request, rec_id):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, request.user.id):
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
     usados = RedirectDynHost.objects.filter(dynhost__record__id=rec_id).count()
     dynhost = DynHosts.objects.filter(record__id = rec_id)[0]
     redir = RedirectDynHost()
@@ -75,7 +75,7 @@ def edit(request, redir_id):
     try:
         redir = RedirectDynHost.objects.get(pk=redir_id)
         if redir.dynhost.user_id != cuenta.user_id:
-            return redirect(reverse('dynhost.views.domains.index'))
+            return redirect(reverse('dynamic.views.domains.index'))
         usados = RedirectDynHost.objects.filter(dynhost__record__id=redir.dynhost.record.id).count()
         if request.method == 'POST':
             form = RedirectDynHostForm(request.POST, instance=redir, auto_id=False)

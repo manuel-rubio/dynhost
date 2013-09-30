@@ -9,24 +9,24 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding model 'Domains'
-        db.create_table('dynhost_domains', (
+        db.create_table('dynamic_domains', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user_id', self.gf('django.db.models.fields.IntegerField')()),
             ('domain', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('ip', self.gf('django.db.models.fields.CharField')(max_length=15)),
         ))
-        db.send_create_signal('dynhost', ['Domains'])
+        db.send_create_signal('dynamic', ['Domains'])
 
 
     def backwards(self, orm):
         
         # Deleting model 'Domains'
-        db.delete_table('dynhost_domains')
+        db.delete_table('dynamic_domains')
 
 
     models = {
-        'dynhost.domains': {
-            'Meta': {'object_name': 'Domains', 'db_table': '\'dynhost_domains\''},
+        'dynamic.domains': {
+            'Meta': {'object_name': 'Domains', 'db_table': '\'dynamic_domains\''},
             'domain': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ip': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
@@ -34,4 +34,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['dynhost']
+    complete_apps = ['dynamic']

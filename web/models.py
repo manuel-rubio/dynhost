@@ -31,7 +31,7 @@ class RedirectDynHost(models.Model):
     name = models.TextField(unique=True, max_length=60)
     url = models.TextField()
     uri = models.TextField(default='/')
-    dynhost = models.ForeignKey('dynhost.Domains')
+    dynhost = models.ForeignKey('dynamic.Domains')
     def __unicode__(self):
         return self.name
     class Meta:

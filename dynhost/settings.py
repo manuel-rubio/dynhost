@@ -11,14 +11,32 @@ ADMINS = (
     ('Manuel Rubio', 'bombadil@bosqueviejo.net'),
 )
 
-MANAGERS = ADMINS
-
 PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")
 
 DEFAULT_IP = '176.31.105.29'
 
-RECAPTCHA_PUBLIC = '6LdpP88SAAAAAHYByZgLpgN4RDzAuaLs3vwTD3uL'
-RECAPTCHA_PRIVATE = '6LdpP88SAAAAAMy9payK06HWlpTGQbQ6ErWao7Ez'
+RECAPTCHA_PUBLIC_KEY = '6LdpP88SAAAAAHYByZgLpgN4RDzAuaLs3vwTD3uL'
+RECAPTCHA_PRIVATE_KEY = '6LdpP88SAAAAAMy9payK06HWlpTGQbQ6ErWao7Ez'
+RECAPTCHA_USE_SSL = True
+
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'ring',                      # Or path to database file if using sqlite3.
+        'USER': 'ring',                      # Not used with sqlite3.
+        'PASSWORD': 'ring1234',                  # Not used with sqlite3.
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/tmp/dynhost.sqlite'
+    }
 
 USER_SKEL = {
     'dynhost': 'apache/conf.d/dynhosts/%(userid)d',
@@ -147,30 +165,14 @@ Alias %(uri)s %(path)s
 
 AUTH_PROFILE_MODULE = 'billing.Accounts'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'ring',                      # Or path to database file if using sqlite3.
-        'USER': 'ring',                      # Not used with sqlite3.
-        'PASSWORD': 'ring1234',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/dynhost.sqlite'
-    }
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = []
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
-# On Unix systems, a value of None will cause Django to use the same
-# timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
+# In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'Europe/Madrid'
 
 # Language code for this installation. All choices can be found here:
@@ -191,22 +193,22 @@ USE_L10N = True
 USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
+# Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+# Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
+# Example: "/var/www/example.com/static/"
 STATIC_ROOT = '/home/bombadil/www-data/dynhost.es/htdocs/static'
 
 # URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
+# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files
@@ -226,7 +228,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'k%oyy!--&amp;n+!fnec0he+)9-b5v=orh-o0za)-$173_2#eqpv5g'
+SECRET_KEY = '%6sy_bhgqn!*0j_-n*js43v8^dckrpc1*gziduvka%xd($x$qi'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -254,7 +256,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_PATH + '/dynhost/templates',
+    PROJECT_PATH + '/dynamic/templates',
     PROJECT_PATH + '/billing/templates',
     PROJECT_PATH + '/dns/templates',
     PROJECT_PATH + '/database/templates',
@@ -268,22 +270,27 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
-    'registration',
-    'billing',
-    'ftp',
-    'dns',
-    'dynhost',
-    'mail',
-    'database',
-    'web',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'south',
+    'registration',
+    'captcha',
+    # project apps:
+    'billing',
+    'ftp',
+    'dns',
+    'dynamic',
+    'mail',
+    'database',
+    'web',
 )
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+
 ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'noreply@dynhost.es'
 LOGIN_REDIRECT_URL = '/'

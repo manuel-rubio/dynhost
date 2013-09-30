@@ -15,13 +15,13 @@
         <td>{{ servicio.ip }}</td>
         <td align="center">
             <div class="btn-group">
-                <a class="btn btn-mini" title="redirección de email" href="{% url mail.views.redirects_dynamic.index servicio.record.id %}">
+                <a class="btn btn-mini" title="redirección de email" href="{% url "mail.views.redirects_dynamic.index" servicio.record.id %}">
                     <i class="icon-envelope"></i>
                 </a>
-                <a class="btn btn-mini" title="redirección web" href="{% url web.views.redirects_dynamic.index servicio.record.id %}">
+                <a class="btn btn-mini" title="redirección web" href="{% url "web.views.redirects_dynamic.index" servicio.record.id %}">
                     <i class="icon-share"></i>
                 </a>
-                <a class="btn btn-mini btn-info" title="editar" href="{% url dynhost.views.domains.edit servicio.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "dynamic.views.domains.edit" servicio.id %}">
                     <i class="icon-edit"></i>
                 </a>
                 <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url dynhost.views.domains.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a href="{% url "dynamic.views.domains.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
                 </div>
             </div>
         </td>
@@ -51,6 +51,6 @@
 {% if servicios|length >= total %}
 <a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más dynhost.')"><i class="icon-file"></i> Nuevo DynHOST</a>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url dynhost.views.domains.new %}"><i class="icon-file"></i> Nuevo DynHOST</a>
+<a class="btn pull-right btn-primary" href="{% url "dynamic.views.domains.new" %}"><i class="icon-file"></i> Nuevo DynHOST</a>
 {% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from billing.models import *
-from ..models import *
+from dns.models import *
 from django.core.urlresolvers import reverse
 from datetime import datetime
 

@@ -22,7 +22,7 @@ def check_owner(rec_id, acc_id):
 def index(request, rec_id, page=None):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, cuenta.id):
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
     servicios = RedirectDynHost.objects.filter(record__id=rec_id)
     usados = servicios.count()
     record = Records.objects.get(pk=rec_id)
@@ -41,7 +41,7 @@ def index(request, rec_id, page=None):
 def new(request, rec_id):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, cuenta.id):
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
     usados = RedirectDynHost.objects.filter(record__id=rec_id).count()
     record = Records.objects.get(pk=rec_id)
     redir = RedirectDynHost()
@@ -74,7 +74,7 @@ def edit(request, mbox_id):
     try:
         redir = RedirectDynHost.objects.get(pk=mbox_id)
         if redir.record.domain.accounts.id != cuenta.id:
-            return redirect(reverse('dynhost.views.domains.index'))
+            return redirect(reverse('dynamic.views.domains.index'))
         usados = RedirectDynHost.objects.filter(record__id=redir.record.id).count()
         if request.method == 'POST':
             form = RedirectDynHostForm(request.POST, instance=redir, auto_id=False)
@@ -98,7 +98,7 @@ def edit(request, mbox_id):
             'tipo': 'Redirecciones'
         }, context_instance=RequestContext(request))
     except RedirectDynHost.DoesNotExist:
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
 
 @login_required(login_url='/')
 def delete(request, mbox_id):
@@ -107,9 +107,9 @@ def delete(request, mbox_id):
         print >>sys.stderr, mbox_id
         redir = RedirectDynHost.objects.get(pk=mbox_id)
         if redir.record.domain.accounts.id != cuenta.id:
-            return redirect(reverse('dynhost.views.domains.index'))
+            return redirect(reverse('dynamic.views.domains.index'))
         redir.delete()
         return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.record_id]))
     except RedirectDynHost.DoesNotExist:
         pass
-    return redirect(reverse('dynhost.views.domains.index'))
+    return redirect(reverse('dynamic.views.domains.index'))

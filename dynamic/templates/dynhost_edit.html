@@ -25,7 +25,7 @@
     <div class="control-group">
         <div class="controls">
             <input type="button" onclick="$('#{{ form.ip.html_name }}').get(0).value = '{{ myip }}'" class="btn btn-info" value="Mi IP"/>
-            <a href="{% url dynhost.views.domains.index %}" class="btn">Cancelar</a>
+            <a href="{% url "dynamic.views.domains.index" %}" class="btn">Cancelar</a>
             <input type="submit" class="btn btn-primary" value="Guardar"/>
         </div>
     </div>

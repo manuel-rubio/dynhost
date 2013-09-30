@@ -6,7 +6,7 @@ from billing.models import Accounts, Domains
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
-from dynhost.models import Domains as Dynamic
+from dynamic.models import Domains as Dynamic
 from ftp.models import Users as FTPUsers
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 

@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from billing.models import Accounts, Domains
-from ..models import Records, RecordsForm
+from dns.models import Records, RecordsForm
 from django.core.urlresolvers import reverse
 import sys
 

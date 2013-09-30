@@ -1,21 +1,33 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
-from django.views.generic.simple import direct_to_template
+from registration.backends.default.views import RegistrationView
+from django.views.generic import TemplateView
 from dynhost.forms import RecaptchaRegistrationForm
 from dynhost import settings
 
+# Uncomment the next two lines to enable the admin:
+# from django.contrib import admin
+# admin.autodiscover()
+
 urlpatterns = patterns('',
-    # ver templateresponse y extra_context para agregar funcionalidad
-    # a estas vistas.
-    url(r'^user/register/complete', direct_to_template, {
-        'template': 'registration/registration_complete.html'
-    }),
-    url(r'^user/register/', 'dynhost.forms.register', {
-        'backend': 'dynhost.forms.RecaptchaRegistrationBackend', # para v0.8
-        'form_class':RecaptchaRegistrationForm
-    }),
-    url(r'^user/', include('registration.urls')),
-    
+    # Examples:
+    # url(r'^$', 'dynhost.views.home', name='home'),
+    # url(r'^dynhost/', include('dynhost.foo.urls')),
+
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    # url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^user/register/complete', TemplateView.as_view(
+        template_name='registration/registration_complete.html'
+    )),
+    url(r'^user/register/', RegistrationView.as_view(
+        form_class=RecaptchaRegistrationForm
+    )),
+    url(r'^user/', include('registration.backends.default.urls')),
+
     url(r'^account/$', 'billing.views.index'),
 
     url(r'^dns/$', 'dns.views.domains.index'),
@@ -88,14 +100,14 @@ urlpatterns = patterns('',
     url(r'^web/hosting/(?P<hosting_id>\d+)/delete/$', 'web.views.hostings.delete'),
     url(r'^web/hosting/(?P<dom_id>\d+)/new/$', 'web.views.hostings.new'),
 
-    url(r'^dynamic/$', 'dynhost.views.domains.index'),
-    url(r'^dynamic/(?P<page_id>\d+)/$', 'dynhost.views.domains.index'),
-    url(r'^dynamic/(?P<dom_id>\d+)/edit/$', 'dynhost.views.domains.edit'),
-    url(r'^dynamic/(?P<dom_id>\d+)/delete/$', 'dynhost.views.domains.delete'),
-    url(r'^dynamic/new/$', 'dynhost.views.domains.new'),
-    url(r'^dynamic/help/$', direct_to_template, {
-        'template': 'dynhost_help.html'
-    }),
+    url(r'^dynamic/$', 'dynamic.views.domains.index'),
+    url(r'^dynamic/(?P<page_id>\d+)/$', 'dynamic.views.domains.index'),
+    url(r'^dynamic/(?P<dom_id>\d+)/edit/$', 'dynamic.views.domains.edit'),
+    url(r'^dynamic/(?P<dom_id>\d+)/delete/$', 'dynamic.views.domains.delete'),
+    url(r'^dynamic/new/$', 'dynamic.views.domains.new'),
+    url(r'^dynamic/help/$', TemplateView.as_view(
+        template_name='dynhost_help.html'
+    )),
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}),
     url(r'^$', 'django.contrib.auth.views.login', {'template_name': 'index.html'}),

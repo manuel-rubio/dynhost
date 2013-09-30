@@ -33,7 +33,7 @@
 <body>
     {% block login %}
     {% if not user.is_authenticated %}
-    <form class="form-horizontal" action="{% url django.contrib.auth.views.login %}" method="post">
+    <form class="form-horizontal" action="{% url "django.contrib.auth.views.login" %}" method="post">
     <input type="hidden" name="next" value="account" />
     {% csrf_token %}
     <div class="modal hide fade" id="loginForm">
@@ -57,10 +57,16 @@
                 <span class="help-inline">{{ error }}</span>
                 {% endfor %}
             </div>
+            <a href="#">&iquest;Olvidó la clave?</a>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-            <button type="submit" class="btn btn-primary">Inicia Sesi&oacute;n</a>
+            <div class="pull-left">
+                <a href="/user/register/" class="btn btn-info">Date de Alta</a>
+            </div>
+            <div class="pull-right">
+                <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                <button type="submit" class="btn btn-primary">Inicia Sesi&oacute;n</a>
+            </div>
         </div>
     </div>
     </form>
@@ -91,13 +97,13 @@
                     <ul class="nav">
                         {% if user.is_authenticated %}
                         <li{% if menu == 'index' %} class="active"{% endif %}>
-                            <a href="{% url dynhost.views.domains.index %}">DynHost</a>
+                            <a href="{% url "dynamic.views.domains.index" %}">DynHost</a>
                         </li>
                         <li{% if menu == 'index' %} class="active"{% endif %}>
-                            <a href="{% url dns.views.domains.index %}">Dominios</a>
+                            <a href="{% url "dns.views.domains.index" %}">Dominios</a>
                         </li>
                         <li{% if menu == 'index' %} class="active"{% endif %}>
-                            <a href="{% url ftp.views.index %}">Accesos FTP</a>
+                            <a href="{% url "ftp.views.index" %}">Accesos FTP</a>
                         </li>
                         <li class="dropdown{% if menu == 'index' %} active{% endif %}">
                             <a class="dropdown-toggle" id="database" role="button" data-toggle="dropdown">
@@ -106,10 +112,10 @@
                             </a>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{% url database.views.databases.index %}">Listado de Bases de Datos</a>
+                                    <a role="menuitem" tabindex="-1" href="{% url "database.views.databases.index" %}">Listado de Bases de Datos</a>
                                 </li>
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{% url database.views.users.index %}">Usuarios de Bases de Datos</a>
+                                    <a role="menuitem" tabindex="-1" href="{% url "database.views.users.index" %}">Usuarios de Bases de Datos</a>
                                 </li>
                             </ul>
                         </li>
@@ -123,11 +129,9 @@
                 <div class="nav-collapse pull-right">
                     <div class="btn-group">
                         {% if user.is_authenticated %}
-                        <a class="btn btn-small btn-info" href="{% url billing.views.index %}"><i class="icon-user icon-white"></i> {{ user.username }}</a>
+                        <a class="btn btn-small btn-info" href="{% url "billing.views.index" %}"><i class="icon-user icon-white"></i> {{ user.username }}</a>
                         <a class="btn btn-small btn-info" href="/logout/"><i class="icon-off icon-white"></i></a>
                         {% else %}
-                        <a class="btn btn-small btn-info" title="¿Olvidó su clave?" href=""><i class="icon-lock icon-white"></i></a>
-                        <a class="btn btn-small btn-info" title="Crear cuenta nueva" href="/user/register/"><i class="icon-signin icon-white"></i></a>
                         <a class="btn btn-small btn-info" href="#loginForm" data-toggle="modal"><i class="icon-user icon-white"></i> Entrar</a>
                         {% endif %}
                     </div>
