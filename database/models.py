@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
+from django.forms import TextInput
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
@@ -110,7 +111,8 @@ class AddDatabasesForm(forms.ModelForm):
         fields = [ 'database' ]
 
 class UsersForm(forms.ModelForm):
-    password = forms.CharField(label='Clave')
+    username = forms.CharField(label='Usuario')
+    password = forms.CharField(label='Clave', widget=TextInput(attrs={'id':'user_password','type':'password'}))
     #links = forms.ModelMultipleChoiceField(label='Usuarios', queryset=None, required=False)
     class Meta:
         model = Users
