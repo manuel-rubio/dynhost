@@ -1,21 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="info">
-    <div class="marco_gris">
-        {% if servicios|length >= total %}
-        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más usuarios.')">
-        {% else %}
-        <a href="{% url database.views.users.new %}">
-        {% endif %}
-            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
-        </a>
-        &nbsp;
-    </div>
+<div id="breadcrumbs">
+    <a href="/">Inicio</a> &raquo; <a href="/user/">Usuarios de Base de Datos</a>
 </div>
-<br />
 <h1>Usuarios de Base de Datos</h1>
-<table id="listado">
+<table class="table table-condensed">
 <thead>
     <th>Usuario</th>
     <th align="center">acciones</th>
@@ -25,21 +15,66 @@
     <tr>
         <td>{{ servicio.username }}</td>
         <td align="center">
-            <a href="{% url database.views.users.edit servicio.id %}">
-                <img src="/static/images/32/notepad.png" alt="W" title="Mostrar" />
-            </a>
-            &nbsp;
-            <a href="{% url database.views.users.delete servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar este usuario?');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
+            <div class="btn-group">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "database.views.users.edit" servicio.id %}">
+                    <i class="icon-edit"></i>
+                </a>
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <i class="icon-remove"></i>
+                </a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
+                <div class="modal-header">Eliminar Usuario de Base de Datos</div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar este usuario <strong>{{servicio.users}}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url "database.views.users.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
     <tr>
-        <td colspan="3" align="center">No hay usuarios de bases de datos</td>
+        <td colspan="3" align="center">No hay usuarios de Base de datos</td>
     </tr>
     {% endfor %}
 </tbody>
 </table>
+
+{% if servicios|length >= total %}
+<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más usuarios de bases de datos.')"><i class="icon-file"></i> Nuevo Usuario de Base de Datos</a>
+{% else %}
+<a class="btn pull-right btn-primary" href="#new_user" data-toggle="modal"><i class="icon-file"></i> Nuevo Usuario de Base de Datos</a>
+<form class="form-horizontal" method="post" action="{% url "database.views.users.new" %}">
+    <div class="modal hide fade" id="new_user">
+        <div class="modal-header">Nuevo Usuario de Base de Datos</div>
+        <div class="modal-body">
+                {% csrf_token %}
+                <div class="control-group{% if form.username.errors %} error{% endif %}">
+                    <label class="control-label">{{ form.username.label }}</label>
+                    <div class="controls">
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                        <span class="help-inline">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <label class="control-label">{{ form.password.label }}</label>
+                    <div class="controls">
+                        {{ form.password }}
+                        {% for error in form.password.errors %}
+                        <span class="help-inline">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+            <button type="submit" class="btn btn-primary">Crear</a>
+        </div>
+    </div>
+</form>
+{% endif %}
 {% endblock %}

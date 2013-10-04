@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% block breadcrumb %}{{ block.super }} &raquo; {{ object.title|title }}{% endblock %}
 
 {% block content %}
-{% if not show %}
 
+{% if not show %}
 <h1>Información de Base de Datos</h1>
 <form class="form-horizontal" method="post">
     {% csrf_token %}
@@ -17,13 +18,28 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <a href="{% url database.views.databases.index %}" class="btn">Cancelar</a>
+            <a href="{% url "database.views.databases.index" %}" class="btn">Cancelar</a>
             <input type="submit" class="btn btn-primary" value="Guardar"/>
         </div>
     </div>
 </form>
 
 {% else %}
+<div id="breadcrumbs">
+        <a href="/">Inicio</a> &raquo; <a href="/database/">Base de Datos</a> &raquo; Editar
+</div>
+
+<h1>Información de Base de Datos</h1>
+<table class="table table-condensed">
+<thead>
+    <th>Nombre</th>
+</thead>
+<tbody>
+    <tr>
+        <td>{{ database.database }}</td>
+    </tr>
+</tbody>
+</table>
 
 <h1>Usuarios con Permisos a <strong>{{ database.database }}</strong></h1>
 <table class="table table-condensed">
@@ -37,10 +53,10 @@
         <td>{{ link.user.username }}</td>
         <td align="center">
             <div class="btn-group">
-                <a class="btn btn-mini" title="SQL Shell" href="{% url database.views.databases.execute link.id %}">
+                <a class="btn btn-mini" title="SQL Shell" href="{% url "database.views.databases.execute" link.id %}">
                     <i class="icon-play"></i>
                 </a>
-                <a class="btn btn-mini btn-info" title="editar" href="{% url database.views.users.edit link.user.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "database.views.users.edit" link.user.id %}">
                     <i class="icon-edit"></i>
                 </a>
                 <a class="btn btn-mini btn-danger" title="revocar permiso" href="#confirm_{{ link.id }}" data-toggle="modal">
@@ -58,7 +74,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url database.views.databases.unlink link.id %}" class="btn btn-danger">Revoca permisos</a>
+                    <a href="{% url "database.views.databases.unlink" link.id %}" class="btn btn-danger">Revoca permisos</a>
                 </div>
             </div>
         </td>
@@ -70,9 +86,13 @@
     {% endfor %}
 </tbody>
 </table>
-<form name="addUser" method="post" action="{% url database.views.databases.link db_id %}">
+<form name="addUser" method="post" action="{% url "database.views.databases.link" db_id %}">
 {% csrf_token %}
-Agregar usuarios: {{ users.user }} <a href="#" onclick="document.addUser.submit();"><img src="/static/images/16/up.png" title="Agregar" /></a>
+
+<div class="control-group">
+    Agregar usuarios: {{ users.user }} 
+    <a class="btn btn-mini btn-primary" href="#" onclick="document.addUser.submit();"><i class="icon-plus icon-white"></i></a>
+</div>
 </form>
 
 {% endif %}

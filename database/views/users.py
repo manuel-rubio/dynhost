@@ -12,7 +12,7 @@ import sys
 @login_required(login_url='/')
 def index(request, page=None):
     cuenta = Accounts.objects.get(user = request.user.id)
-    servicios = Users.objects.filter(accounts__id=cuenta.id)
+    servicios = Users.objects.filter(accounts__id=cuenta.id).order_by('username')
     usados = servicios.count()
     return render_to_response('databases_users_home.html', {
         'cuenta': cuenta,
@@ -20,7 +20,8 @@ def index(request, page=None):
         'usados': usados,
         'disponibles': cuenta.limit_sql_users - usados,
         'total': cuenta.limit_sql_users,
-        'tipo': 'Usuarios BD'
+        'tipo': 'Usuarios BD',
+        'form': UsersForm(instance=Users(), auto_id=False),
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -30,7 +31,7 @@ def new(request):
     user = Users()
     user.accounts_id = cuenta.id
     if request.method == 'POST':
-        form = UsersForm(request.POST, instance=user, auto_id=False)
+        form = UsersForm(request.POST, instance=user, auto_id=True)
         #form.fields['links'].queryset = Databases.objects.filter(accounts__id=cuenta.id)
         if form.is_valid():
             form.save()
@@ -38,7 +39,7 @@ def new(request):
         print >>sys.stderr, form.errors
     else:
         print >>sys.stderr, "Peticion GET"
-        form = UsersForm(instance=user, auto_id=False)
+        form = UsersForm(instance=user, auto_id=True)
         #form.fields['links'].queryset = Databases.objects.filter(accounts__id=cuenta.id)
     return render_to_response('databases_users_edit.html', {
         'form': form,
@@ -59,13 +60,13 @@ def edit(request, user_id):
         database_actual = UsersDatabases.objects.filter(user__id=user_id).values('database_id').query
         database.fields['database'].queryset = Databases.objects.filter(accounts__id=cuenta.id).exclude(id__in=database_actual)
         if request.method == 'POST':
-            form = UsersForm(request.POST, instance=user, auto_id=False)
+            form = UsersForm(request.POST, instance=user, auto_id=True)
             #form.fields['links'].queryset = Databases.objects.filter(accounts__id=cuenta.id)
             if form.is_valid():
                 form.save()
                 return redirect(reverse('database.views.users.index'))
         else:
-            form = UsersForm(instance=user, auto_id=False)
+            form = UsersForm(instance=user, auto_id=True)
             #form.fields['links'].queryset = Databases.objects.filter(accounts__id=cuenta.id)
         usados = Users.objects.filter(accounts__id=cuenta.id).count()
         return render_to_response('databases_users_edit.html', {

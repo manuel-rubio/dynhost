@@ -67,15 +67,15 @@
     <tr>
         <td>{{ link.database.database }}</td>
         <td align="center" nowrap="nowrap">
-            <a href="{% url database.views.databases.execute link.id %}">
+            <a href="{% url "database.views.databases.execute" link.id %}">
                 <img src="/static/images/32/computer.png" alt="X" title="Shell SQL" />
             </a>
             &nbsp;
-            <a href="{% url database.views.databases.show link.database.id %}">
+            <a href="{% url "database.views.databases.show" link.database.id %}">
                 <img src="/static/images/32/notepad.png" alt="E" title="Editar Base de Datos" />
             </a>
             &nbsp;
-            <a href="{% url database.views.users.unlink link.id %}" onclick="return confirm('¿Está seguro de que dese revocar los permisos a este usuario?\n\nNOTA: esto no borrará el usuario, solo lo desligará de la base de datos.');">
+            <a href="{% url "database.views.users.unlink" link.id %}" onclick="return confirm('¿Está seguro de que dese revocar los permisos a este usuario?\n\nNOTA: esto no borrará el usuario, solo lo desligará de la base de datos.');">
                 <img src="/static/images/32/remove.png" alt="S" title="Suprimir Acceso a esta Base de Datos" />
             </a>
             &nbsp;
@@ -88,7 +88,7 @@
     {% endfor %}
 </tbody>
 </table>
-<form name="addDatabase" method="post" action="{% url database.views.users.link user_id %}">
+<form name="addDatabase" method="post" action="{% url "database.views.users.link" user_id %}">
 {% csrf_token %}
 Agregar base de datos: {{ database.database }} <a href="#" onclick="document.addDatabase.submit();"><img src="/static/images/16/up.png" title="Agregar" /></a>
 </form>

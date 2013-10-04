@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="breadcrumbs">
+    <a href="/">Inicio</a> &raquo; <a href="/database/">Base de Datos</a>
+</div>
 <h1>Bases de Datos</h1>
 <table class="table table-condensed">
 <thead>
@@ -13,7 +16,7 @@
         <td>{{ servicio.database }}</td>
         <td align="center">
             <div class="btn-group">
-                <a class="btn btn-mini btn-info" title="editar" href="{% url database.views.databases.show servicio.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "database.views.databases.show" servicio.id %}">
                     <i class="icon-edit"></i>
                 </a>
                 <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
@@ -30,7 +33,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url database.views.databases.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a href="{% url "database.views.databases.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
                 </div>
             </div>
         </td>
@@ -47,7 +50,7 @@
 <a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más bases de datos.')"><i class="icon-file"></i> Nueva Base de Datos</a>
 {% else %}
 <a class="btn pull-right btn-primary" href="#new_database" data-toggle="modal"><i class="icon-file"></i> Nueva Base de Datos</a>
-<form class="form-horizontal" method="post" action="{% url database.views.databases.new %}">
+<form class="form-horizontal" method="post" action="{% url "database.views.databases.new" %}">
     <div class="modal hide fade" id="new_database">
         <div class="modal-header">Nueva Base de Datos</div>
         <div class="modal-body">
