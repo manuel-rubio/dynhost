@@ -277,6 +277,7 @@ INSTALLED_APPS = (
     'south',
     'registration',
     'captcha',
+    'gravatar',
     # project apps:
     'billing',
     'ftp',
@@ -294,6 +295,10 @@ REGISTRATION_OPEN = True
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'noreply@dynhost.es'
 LOGIN_REDIRECT_URL = '/'
+
+GRAVATAR_DEFAULT_IMAGE = 'mm'
+GRAVATAR_DEFAULT_RATING = 'g'
+GRAVATAR_DEFAULT_SIZE = 32
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

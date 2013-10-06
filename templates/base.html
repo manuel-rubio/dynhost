@@ -126,14 +126,25 @@
                     </ul>
                 </div>
                 {% block login_button %}
-                <div class="nav-collapse pull-right">
-                    <div class="btn-group">
-                        {% if user.is_authenticated %}
-                        <a class="btn btn-small btn-info" href="{% url "billing.views.index" %}"><i class="icon-user icon-white"></i> {{ user.username }}</a>
-                        <a class="btn btn-small btn-info" href="/logout/"><i class="icon-off icon-white"></i></a>
-                        {% else %}
+                <div class="nav pull-right">
+                    {% if user.is_authenticated %}
+                        {% load gravatar %}
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a class="gravatar dropdown-toggle" id="profile" data-toggle="dropdown">
+                                    Opciones 
+                                    <b class="caret"></b>
+                                    <img src="{% gravatar_for_user user 32 %}"/>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url "billing.views.index" %}">Perfil de Usuario</a></li>
+                                    <li><a href="/logout">Cerrar Sesión</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    {% else %}
                         <a class="btn btn-small btn-info" href="#loginForm" data-toggle="modal"><i class="icon-user icon-white"></i> Entrar</a>
-                        {% endif %}
+                    {% endif %}
                     </div>
                 </div>
                 {% endblock %}

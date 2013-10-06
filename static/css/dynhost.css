@@ -294,3 +294,8 @@ p.titulo {
 #formulario-ancho {
 	width: 600px;
 }
+
+.navbar .nav > li > a.gravatar {
+    padding-top: 4px;
+    padding-bottom: 0px;
+}
