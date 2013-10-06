@@ -67,7 +67,7 @@ $('#passwordForm').modal('show');
             <tr><th>Usuario</th><td>{{ cuenta.user.username }}</td></tr>
             <tr><th>eMail</th><td>{{ cuenta.user.email }}</td></tr>
             <tr><th>Alta</th><td>{{ cuenta.user.date_joined|date:"d/m/Y" }}</td></tr>
-            <tr><th>Cuota Mensual</th><td>{{ cuenta.paymonth|floatformat:2 }} &euro;</td></tr>
+            <tr><th>Cuota Mensual</th><td>{{ currency }} {{ cuenta.paymonth|floatformat:2 }}</td></tr>
         </table>
         <br />
         <div class="pull-right">

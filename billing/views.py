@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains
+from billing.models import Accounts, Domains, CURRENCIES
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -21,6 +21,12 @@ def index(request):
             mensaje = 'Clave cambiada con éxito.'
     else:
         form = PasswordChangeForm(request.user)
+    for (k,val) in CURRENCIES:
+        if k == cuenta.currency:
+            currency = val 
+            break
+    else:
+        currency = '&euro;'
     return render_to_response('billing_home.html', {
         'cuenta': cuenta,
         'form': form,
@@ -36,6 +42,7 @@ def index(request):
         'redirects_web_dynhost': RedirectWebDynHost.objects.filter(dynhost__record__domain__accounts__id = cuenta.id).count(),
         'ftp': FTPUsers.objects.filter(accounts__id = cuenta.id).count(),
         'mensaje': mensaje,
+        'currency': currency,
     }, context_instance=RequestContext(request))
 
 def pricing(request):

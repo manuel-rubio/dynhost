@@ -7,6 +7,11 @@ from django import forms
 import os
 from dynhost import settings
 
+CURRENCIES = (
+    ('EUR', '€'),
+    ('USD', '$'),
+)
+
 class Accounts(models.Model):
     limit_web = models.IntegerField(default=0)
     limit_web_redirect = models.IntegerField(default=0)
@@ -19,6 +24,7 @@ class Accounts(models.Model):
     limit_email_lists = models.IntegerField(default=0)
     limit_dynhost = models.IntegerField(default=5)
     paymonth = models.FloatField(default=0.0)
+    currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
     def __unicode__(self):
