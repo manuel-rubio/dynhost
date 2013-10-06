@@ -20,6 +20,19 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^avisos-legales/condiciones-generales-servicio', TemplateView.as_view(
+        template_name='avisos-legales/condiciones-generales-servicio.html'
+    )),
+    url(r'^avisos-legales/privacidad', TemplateView.as_view(
+        template_name='avisos-legales/privacidad.html'
+    )),
+    url(r'^avisos-legales', TemplateView.as_view(
+        template_name='avisos-legales.html'
+    )),
+    url(r'^acerca-de', TemplateView.as_view(
+        template_name='acerca-de.html'
+    )),
+
     url(r'^user/register/complete', TemplateView.as_view(
         template_name='registration/registration_complete.html'
     )),

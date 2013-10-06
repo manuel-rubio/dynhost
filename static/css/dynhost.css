@@ -110,6 +110,48 @@ input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
         z-index: 1030;
         bottom: 0;
     }
+    .container,
+    .navbar-fixed-top .container {
+        width: 98%;
+    }
+    #logo {
+        margin-left: 38px;
+    }
+    #copyright,
+    #legal {
+        width: 98%;
+        font-size: 12px;
+        line-height: 12px;
+    }
+}
+
+
+.legal h1,
+.legal h2,
+.legal h3 {
+    font-family: monospace;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.legal ul {
+    margin-left: 50px;
+}
+
+.legal ul li {
+    margin-bottom: 10px;
+}
+
+.legal p,
+.legal>ul {
+    font-family: monospace;
+    margin-right: 50px;
+    margin-left: 50px;
+    text-align: justify;
+}
+
+.legal>ul {
+    margin-left: 100px;
 }
 
 body {
@@ -140,7 +182,9 @@ h2 {
     margin-top: 0px;
 }
 h3 {
+    font-family: "Chocolate Covered Raindrops";
     font-size: 20px;
+    margin-top: 0px;
 }
 
 tt {

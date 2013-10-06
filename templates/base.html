@@ -25,9 +25,9 @@
       <link href="/static/css/font-awesome-ie7.min.css" rel="stylesheet">
     <![endif]-->
 
-	<link rel="stylesheet" href="/static/css/dynhost.css" type="text/css" media="screen" />
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.js"></script>
+	<link href="/static/css/dynhost.css" rel="stylesheet">
     {% block meta %}{% endblock %}
 </head>
 <body>
@@ -158,13 +158,16 @@
 
     <footer class="footer">
         <div class="container">
-            <a href="https://www.djangoproject.com/" target="_blank">
-                <img src="/static/img/powered.png" alt="Powered by Django" />
-            </a>
-            <br />
-            &copy; 2011-{% now "Y" %}, <a href="http://bosqueviejo.net" target="_blank">
-                <strong>Bosque</strong>Viejo
-            </a>
+            <div id="copyright">
+                &copy; 2011-{% now "Y" %}, <a href="http://altenwald.com" target="_blank">
+                    <strong>Alten</strong>Wald, S.L.
+                </a>
+            </div>
+            <div id="legal">
+                <a href="/avisos-legales">Avisos Legales</a>
+                | <a href="/avisos-legales/privacidad">Política de Privacidad</a> 
+                | <a href="/acerca-de">Acerca de <strong>Dyn</strong>Host</a>
+            </div>
         </div>
     </footer>
 </body>
