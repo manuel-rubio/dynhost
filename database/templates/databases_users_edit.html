@@ -57,7 +57,7 @@
 
 <h1>Permisos sobre Base de Datos</h1>
 
-<table id="listado">
+<table class="table table-condensed">
 <thead>
     <th>Base de Datos</th>
     <th align="center">acciones</th>
@@ -66,19 +66,33 @@
     {% for link in links %}
     <tr>
         <td>{{ link.database.database }}</td>
-        <td align="center" nowrap="nowrap">
-            <a href="{% url "database.views.databases.execute" link.id %}">
-                <img src="/static/images/32/computer.png" alt="X" title="Shell SQL" />
-            </a>
-            &nbsp;
-            <a href="{% url "database.views.databases.show" link.database.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar Base de Datos" />
-            </a>
-            &nbsp;
-            <a href="{% url "database.views.users.unlink" link.id %}" onclick="return confirm('¿Está seguro de que dese revocar los permisos a este usuario?\n\nNOTA: esto no borrará el usuario, solo lo desligará de la base de datos.');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir Acceso a esta Base de Datos" />
-            </a>
-            &nbsp;
+        <td align="center">
+            <div class="btn-group">
+                <a class="btn btn-mini" title="SQL Shell" href="{% url "database.views.databases.execute" link.id %}">
+                    <i class="icon-play"></i>
+                </a>
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "database.views.databases.show" link.database.id %}">
+                    <i class="icon-edit"></i>
+                </a>
+                <a class="btn btn-mini btn-danger" title="Suprimir acceso a esta base de datos" href="#confirm_{{ link.id }}" data-toggle="modal">
+                    <i class="icon-remove"></i>
+                </a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ link.id }}">
+                <div class="modal-header">
+                    Suprimir acceso a esta base de datos
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <strong>Aviso</strong>: esto no borrará el usuario, solo lo desligará de la base de datos.
+                    </div>
+                    ¿Está seguro de que dese revocar los permisos de la base de datos <strong>{{ link.database.database }}</strong> al usuario <strong>{{ link.user.username }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url "database.views.databases.unlink" link.id %}" class="btn btn-danger">Revoca permisos</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
@@ -90,7 +104,10 @@
 </table>
 <form name="addDatabase" method="post" action="{% url "database.views.users.link" user_id %}">
 {% csrf_token %}
-Agregar base de datos: {{ database.database }} <a href="#" onclick="document.addDatabase.submit();"><img src="/static/images/16/up.png" title="Agregar" /></a>
+<div class="control-group">
+    Agregar base de datos: {{ database.database }} 
+    <a class="btn btn-mini btn-primary" href="#" onclick="document.addDatabase.submit();"><i class="icon-plus icon-white"></i></a>
+</div>
 </form>
 {% endif %}
 {% endblock %}

@@ -131,7 +131,10 @@ def execute(request, lk_id):
             'query': request.POST['query'] if request.method == 'POST' else '',
             'heads': keys,
             'result': values,
-            'tipo': 'Base de Datos'
+            'tipo': 'Base de Datos',
+            'database': link.database,
+            'user_database': link.user,
+            'id_database': lk_id            
         }, context_instance=RequestContext(request))
     except Databases.DoesNotExist:
         return redirect(reverse('database.views.databases.index'))
