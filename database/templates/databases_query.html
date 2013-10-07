@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="breadcrumbs">
-    <a href="/">Inicio</a> &raquo; <a href="/database/{{ id_database }}/show"> {{ database.database }}</a> &raquo; <a href="/database/user/{{ user_database.id }}/edit/">{{ user_database.username }}</a> &raquo; Consulta SQL
+<div id="breadcrumbs"  class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/database/{{ id_database }}/show"> {{ database.database }}</a> &raquo; <a href="/database/user/{{ user_database.id }}/edit/">{{ user_database.username }}</a> &raquo; <strong>Consulta SQL</strong>
 </div>
 
 <h1>Consulta a Base de Datos {{ database.database }}</h1>
