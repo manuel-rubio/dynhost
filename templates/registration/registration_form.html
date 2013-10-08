@@ -67,6 +67,15 @@
             {% endfor %}
         </div>
     </div>
+    <div class="control-group{% if form.tos.errors %} error{% endif %}">
+        <label class="control-label" for="id_tos">He leído y acepto los <a href="">términos de servicio</a></label>
+        <div class="controls">
+            {{ form.tos }}
+            {% for error in form.tos.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
     <div class="control-group">
     	<div class="controls">
     		<a href="/" class="btn">Cancelar</a>
