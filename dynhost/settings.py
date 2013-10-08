@@ -13,6 +13,12 @@ ADMINS = (
 
 PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")
 
+OVH_USER = ''
+OVH_PASS = ''
+
+WSDL_FILE = PROJECT_PATH + "/ovh/soapi-re-1.61.wsdl"
+# WSDL = 'https://www.ovh.com/soapi/soapi-re-1.61.wsdl'
+
 DEFAULT_IP = '176.31.105.29'
 
 RECAPTCHA_PUBLIC_KEY = '6LdpP88SAAAAAHYByZgLpgN4RDzAuaLs3vwTD3uL'
