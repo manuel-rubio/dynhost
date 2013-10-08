@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from registration.backends.default.views import RegistrationView
 from django.views.generic import TemplateView
-from dynhost.forms import RecaptchaRegistrationForm
+from dynhost.forms import RecaptchaRegistrationForm, RecaptchaPasswordResetForm
 from dynhost import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -39,6 +39,10 @@ urlpatterns = patterns('',
     url(r'^user/register/', RegistrationView.as_view(
         form_class=RecaptchaRegistrationForm
     )),
+    url(r'^user/password/reset/$', 'django.contrib.auth.views.password_reset', {
+        'password_reset_form': RecaptchaPasswordResetForm,
+        'email_template_name': 'registration/password_reset_email.txt'
+    }),
     url(r'^user/', include('registration.backends.default.urls')),
 
     url(r'^account/$', 'billing.views.index'),
