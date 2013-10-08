@@ -57,7 +57,7 @@
                 <span class="help-inline">{{ error }}</span>
                 {% endfor %}
             </div>
-            <a href="#">&iquest;Olvidó la clave?</a>
+            <a href="{% url "django.contrib.auth.views.password_reset" %}">&iquest;Olvidó la clave?</a>
         </div>
         <div class="modal-footer">
             <div class="pull-left">
