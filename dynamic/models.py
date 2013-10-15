@@ -25,6 +25,9 @@ class Domains(models.Model):
     ip = models.CharField(max_length=15)
     def getName(self):
         return self.record.getName()
+    def __unicode__(self):
+        return str(self.user_id) + " " + \
+               str(self.record) + " " + self.ip 
 
 class DomainsForm(forms.ModelForm):
     domain = forms.SlugField(label='DynHost', required=True)

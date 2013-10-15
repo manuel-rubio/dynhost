@@ -58,7 +58,8 @@ def new(request, dom_id):
         'total': cuenta.limit_email_mailbox,
         'dom_id': dom_id,
         'dom': domain.domain,
-        'tipo': 'Buzones'
+        'tipo': 'Buzones',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

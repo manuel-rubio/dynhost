@@ -35,7 +35,10 @@ class Accounts(models.Model):
     def dirs(self, relative=None, path='www-data'):
         hd = self.getPath(relative) + path
         data = [ root[len(hd):] for root, dir, files in os.walk(hd) if root.find('.svn') == -1 ]
-        data[0] = '/'
+        if len(data)==0:
+            data = [ '/' ]
+        else:
+            data[0] = '/'
         return data
     def getPath(self, relative=None):
         dir = self.homedir

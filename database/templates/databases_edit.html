@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% block breadcrumb %}{{ block.super }} &raquo; {{ object.title|title }}{% endblock %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+        <a href="/">Inicio</a> &raquo; <a href="/database/">Base de Datos</a> &raquo; <strong>Editar</strong>
+</div>
 
 {% if not show %}
 <h1>Información de Base de Datos</h1>
@@ -25,10 +27,6 @@
 </form>
 
 {% else %}
-<div id="breadcrumbs" class="breadcrumb">
-        <a href="/">Inicio</a> &raquo; <a href="/database/">Base de Datos</a> &raquo; <strong>Editar</strong>
-</div>
-
 <h1>Información de Base de Datos</h1>
 <table class="table table-condensed">
 <thead>

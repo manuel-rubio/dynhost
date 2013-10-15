@@ -128,9 +128,9 @@ APACHE_BASE = """
         AssignUserId #%(uid)s #1003
     </IfModule>
 
-    Include %(dyndir)s/*.%(name)s
-    Include %(reddir)s/*.%(name)s
-    Include %(hosdir)s/*.%(name)s
+    Include %%(dyndir)s/*.%(name)s
+    Include %%(reddir)s/*.%(name)s
+    Include %%(hosdir)s/*.%(name)s
 
     DocumentRoot %(path)s
     <Directory />
@@ -147,8 +147,8 @@ APACHE_BASE = """
     </Directory>
 
     LogLevel warn
-    ErrorLog %(logdir)s/%(name)s.error.log
-    CustomLog %(logdir)s/%(name)s.access.log combined
+    ErrorLog %%(logdir)s/%(name)s.error.log
+    CustomLog %%(logdir)s/%(name)s.access.log combined
     ServerSignature Off
 </VirtualHost>
 

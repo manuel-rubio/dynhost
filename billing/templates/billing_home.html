@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <strong>Perfil de Usuario</strong>
+</div>
+
 <form class="form-horizontal" method="post">
 {% csrf_token %}
 <div class="modal hide fade" id="passwordForm">

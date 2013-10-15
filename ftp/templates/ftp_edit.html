@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/ftp/">Listado de Accesos FTP</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
+</div>
 <h1>Información de Acceso FTP</h1>
 <form class="form-horizontal" method="post">
     {% csrf_token %}
@@ -42,7 +45,7 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <a href="{% url ftp.views.index %}" class="btn">Cancelar</a>
+            <a href="{% url "ftp.views.index" %}" class="btn">Cancelar</a>
             <input type="submit" class="btn btn-primary" value="Guardar"/>
         </div>
     </div>

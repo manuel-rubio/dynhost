@@ -77,7 +77,8 @@ def new(request, dom_id):
         'total': cuenta.limit_web_redirect,
         'dom_id': dom_id,
         'dom': Domains.objects.get(pk=dom_id).domain,
-        'tipo': 'Redirecciones Web'
+        'tipo': 'Redirecciones Web',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

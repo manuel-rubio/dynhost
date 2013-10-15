@@ -44,7 +44,8 @@ def new(request):
         'empleados': empleados,
         'disponibles': cuenta.limit_dynhost - empleados,
         'total': cuenta.limit_dynhost,
-        'tipo': '<strong>DynHost</strong>'
+        'tipo': '<strong>DynHost</strong>',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

@@ -164,7 +164,10 @@ def remove_config(relative, name, record):
 
 @receiver(post_delete, sender=Hosting)
 def remove_config_hosting(sender, instance, **kwargs):
-    remove_config('hosting', instance.name, instance.record)
+    if not instance.url:
+        remove_config('hosting', instance.name, instance.record)
+    elif not instance.directory:
+        remove_config('redirect', instance.name, instance.record)
 
 @receiver(post_delete, sender=RedirectDynHost)
 def remove_config_dynhost(sender, instance, **kwargs):

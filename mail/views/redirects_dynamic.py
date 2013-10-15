@@ -3,26 +3,27 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from billing.models import Accounts, Domains
+from dynamic.models import Domains as DynHosts
 from dns.models import Records
-from ..models import RedirectDynHost, RedirectDynHostForm
+from mail.models import RedirectDynHost, RedirectDynHostForm
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 import sys
 
-def check_owner(rec_id, acc_id):
+def check_owner(rec_id, user_id):
     try:
-        cuenta = Records.objects.get(pk=rec_id).domain.accounts
-        if cuenta.id != acc_id:
+        uid = DynHosts.objects.get(record__id=rec_id).user_id
+        if user_id != uid:
             return False
-    except Domains.DoesNotExist:
+    except DynHosts.DoesNotExist:
         return False
     return True
 
 @login_required(login_url='/')
 def index(request, rec_id, page=None):
-    cuenta = Accounts.objects.get(user = request.user.id)
-    if not check_owner(rec_id, cuenta.id):
+    if not check_owner(rec_id, request.user.id):
         return redirect(reverse('dynamic.views.domains.index'))
+    cuenta = Accounts.objects.get(user = request.user.id)
     servicios = RedirectDynHost.objects.filter(record__id=rec_id)
     usados = servicios.count()
     record = Records.objects.get(pk=rec_id)
@@ -39,9 +40,9 @@ def index(request, rec_id, page=None):
 
 @login_required(login_url='/')
 def new(request, rec_id):
-    cuenta = Accounts.objects.get(user = request.user.id)
-    if not check_owner(rec_id, cuenta.id):
+    if not check_owner(rec_id, request.user.id):
         return redirect(reverse('dynamic.views.domains.index'))
+    cuenta = Accounts.objects.get(user = request.user.id)
     usados = RedirectDynHost.objects.filter(record__id=rec_id).count()
     record = Records.objects.get(pk=rec_id)
     redir = RedirectDynHost()

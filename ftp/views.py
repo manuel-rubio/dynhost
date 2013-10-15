@@ -52,6 +52,7 @@ def new(request):
         'disponibles': cuenta.limit_ftp - usados,
         'total': cuenta.limit_ftp,
         'tipo': 'Accesos FTP',
+        'nuevo': True,
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

@@ -53,10 +53,8 @@ def new(request, rec_id):
                 form.save()
                 return redirect(reverse('web.views.redirects_dynamic.index', args=[rec_id]))
             except IntegrityError:
-                form._errors['name'] = ["El nombre o la URI ya existen para este DynHost."]
-        print >>sys.stderr, form.as_table
+                form.non_field_errors = ["El nombre o la URI ya existen para este DynHost."]
     else:
-        print >>sys.stderr, "Peticion GET"
         form = RedirectDynHostForm(instance=redir, auto_id=False)
     return render_to_response('web_redirects_dynhost_edit.html', {
         'form': form,

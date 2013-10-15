@@ -65,7 +65,8 @@ def new(request, dom_id):
         'total': cuenta.limit_email_redirect,
         'dom_id': dom_id,
         'dom': domain.domain,
-        'tipo': 'Redirecciones'
+        'tipo': 'Redirecciones',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

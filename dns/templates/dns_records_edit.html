@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo Registro{% else %} Editar Registro{% endif %}</strong>
+</div>
 <h1>Información de Registro de {{ dom }}</h1>
 <form class="form-horizontal" method="post">
     {% csrf_token %}
@@ -55,7 +58,7 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <a href="{% url dns.views.domains.edit dom_id %}" class="btn">Cancelar</a>
+            <a href="{% url "dns.views.domains.edit" dom_id %}" class="btn">Cancelar</a>
             <input type="submit" class="btn btn-primary" value="Actualiza datos"/>
         </div>
     </div>

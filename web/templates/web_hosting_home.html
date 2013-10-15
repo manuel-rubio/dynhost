@@ -1,27 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="info">
-    <div class="marco_gris">
-        <a href="{% url dns.views.domains.index %}">
-            <img width="32px" height="32px" src="/static/images/32/left.png" alt="cancel" title="Volver" />
-        </a>
-        &nbsp;
-        <img src="/static/images/separador.png" />
-        &nbsp;
-        {% if servicios|length >= total %}
-        <a href="#" onclick="alert('Ha superado el máximo, no puede crear más hostings web.')">
-        {% else %}
-        <a href="{% url web.views.hostings.new dom_id %}">
-        {% endif %}
-            <img src="/static/images/32/add.png" alt="+" title="Agregar" />
-        </a>
-        &nbsp;
-    </div>
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/{{ dom_id }}/edit/"> {{ dom }}</a>  &raquo; <strong>Hostings Web</strong>
 </div>
-<br />
+
 <h1>Listado de Hostings Web en {{ dom }}</h1>
-<table id="listado">
+<table  class="table table-condensed">
 <thead>
     <th>Nombre</th>
     <th>URI</th>
@@ -33,14 +18,23 @@
         <td>{{ servicio.name }}</td>
         <td>{{ servicio.uri }}</td>
         <td align="center">
-            <a href="{% url web.views.hostings.edit servicio.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
-            </a>
-            &nbsp;
-            <a href="{% url web.views.hostings.delete servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar este hosting web?\n\nSolo se eliminará el hosting, no el espacio ni los ficheros que tenga alojados.');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
+            <div class="btn-group">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "web.views.hostings.edit" servicio.id %}"><i class="icon-edit"></i></a>
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal"><i class="icon-remove"></i></a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
+                <div class="modal-header">Eliminar Hosting Web</div>
+                <div class="modal-body">
+                    <div class="alert alert-error">
+                        <strong>Importante</strong>: Solo se eliminará el hosting, no el espacio ni los ficheros que tenga alojados.
+                    </div>
+                    ¿Está seguro de que desea eliminar este hosting web <strong>{{ servicio.name }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url "web.views.hostings.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
@@ -50,4 +44,11 @@
     {% endfor %}
 </tbody>
 </table>
+
+{% if servicios|length >= total %}
+<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más hostings web.')"><i class="icon-file"></i> Nuevo Hosting</a>
+{% else %}
+<a class="btn pull-right btn-primary" href="{% url "web.views.hostings.new" dom_id %}"><i class="icon-file"></i> Nuevo Hosting</a>
+{% endif %}
+
 {% endblock %}

@@ -31,7 +31,8 @@ def new(request, dom_id):
         'total': cuenta.limit_dns,
         'dom_id': record.domain.id,
         'dom': record.domain.domain,
-        'tipo': 'Zonas'
+        'tipo': 'Zonas',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

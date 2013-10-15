@@ -40,6 +40,8 @@ class Records(models.Model):
     @email.setter
     def email(self, value):
         self.resp_person = value.replace('@', '.') + '.'
+    def __unicode__(self):
+        return self.host + "." + str(self.domain)
 
 class SoaRecordForm(forms.ModelForm):
     ttl = forms.IntegerField(label='Tiempo de Vida (seg)', initial=38400)

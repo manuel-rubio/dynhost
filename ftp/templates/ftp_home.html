@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <strong>Listado de Accesos FTP</strong>
+</div>
 <h1>Listado de Accesos FTP</h1>
 <table class="table table-condensed">
 <thead>
@@ -13,7 +16,7 @@
         <td>{{ servicio.userid }}</td>
         <td>
             <div class="btn-group">
-                <a class="btn btn-mini btn-info" title="editar" href="{% url ftp.views.edit servicio.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "ftp.views.edit" servicio.id %}">
                     <i class="icon-edit"></i>
                 </a>
                 <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
@@ -27,7 +30,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url ftp.views.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a href="{% url "ftp.views.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
                 </div>
             </div>
         </td>
@@ -43,6 +46,6 @@
 {% if servicios|length >= total %}
 <a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más usuarios FTP.')"><i class="icon-file"></i> Nuevo Usuario</a>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url ftp.views.new %}"><i class="icon-file"></i> Nuevo Usuario</a>
+<a class="btn pull-right btn-primary" href="{% url "ftp.views.new" %}"><i class="icon-file"></i> Nuevo Usuario</a>
 {% endif %}
 {% endblock %}

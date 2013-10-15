@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <strong>Listado de Dominios</strong>
+</div>
+
 <h1>Listado de Dominios</h1>
 <table class="table table-condensed">
 <thead>
@@ -14,7 +18,7 @@
         <td align="center">
             <div class="btn-group">
                 {% if servicio.email_type == 'R' %}
-                <a class="btn btn-mini btn-inverse disabled" title="buzones de email" href="{% url mail.views.mailboxes.index servicio.id %}">
+                <a class="btn btn-mini btn-inverse disabled" title="buzones de email" href="{% url "mail.views.mailboxes.index" servicio.id %}">
                     <i class="icon-envelope"></i>
                 </a>
                 {% else %}
@@ -23,7 +27,7 @@
                 </button>
                 {% endif %}
                 {% if servicio.email_type %}
-                <a class="btn btn-mini" title="redirección de email" href="{% url mail.views.redirects.index servicio.id %}">
+                <a class="btn btn-mini" title="redirección de email" href="{% url "mail.views.redirects.index" servicio.id %}">
                     <i class="icon-envelope"></i>
                 </a>
                 {% else %}
@@ -31,13 +35,13 @@
                     <i class="icon-envelope"></i>
                 </button>
                 {% endif %}
-                <a class="btn btn-mini" title="hosting web" href="{% url web.views.hostings.index servicio.id %}">
+                <a class="btn btn-mini" title="hosting web" href="{% url "web.views.hostings.index" servicio.id %}">
                     <i class="icon-share"></i>
                 </a>
-                <a class="btn btn-mini" title="redirección web" href="{% url web.views.redirects.index servicio.id %}">
+                <a class="btn btn-mini" title="redirección web" href="{% url "web.views.redirects.index" servicio.id %}">
                     <i class="icon-share"></i>
                 </a>
-                <a class="btn btn-mini btn-info" title="editar" href="{% url dns.views.domains.edit servicio.id %}">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "dns.views.domains.edit" servicio.id %}">
                     <i class="icon-edit"></i>
                 </a>
                 <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
@@ -51,7 +55,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url dynamic.views.domains.delete servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a href="{% url "dynamic.views.domains.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
                 </div>
             </div>
         </td>
@@ -67,6 +71,6 @@
 {% if servicios|length >= total %}
 <button class="btn pull-right btn-inverse disabled" type="button" onclick="alert('Ha superado el máximo, no puede crear más dominios.')"><i class="icon-file"></i> Nuevo Dominio</button>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url dns.views.domains.new %}"><i class="icon-file"></i> Nuevo Dominio</a>
+<a class="btn pull-right btn-primary" href="{% url "dns.views.domains.new" %}"><i class="icon-file"></i> Nuevo Dominio</a>
 {% endif %}
 {% endblock %}

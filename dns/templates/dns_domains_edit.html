@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo Dominio {% else %} Editar Dominio{% endif %}</strong>
+</div>
+
 <h1>Información de Dominio</h1>
 <form class="form-horizontal" method="post">
     {% csrf_token %}
@@ -42,7 +47,7 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <a href="{% url dns.views.domains.index %}" class="btn">Volver al listado</a>
+            <a href="{% url "dns.views.domains.index" %}" class="btn">Volver al listado</a>
             <input type="submit" class="btn btn-primary" value="Actualiza datos"/>
         </div>
     </div>
@@ -66,7 +71,7 @@
             <td>{{ registro.data }}</td>
             <td align="center" nowrap="nowrap">
                 <div class="btn-group">
-                    <a class="btn btn-mini btn-info" title="editar" href="{% url dns.views.records.edit registro.id %}">
+                    <a class="btn btn-mini btn-info" title="editar" href="{% url "dns.views.records.edit" registro.id %}">
                         <i class="icon-edit"></i>
                     </a>
                     <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ registro.id }}" data-toggle="modal">
@@ -80,7 +85,7 @@
                     </div>
                     <div class="modal-footer">
                         <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                        <a href="{% url dns.views.records.delete registro.id %}" class="btn btn-danger">Elimina</a>
+                        <a href="{% url "dns.views.records.delete" registro.id %}" class="btn btn-danger">Elimina</a>
                     </div>
                 </div>
             </td>
@@ -95,7 +100,7 @@
 
 </div>
 
-<a class="btn pull-right btn-primary" href="{% url dns.views.records.new dom_id %}"><i class="icon-file"></i> Nuevo Registro</a>
+<a class="btn pull-right btn-primary" href="{% url "dns.views.records.new" dom_id %}"><i class="icon-file"></i> Nuevo Registro</a>
 
 {% endif %}
 {% endblock %}

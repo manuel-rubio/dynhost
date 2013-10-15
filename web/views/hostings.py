@@ -25,7 +25,7 @@ def getForm(cuenta, dom_id, post, hosting):
     else:
         form = HostingForm(post, instance=hosting, auto_id=False)
     print >>sys.stderr, hosting
-    form.fields['directory'].choices = tuple([ (x,x) for x in cuenta.dirs('web', 'www-data') ])
+    form.fields['directory'].choices = tuple([ (x,x) for x in cuenta.dirs() ])
     form.fields['record'].queryset = Records.objects.filter(
         Q(domain__id=dom_id) & (
             Q(type='A') | Q(type='CNAME')
@@ -78,7 +78,8 @@ def new(request, dom_id):
         'total': cuenta.limit_web,
         'dom_id': dom_id,
         'dom': Domains.objects.get(pk=dom_id).domain,
-        'tipo': 'Alojamientos Web'
+        'tipo': 'Alojamientos Web',
+        'nuevo': True,
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
