@@ -251,6 +251,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.FailedLoginMiddleware',
 )
 
 ROOT_URLCONF = 'dynhost.urls'
@@ -284,6 +285,7 @@ INSTALLED_APPS = (
     'registration',
     'captcha',
     'gravatar',
+    'axes',
     # project apps:
     'billing',
     'ftp',
@@ -305,6 +307,15 @@ LOGIN_REDIRECT_URL = '/'
 GRAVATAR_DEFAULT_IMAGE = 'mm'
 GRAVATAR_DEFAULT_RATING = 'g'
 GRAVATAR_DEFAULT_SIZE = 32
+
+AXES_LOGIN_FAILURE_LIMIT = 5
+AXES_LOCK_OUT_AT_FAILURE = True
+AXES_USE_USER_AGENT = False
+AXES_COOLOFF_TIME = 6 # hours to forgot malicious IPs
+AXES_LOGGER = 'axes.watch_login'
+AXES_LOCKOUT_TEMPLATE = 'lockout.html'
+AXES_LOCKOUT_URL = None
+AXES_VERBOSE = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
