@@ -15,6 +15,13 @@ PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")
 
 OVH_USER = ''
 OVH_PASS = ''
+DOMAIN_CONTACT = ''
+DNS_CONFIG = (
+    'ns1.bosqueviejo.net',
+    'ns2.bosqueviejo.net',
+    'ns3.bosqueviejo.net',
+    'ns4.bosqueviejo.net'
+)
 
 WSDL_FILE = PROJECT_PATH + "/ovh/soapi-re-1.61.wsdl"
 # WSDL = 'https://www.ovh.com/soapi/soapi-re-1.61.wsdl'
