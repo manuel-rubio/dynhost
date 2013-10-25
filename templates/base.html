@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Le styles -->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/subnav.css" rel="stylesheet">
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <style>
       body {
@@ -27,6 +28,7 @@
 
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/subnav.js"></script>
 	<link href="/static/css/dynhost.css" rel="stylesheet">
     {% block meta %}{% endblock %}
 </head>
@@ -152,6 +154,8 @@
         </div>
     </div>
 
+    {% block subnav %}{% endblock %}
+
 	<div id="content">
         {% if mensaje or form.non_field_errors %}
         {% for mensaje in form.non_field_errors %}
@@ -171,7 +175,7 @@
         <div class="container">
             <div id="copyright">
                 &copy; 2011-{% now "Y" %}, <a href="http://altenwald.com" target="_blank">
-                    <strong>Alten</strong>Wald, S.L.
+                    <strong>AltenWald</strong> Solutions, S.L.
                 </a>
             </div>
             <div id="legal">
