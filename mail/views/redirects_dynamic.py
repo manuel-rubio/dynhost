@@ -74,7 +74,7 @@ def edit(request, mbox_id):
     cuenta = Accounts.objects.get(user = request.user.id)
     try:
         redir = RedirectDynHost.objects.get(pk=mbox_id)
-        if redir.record.domain.accounts.id != cuenta.id:
+        if redir.dynhost.user_id != cuenta.user_id:
             return redirect(reverse('dynamic.views.domains.index'))
         usados = RedirectDynHost.objects.filter(record__id=redir.record.id).count()
         if request.method == 'POST':

@@ -7,12 +7,12 @@ from django.forms.util import ErrorList
 class RedirectDynHost(models.Model):
     username = models.CharField(max_length=50)
     destin = models.TextField(max_length=250)
-    record = models.ForeignKey('dns.Records')
+    dynamic = models.ForeignKey('dynamic.Domains')
     class Meta:
-        unique_together = ("username", "record")
+        unique_together = ("username", "dynamic")
 
     def user(self):
-        return self.username + "@" + self.record.host + ".dynhost.es"
+        return self.username + "@" + self.dynamic.record.host + ".dynhost.es"
 
     def __unicode__(self):
         return self.user()

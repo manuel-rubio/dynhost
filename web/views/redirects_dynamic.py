@@ -24,7 +24,7 @@ def index(request, rec_id, page=None):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, request.user.id):
         return redirect(reverse('dynamic.views.domains.index'))
-    servicios = RedirectDynHost.objects.filter(dynhost__record__id=rec_id)
+    servicios = RedirectDynHost.objects.filter(dynamic__record__id=rec_id)
     usados = servicios.count()
     return render_to_response('web_redirects_dynhost_home.html', {
         'cuenta': cuenta,
@@ -42,14 +42,14 @@ def new(request, rec_id):
     cuenta = Accounts.objects.get(user = request.user.id)
     if not check_owner(rec_id, request.user.id):
         return redirect(reverse('dynamic.views.domains.index'))
-    usados = RedirectDynHost.objects.filter(dynhost__record__id=rec_id).count()
+    usados = RedirectDynHost.objects.filter(dynamic__record__id=rec_id).count()
     dynhost = DynHosts.objects.filter(record__id = rec_id)[0]
     redir = RedirectDynHost()
-    redir.dynhost_id = dynhost.id
+    redir.dynamic_id = dynhost.id
     if request.method == 'POST':
         form = RedirectDynHostForm(request.POST, instance=redir, auto_id=False)
         if form.is_valid():
-            try:
+            try:                
                 form.save()
                 return redirect(reverse('web.views.redirects_dynamic.index', args=[rec_id]))
             except IntegrityError:
@@ -72,15 +72,15 @@ def edit(request, redir_id):
     cuenta = Accounts.objects.get(user=request.user.id)
     try:
         redir = RedirectDynHost.objects.get(pk=redir_id)
-        if redir.dynhost.user_id != cuenta.user_id:
+        if redir.dynamic.user_id != cuenta.user_id:
             return redirect(reverse('dynamic.views.domains.index'))
-        usados = RedirectDynHost.objects.filter(dynhost__record__id=redir.dynhost.record.id).count()
+        usados = RedirectDynHost.objects.filter(dynamic__record__id=redir.dynamic.record.id).count()
         if request.method == 'POST':
             form = RedirectDynHostForm(request.POST, instance=redir, auto_id=False)
             if form.is_valid():
                 try:
                     form.save()
-                    return redirect(reverse('web.views.redirects_dynamic.index', args=[redir.dynhost.record.id]))
+                    return redirect(reverse('web.views.redirects_dynamic.index', args=[redir.dynamic.record.id]))
                 except IntegrityError:
                     form._errors['name'] = ["La redirección ya existe."]
                     del form.cleaned_data['name']
@@ -92,21 +92,21 @@ def edit(request, redir_id):
             'usados': usados,
             'disponibles': cuenta.limit_web_redirect - usados,
             'total': cuenta.limit_web_redirect,
-            'rec_id': redir.dynhost.record.id,
-            'dom': redir.dynhost.getName(),
+            'rec_id': redir.dynamic.record.id,
+            'dom': redir.dynamic.getName(),
             'tipo': 'Redirecciones Web'
         }, context_instance=RequestContext(request))
     except RedirectDynHost.DoesNotExist:
-        return redirect(reverse('dynhost.views.domains.index'))
+        return redirect(reverse('dynamic.views.domains.index'))
 
 @login_required(login_url='/')
 def delete(request, redir_id):
     try:
         redir = RedirectDynHost.objects.get(pk=redir_id)
-        if redir.dynhost.user.id != request.user.id:
-            return redirect(reverse('dynhost.views.domains.index'))
+        if redir.dynamic.user_id != request.user.id:
+            return redirect(reverse('dynamic.views.domains.index'))
         redir.delete()
-        return redirect(reverse('web.views.redirects_dynamic.index', args=[redir.dynhost.record_id]))
+        return redirect(reverse('web.views.redirects_dynamic.index', args=[redir.dynamic.record_id]))
     except RedirectDynHost.DoesNotExist:
         pass
-    return redirect(reverse('dynhost.views.domains.index'))
+    return redirect(reverse('dynamic.views.domains.index'))
