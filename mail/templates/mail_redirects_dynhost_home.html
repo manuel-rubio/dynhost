@@ -14,7 +14,7 @@
 <tbody>
     {% for servicio in servicios %}
     <tr>
-        <td>{{ servicio.username }}@{{ servicio.record.host }}.dynhost.es</td>
+        <td>{{ servicio.username|default:"*" }}@{{ dom }}</td>
         <td align="center">
             <div class="btn-group">
                 <a class="btn btn-mini btn-info" title="editar" href="{% url "mail.views.redirects_dynamic.edit" servicio.id %}">
@@ -27,7 +27,7 @@
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
                 <div class="modal-header">Eliminar Redirección</div>
                 <div class="modal-body">
-                    ¿Está seguro de que desea eliminar esta redirección <strong>{{ servicio.username }}@{{ servicio.record.host }}.dynhost.es</strong>?
+                    ¿Está seguro de que desea eliminar esta redirección <strong>{{ servicio.username|default:"*" }}@{{ dom }}</strong>?
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>

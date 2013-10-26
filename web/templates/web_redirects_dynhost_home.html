@@ -17,14 +17,24 @@
         <td>{{ servicio.name }}</td>
         <td>{{ servicio.uri }}</td>
         <td align="center">
-            <a href="{% url "web.views.redirects_dynamic.edit" servicio.id %}">
-                <img src="/static/images/32/notepad.png" alt="E" title="Editar" />
-            </a>
-            &nbsp;
-            <a href="{% url "web.views.redirects_dynamic.delete" servicio.id %}" onclick="return confirm('¿Está seguro de que desea eliminar esta redirección web?');">
-                <img src="/static/images/32/remove.png" alt="S" title="Suprimir" />
-            </a>
-            &nbsp;
+            <div class="btn-group">
+                <a class="btn btn-mini btn-info" title="editar" href="{% url "web.views.redirects_dynamic.edit" servicio.id %}">
+                    <i class="icon-edit"></i>
+                </a>
+                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <i class="icon-remove"></i>
+                </a>
+            </div>
+            <div class="modal hide fade" id="confirm_{{ servicio.id }}">
+                <div class="modal-header">Eliminar Redirección Web</div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar esta redirección web <strong>{{ servicio.name }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                    <a href="{% url "web.views.redirects_dynamic.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
+                </div>
+            </div>
         </td>
     <tr>
     {% empty %}
