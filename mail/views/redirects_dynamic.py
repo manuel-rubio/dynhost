@@ -67,7 +67,8 @@ def new(request, rec_id):
         'total': cuenta.limit_email_redirect,
         'rec_id': rec_id,
         'dom': dynhost.getName(),
-        'tipo': 'Redirecciones'
+        'tipo': 'Redirecciones',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -109,10 +110,10 @@ def delete(request, mbox_id):
         cuenta = Accounts.objects.get(user=request.user.id)
         print >>sys.stderr, mbox_id
         redir = RedirectDynHost.objects.get(pk=mbox_id)
-        if redir.dynamic.record.domain.accounts.id != cuenta.id:
+        if redir.dynamic.user_id != request.user.id:
             return redirect(reverse('dynamic.views.domains.index'))
         redir.delete()
-        return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.record_id]))
+        return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.dynamic.record_id]))
     except RedirectDynHost.DoesNotExist:
         pass
     return redirect(reverse('dynamic.views.domains.index'))
