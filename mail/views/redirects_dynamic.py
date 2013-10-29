@@ -8,6 +8,7 @@ from dns.models import Records
 from mail.models import RedirectDynHost, RedirectDynHostForm
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
+from django.db import connection
 import sys
 
 def check_owner(rec_id, user_id):
@@ -53,7 +54,8 @@ def new(request, rec_id):
                 form.save()
                 return redirect(reverse('mail.views.redirects_dynamic.index', args=[rec_id]))
             except IntegrityError:
-                form._errors['username'] = "El usuario ya existe."
+                connection._rollback()
+                form._errors['username'] = ["El usuario ya existe."]
                 del form.cleaned_data['username']
     else:
         form = RedirectDynHostForm(instance=redir, auto_id=False)
@@ -65,7 +67,8 @@ def new(request, rec_id):
         'total': cuenta.limit_email_redirect,
         'rec_id': rec_id,
         'dom': dynhost.getName(),
-        'tipo': 'Redirecciones'
+        'tipo': 'Redirecciones',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -83,6 +86,7 @@ def edit(request, mbox_id):
                     form.save()
                     return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.dynamic.record.id]))
                 except IntegrityError:
+                    connection._rollback()
                     form._errors['username'] = ["El usuario ya existe."]
                     del form.cleaned_data['username']
         else:
@@ -106,10 +110,10 @@ def delete(request, mbox_id):
         cuenta = Accounts.objects.get(user=request.user.id)
         print >>sys.stderr, mbox_id
         redir = RedirectDynHost.objects.get(pk=mbox_id)
-        if redir.dynamic.record.domain.accounts.id != cuenta.id:
+        if redir.dynamic.user_id != request.user.id:
             return redirect(reverse('dynamic.views.domains.index'))
         redir.delete()
-        return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.record_id]))
+        return redirect(reverse('mail.views.redirects_dynamic.index', args=[redir.dynamic.record_id]))
     except RedirectDynHost.DoesNotExist:
         pass
     return redirect(reverse('dynamic.views.domains.index'))
