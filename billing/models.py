@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django import forms
+from django.forms.util import ErrorList
 import os
 from dynhost import settings
+from ovh import soapi
 
 CURRENCIES = (
     ('EUR', '€'),
@@ -27,6 +29,7 @@ class Accounts(models.Model):
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
+    nic = models.TextField(null=True)
     def __unicode__(self):
         ret = self.user.username + " ("
         ret += "virtual" if not self.homedir else "real"
@@ -62,24 +65,38 @@ class Payments(models.Model):
         return "%(type)s: %(price).2f €" % {'type':self.type, 'price':self.price}
 
 EMAIL_TYPE = (
-    ('', 'Configuración Manual'),
-    ('V', 'Activa Redirecciones'),
     ('R', 'Activa Buzones y Redirecciones'),
+    ('V', 'Activa Redirecciones'),
+    ('', 'Configuración Manual'),
 )
 
 class Domains(models.Model):
     domain = models.CharField(max_length=80, unique=True)
     accounts = models.ForeignKey('Accounts')
-    email_type = models.CharField(max_length=1, null=True, choices=EMAIL_TYPE)
+    email_type = models.CharField(max_length=1, default='R', null=True, choices=EMAIL_TYPE)
+    expires = models.DateField(default=None, null=True)
     def __unicode__(self):
         return self.domain
 
 class DomainsForm(forms.ModelForm):
-    domain = forms.CharField(label='Nombre del Dominio')
+    domain = forms.RegexField(label='Nombre del Dominio', required=True, regex=r'[0-9a-z-_]+\.[a-z]{2,4}')
     email_type = forms.ChoiceField(label='¿Activar email?', required=False, choices=EMAIL_TYPE)
     class Meta:
         model = Domains
-        exclude = ( 'accounts', )
+        fields = ( 'domain', 'email_type' )
+
+class DomainCheckForm(forms.ModelForm):
+    domain = forms.RegexField(label='Nombre del Dominio', required=True, regex=r'[0-9a-z-_]+\.[a-z]{2,4}')
+    class Meta:
+        model = Domains
+        fields = ( 'domain', )
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if cleaned_data.has_key('domain'):
+            status = soapi.check_domain(cleaned_data['domain'])
+            if not status['is_available'][0]:
+                self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
+        return cleaned_data
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

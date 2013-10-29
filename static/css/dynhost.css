@@ -299,3 +299,7 @@ p.titulo {
     padding-top: 4px;
     padding-bottom: 0px;
 }
+
+.badge {
+    font-size: 12px;
+}

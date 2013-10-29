@@ -46,6 +46,8 @@ urlpatterns = patterns('',
     url(r'^user/', include('registration.backends.default.urls')),
 
     url(r'^account/$', 'billing.views.index'),
+    url(r'^purchase/domain/$', 'billing.views.purchase'),
+    url(r'^transfer/domain/$', 'billing.views.transfer'),
 
     url(r'^dns/$', 'dns.views.domains.index'),
     url(r'^dns/(?P<page_id>\d+)/$', 'dns.views.domains.index'),

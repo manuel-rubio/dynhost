@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<script src="/static/js/domains.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>Compra Dominio</strong>
+</div>
+
+<h1>Compra de Dominio</h1>
+<form class="form-horizontal" method="post">
+    {% csrf_token %}
+    <div class="control-group{% if form.domain.errors %} error{% endif %}">
+        <label class="control-label" for="id_domain">{{ form.domain.label }}</label>
+        <div class="controls">
+            {{ form.domain }}
+            {% for error in form.domain.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <a href="{% url "dns.views.domains.index" %}" class="btn">Volver al listado</a>
+            <input type="submit" class="btn btn-primary" value="Comprar"/>
+        </div>
+    </div>
+</form>
+{% endblock %}

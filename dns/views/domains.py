@@ -46,7 +46,7 @@ def new(request):
     domain.accounts = cuenta
     soa = new_soa(domain) # inicializamos registro SOA
     if request.method == 'POST':
-        dom_form = DomainsForm(request.POST, instance=domain, auto_id=False)
+        dom_form = DomainsForm(request.POST, instance=domain, auto_id=True)
         soa_form = SoaRecordForm(request.POST, instance=soa, auto_id=False)
         if dom_form.is_valid() and soa_form.is_valid():
             dom_form.save()
@@ -55,7 +55,7 @@ def new(request):
             return redirect(reverse('dns.views.domains.index'))
     else:
         soa = new_soa(domain)
-        dom_form = DomainsForm(instance=domain, auto_id=False)
+        dom_form = DomainsForm(instance=domain, auto_id=True)
         soa_form = SoaRecordForm(instance=soa, auto_id=False)
     return render_to_response('dns_domains_edit.html', {
         'cuenta': cuenta,
@@ -79,7 +79,7 @@ def edit(request, dom_id):
         soa = Records.objects.filter(type='SOA').filter(domain__id=domain.id)
         if request.method == 'POST':
             soa = new_soa(domain) if len(soa) == 0 else soa[0]
-            dom_form = DomainsForm(request.POST, instance=domain, auto_id=False)
+            dom_form = DomainsForm(request.POST, instance=domain, auto_id=True)
             soa_form = SoaRecordForm(request.POST, instance=soa, auto_id=False)
             if dom_form.is_valid() and soa_form.is_valid():
                 dom_form.save()
@@ -88,7 +88,7 @@ def edit(request, dom_id):
                 return redirect(reverse('dns.views.domains.index'))
         else:
             soa = new_soa(domain) if len(soa) == 0 else soa[0]
-            dom_form = DomainsForm(instance=domain, auto_id=False)
+            dom_form = DomainsForm(instance=domain, auto_id=True)
             soa_form = SoaRecordForm(instance=soa, auto_id=False)
         return render_to_response('dns_domains_edit.html', {
             'cuenta': cuenta,
