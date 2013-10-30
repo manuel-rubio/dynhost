@@ -31,7 +31,7 @@ class Domains(models.Model):
 
 class DomainsForm(forms.ModelForm):
     domain = forms.SlugField(label='DynHost', required=True)
-    ip = forms.IPAddressField(label='Dirección IP', required=True, )
+    ip = forms.IPAddressField(label='Dirección IP', required=True)
     class Meta:
         model = Domains
         fields = ( 'domain', 'ip' )
