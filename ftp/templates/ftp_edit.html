@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<script src="/static/js/jquery.jstree.js"></script>
+<script src="/static/js/ftp.js"></script>
+{% endblock %}
+
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
     <a href="/">Inicio</a> &raquo; <a href="/ftp/">Listado de Accesos FTP</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
@@ -20,6 +25,9 @@
         <label class="control-label" for="id_homedir">{{ form.homedir.label }}</label>
         <div class="controls">
             {{ form.homedir }}
+            <div id="container">
+                {% include "ftp_dirs.html" %}
+            </div>
             {% for error in form.homedir.errors %}
             <span class="help-inline">{{ error }}</span>
             {% endfor %}

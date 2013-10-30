@@ -30,19 +30,25 @@ class Accounts(models.Model):
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
     nic = models.TextField(null=True)
+
     def __unicode__(self):
         ret = self.user.username + " ("
         ret += "virtual" if not self.homedir else "real"
         ret += ")"
         return ret
-    def dirs(self, relative=None, path='www-data'):
-        hd = self.getPath(relative) + path
-        data = [ root[len(hd):] for root, dir, files in os.walk(hd) if root.find('.svn') == -1 ]
-        if len(data)==0:
-            data = [ '/' ]
-        else:
-            data[0] = '/'
+
+    def dirs(self, relative='www-data'):
+        base = self.getPath(relative)
+        return { '/': {'content': self._dirs(base, base), 'id':'/' }}
+
+    def _dirs(self, hd, base):
+        data = {}
+        for name in os.listdir(hd):
+            subdir = os.path.join(hd, name)
+            if os.path.isdir(subdir):
+                data[name] = { 'id': subdir[len(base)-1:], 'content': self._dirs(subdir, base) }
         return data
+
     def getPath(self, relative=None):
         dir = self.homedir
         skel = settings.REAL_USER_SKEL

@@ -8,14 +8,6 @@ from models import *
 from django.core.urlresolvers import reverse
 from datetime import datetime
 
-def getForm(cuenta, post, ftp):
-    if not post:
-        form = UsersForm(instance=ftp, auto_id=False)
-    else:
-        form = UsersForm(post, instance=ftp, auto_id=False)
-    form.fields['homedir'].choices = tuple([ (x,x) for x in cuenta.dirs() ])
-    return form
-
 @login_required(login_url='/')
 def index(request):
     cuenta = Accounts.objects.get(user = request.user.id)
@@ -39,12 +31,12 @@ def new(request):
     ftp = Users()
     ftp.accounts = cuenta
     if request.method == 'POST':
-        form = getForm(cuenta, request.POST, ftp)
+        form = UsersForm(request.POST, instance=ftp, auto_id=False)
         if form.is_valid():
             form.save()
             return redirect(reverse('ftp.views.index'))
     else:
-        form = getForm(cuenta, request.POST, ftp)
+        form = UsersForm(instance=ftp, auto_id=False)
     return render_to_response('ftp_edit.html', {
         'cuenta': cuenta,
         'form': form,
@@ -53,6 +45,7 @@ def new(request):
         'total': cuenta.limit_ftp,
         'tipo': 'Accesos FTP',
         'nuevo': True,
+        'dirs': cuenta.dirs(),
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
@@ -64,12 +57,12 @@ def edit(request, ftp_id):
         if ftp.accounts.id != cuenta.id:
             return redirect(reverse('ftp.views.index'))
         if request.method == 'POST':
-            form = getForm(cuenta, request.POST, ftp)
+            form = UsersForm(request.POST, instance=ftp, auto_id=False)
             if form.is_valid():
                 form.save()
                 return redirect(reverse('ftp.views.index'))
         else:
-            form = getForm(cuenta, request.POST, ftp)
+            form = UsersForm(instance=ftp, auto_id=False)
         return render_to_response('ftp_edit.html', {
             'cuenta': cuenta,
             'form': form,
@@ -77,7 +70,8 @@ def edit(request, ftp_id):
             'disponibles': cuenta.limit_ftp - usados,
             'total': cuenta.limit_ftp,
             'ftp_id': ftp.id,
-            'tipo': 'Accesos FTP'
+            'tipo': 'Accesos FTP',
+            'dirs': cuenta.dirs(),
         }, context_instance=RequestContext(request))
     except Users.DoesNotExist:
         return redirect(reverse('ftp.views.index'))

@@ -55,7 +55,9 @@ class UsersForm(forms.ModelForm):
     )
     pwd = forms.CharField(label='Clave', max_length=15, min_length=6, widget=forms.PasswordInput(), required=False)
     pwd_again = forms.CharField(label='Confirma', max_length=15, min_length=6, widget=forms.PasswordInput(), required=False)
-    homedir = forms.ChoiceField(label='Directorio', required=True)
+    homedir = forms.CharField(label='Directorio', required=True, widget=forms.HiddenInput(
+        attrs={'id': 'id_homedir'}
+    ))
     class Meta:
         model = Users
         exclude = ( 'accounts', 'passwd' )

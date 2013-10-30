@@ -1,0 +1,12 @@
+<ul>
+    {% for name, data in dirs.items %}
+    <li id="{{ data.id }}">
+        <a href="#">{{ name }}</a>
+        {% with "ftp_dirs.html" as filename %}
+        {% with data.content as dirs %}
+            {% include filename %}
+        {% endwith %}
+        {% endwith %}
+    </li>
+    {% endfor %}
+</ul>
