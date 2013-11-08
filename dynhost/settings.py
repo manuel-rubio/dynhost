@@ -293,6 +293,7 @@ INSTALLED_APPS = (
     'captcha',
     'gravatar',
     'axes',
+    'django_extensions',
     # project apps:
     'billing',
     'ftp',
