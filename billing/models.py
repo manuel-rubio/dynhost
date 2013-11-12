@@ -76,11 +76,20 @@ EMAIL_TYPE = (
     ('', 'Configuración Manual'),
 )
 
+DOMAIN_STATUS = (
+    ('Z', 'Gratuito'),
+    ('N', 'Solicitado Nuevo Dominio'),
+    ('T', 'Solicitada Transferencia'),
+    ('A', 'Activo'),
+    ('B', 'Bloqueado'),
+)
+
 class Domains(models.Model):
     domain = models.CharField(max_length=80, unique=True)
     accounts = models.ForeignKey('Accounts')
     email_type = models.CharField(max_length=1, default='R', null=True, choices=EMAIL_TYPE)
     expires = models.DateField(default=None, null=True)
+    status = models.CharField(max_length=1, default='Z', null=False, choices=DOMAIN_STATUS)
     def __unicode__(self):
         return self.domain
 

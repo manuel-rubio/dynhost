@@ -10,6 +10,9 @@ from dynamic.models import Domains as Dynamic
 from ftp.models import Users as FTPUsers
 from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm
 from django.db import IntegrityError
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from django.core.urlresolvers import reverse
 
 @login_required(login_url='/')
 def index(request):
@@ -65,10 +68,13 @@ def purchase(request):
         # check domain availability
         domain = Domains()
         domain.accounts_id = cuenta.id
+        domain.status = 'N'
+        domain.expires = date.today() + relativedelta(years=1)
         form = DomainCheckForm(request.POST, instance=domain)
         if form.is_valid():
             try:
                 form.save()
+                return redirect(reverse('billing.views.payment', domain.id))
             except IntegrityError:
                 form._errors['domain'] = ['El dominio ya existe como zona.']
     else:
@@ -79,8 +85,23 @@ def purchase(request):
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
+def payment(request, dom_id):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    try:
+        domain = Domains.objects.get(pk = dom_id)
+        if domain.accounts_id != cuenta.id:
+            return redirect(reverse('dns.views.domains.index'))
+    except Domains.DoesNotExist:
+        return redirect(reverse('dns.views.domains.index'))
+    return render_to_response('billing_payment_domain.html', {
+        'cuenta': cuenta,
+        'domain': domain
+    }, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
 def transfer(request):
     cuenta = Accounts.objects.get(user = request.user.id)
     return render_to_response('billing_buy_domain.html', {
-        'cuenta': cuenta
+        'cuenta': cuenta,
+
     }, context_instance=RequestContext(request))

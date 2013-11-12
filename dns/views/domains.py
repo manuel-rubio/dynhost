@@ -7,11 +7,12 @@ from billing.models import *
 from dns.models import *
 from django.core.urlresolvers import reverse
 from datetime import datetime
+from django.core.mail import mail_admins
 
 @login_required(login_url='/')
 def index(request):
     cuenta = Accounts.objects.get(user = request.user.id)
-    servicios = Domains.objects.filter(accounts = cuenta)
+    servicios = Domains.objects.filter(accounts = cuenta).order_by('domain')
     usados = servicios.count()
     return render_to_response('dns_home.html', {
         'cuenta': cuenta,
@@ -79,6 +80,8 @@ def edit(request, dom_id):
         soa = Records.objects.filter(type='SOA').filter(domain__id=domain.id)
         if request.method == 'POST':
             soa = new_soa(domain) if len(soa) == 0 else soa[0]
+            if domain.expires != None:
+                request.POST['domain'] = domain.domain
             dom_form = DomainsForm(request.POST, instance=domain, auto_id=True)
             soa_form = SoaRecordForm(request.POST, instance=soa, auto_id=False)
             if dom_form.is_valid() and soa_form.is_valid():
@@ -99,6 +102,7 @@ def edit(request, dom_id):
             'total': cuenta.limit_dns,
             'registros': Records.objects.filter(domain__id=domain.id).exclude(type='SOA').exclude(type='NS'),
             'dom_id': domain.id,
+            'expires': domain.expires,
             'tipo': 'Zonas'
         }, context_instance=RequestContext(request))
     except Domains.DoesNotExist:
@@ -109,6 +113,8 @@ def delete(request, dom_id):
     try:
         cuenta = Accounts.objects.get(user = request.user.id)
         domain = Domains.objects.get(pk=dom_id)
+        if domain.expires != None:
+            mail_admins('Eliminado ' + domain.domain, '')
         registros = Records.objects.filter(domain__id=domain.id)
         if domain.accounts.id != cuenta.id:
             return redirect(reverse('dns.views.domains.index'))

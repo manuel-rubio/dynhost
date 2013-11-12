@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<script src="/static/js/domains.js"></script>
+{% endblock %}
+
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
     <a href="/">Inicio</a> &raquo; <strong>Listado de Dominios</strong>
@@ -8,13 +12,31 @@
 <h1>Listado de Dominios</h1>
 <table class="table table-condensed">
 <thead>
-    <th>Zona</th>
+    <th>Tipo</th>
+    <th>Zona / Dominio</th>
+    <th>Estado</th>
     <th align="center">acciones</th>
 </thead>
 <tbody>
     {% for servicio in servicios %}
     <tr>
+        <td align="center">
+            {% if servicio.expires %}
+                Dominio
+            {% else %}
+                Zona
+            {% endif %}
+        </td>
         <td>{{ servicio.domain }}</td>
+        <td>
+            {% if servicio.status == 'B' %}
+                Bloqueado
+            {% elif servicio.status == 'N' or servicio.status == 'T' %}
+                Pago Pendiente
+            {% else %}
+                Activo
+            {% endif %}
+        </td>
         <td align="center">
             <div class="btn-group">
                 {% if servicio.email_type == 'R' %}
@@ -49,13 +71,23 @@
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
-                <div class="modal-header">Eliminar registro</div>
+                <div class="modal-header">Eliminar {% if servicios.expires %}dominio{% else %}zona{% endif %}</div>
                 <div class="modal-body">
+                    {% if servicio.expires %}
+                    <strong>¡¡¡ ATENCIÓN !!!</strong><br/>
+                    <br/>
+                    La eliminación de la zona implica la eliminación del dominio <strong>{{servicio.domain}}</strong>. Esta acción notifica al registrador de dominio y perderá posibilidad de deshacer esta acción.<br/>
+                    <br/>
+                    Por seguridad, escriba aquí el nombre del dominio para poder eliminarlo:<br/>
+                    <br/>
+                    <input onkeyup="checkDelete('reconfirm_{{servicio.id}}','{{servicio.domain}}','elimina_{{servicio.id}}','{% url "dns.views.domains.delete" servicio.id %}')" type="text" id="reconfirm_{{servicio.id}}" value=""/><br/>
+                    <br/>
+                    {% endif %}
                     ¿Está seguro de que dese eliminar el dominio <strong>{{servicio.domain}}</strong>?
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url "dns.views.domains.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a id="elimina_{{servicio.id}}" class="btn btn-danger{% if servicio.expires %} disabled{% endif %}">Elimina</a>
                 </div>
             </div>
         </td>
