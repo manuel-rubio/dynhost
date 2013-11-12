@@ -38,6 +38,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="form" value="password"/>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Cancela</a>
         <button type="submit" class="btn btn-primary">Cambia clave</a>
@@ -54,13 +55,13 @@ $('#passwordForm').modal('show');
 {% endif %}
 
 <ul class="nav nav-tabs">
-    <li class="active">
+    <li{% if not nic_focus %} class="active"{% endif %}>
         <a href="#info-user" data-toggle="tab">Usuario</a>
     </li>
     <li>
         <a href="#info-dynhost" data-toggle="tab">DynHOST</a>
     </li>
-    <li>
+    <li{% if nic_focus %} class="active"{% endif %}>
         <a href="#info-client" data-toggle="tab">Cliente</a>
     </li>
     <li>
@@ -68,7 +69,7 @@ $('#passwordForm').modal('show');
     </li>
 </ul>
 <div id="profile-tab-content" class="tab-content">
-    <div class="tab-pane fade in active" id="info-user">
+    <div class="tab-pane fade{% if not nic_focus %} in active{% endif %}" id="info-user">
         <h1>Información del Usuario</h1>
         <table class="table table-condensed">
             <tr><th>Usuario</th><td>{{ cuenta.user.username }}</td></tr>
@@ -84,7 +85,7 @@ $('#passwordForm').modal('show');
             </a>
         </div>
     </div>
-    <div class="tab-pane fade" id="info-client">
+    <div class="tab-pane fade{% if nic_focus %} in active{% endif %}" id="info-client">
         <h1>Información de Cliente</h1>
 
         <div class="row-fluid">
@@ -99,6 +100,24 @@ $('#passwordForm').modal('show');
                         <div class="controls">
                             {{ nic_form.legalForm }}
                             {% for error in nic_form.legalForm.errors %}
+                            <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group{% if nic_form.legalName.errors %} error{% endif %}">
+                        <label class="control-label" for="id_legalName">{{ nic_form.legalName.label }}</label>
+                        <div class="controls">
+                            {{ nic_form.legalName }}
+                            {% for error in nic_form.legalName.errors %}
+                            <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group{% if nic_form.legalNumber.errors %} error{% endif %}">
+                        <label class="control-label" for="id_legalNumber">{{ nic_form.legalNumber.label }}</label>
+                        <div class="controls">
+                            {{ nic_form.legalNumber }}
+                            {% for error in nic_form.legalNumber.errors %}
                             <span class="help-inline">{{ error }}</span>
                             {% endfor %}
                         </div>
@@ -135,15 +154,6 @@ $('#passwordForm').modal('show');
                         <div class="controls">
                             {{ nic_form.phone }}
                             {% for error in nic_form.phone.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.fax.errors %} error{% endif %}">
-                        <label class="control-label" for="id_fax">{{ nic_form.fax.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.fax }}
-                            {% for error in nic_form.fax.errors %}
                             <span class="help-inline">{{ error }}</span>
                             {% endfor %}
                         </div>
@@ -202,29 +212,12 @@ $('#passwordForm').modal('show');
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="control-group{% if nic_form.legalName.errors %} error{% endif %}">
-                        <label class="control-label" for="id_legalName">{{ nic_form.legalName.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.legalName }}
-                            {% for error in nic_form.legalName.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.legalNumber.errors %} error{% endif %}">
-                        <label class="control-label" for="id_legalNumber">{{ nic_form.legalNumber.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.legalNumber }}
-                            {% for error in nic_form.legalNumber.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
+
+                    <input type="hidden" name="form" value="nic"/>
 
                     <div class="control-group">
                         <div class="controls">
-                            <a href="{% url "dns.views.domains.index" %}" class="btn">Volver al listado</a>
-                            <button type="submit" class="btn btn-primary">{% if nic_form.name %}Modificar{% else %}Dar de Alta{% endif %}</button>
+                            <button type="submit" class="btn btn-primary">{% if not nic_new %}Modificar{% else %}Dar de Alta{% endif %}</button>
                         </div>
                     </div>
 

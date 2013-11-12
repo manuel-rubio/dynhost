@@ -22,7 +22,6 @@ class NIC(models.Model):
     password = models.TextField(null=False, default='dynhost-user-domain-ovh')
     email = models.TextField(null=False)
     phone = models.TextField(null=False)
-    fax = models.TextField(null=True, default=None)
     address = models.TextField(null=False)
     city = models.TextField(null=False)
     area = models.TextField(null=False)
@@ -55,7 +54,6 @@ class NICform(forms.ModelForm):
     name = forms.CharField(required=True, label='Apellidos')
     email = forms.EmailField(required=True, label='Email')
     phone = forms.IntegerField(required=True, label='Teléfono')
-    fax = forms.IntegerField(required=True, label='Fax')
     address = forms.CharField(required=True, label='Dirección')
     city = forms.CharField(required=True, label='Ciudad')
     area = forms.CharField(required=True, label='Provincia')
@@ -63,15 +61,15 @@ class NICform(forms.ModelForm):
     country = forms.ChoiceField(label='País', required=True, choices=COUNTRIES)
     language = forms.ChoiceField(label='Idioma', required=True, choices=LANGUAGES)
     legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM)
-    legalName = forms.CharField(required=True, label='Empresa')
-    legalNumber = forms.CharField(required=True, label='CIF')
+    legalName = forms.CharField(required=False, label='Empresa')
+    legalNumber = forms.CharField(required=False, label='CIF')
 
     class Meta:
         model = NIC
         fields = ( 
-            'name', 'firstname', 'email', 'phone', 'fax', 'address', 'city', 
-            'area', 'zipCode', 'country', 'language', 'legalForm', 'legalName',
-            'legalNumber' )
+            'name', 'firstname', 'email', 'phone', 'address', 'city', 
+            'area', 'zipCode', 'country', 'language', 'legalForm', 
+            'legalName', 'legalNumber' )
 
 CURRENCIES = (
     ('EUR', '€'),

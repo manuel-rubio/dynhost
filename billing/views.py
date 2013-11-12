@@ -13,28 +13,44 @@ from django.db import IntegrityError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse
+from sys import stderr
 
 @login_required(login_url='/')
 def index(request):
     cuenta = Accounts.objects.get(user = request.user.id)
     mensaje = None
+    form = PasswordChangeForm(request.user)
+    nic_form = NICform(instance=cuenta.nic_data if cuenta.nic_data else NIC())
+    nic_focus = False
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            mensaje = 'Clave cambiada con éxito.'
-    else:
-        form = PasswordChangeForm(request.user)
-        nic_form = NICform(instance=cuenta.nic_data if cuenta.nic_data else NIC())
+        if request.POST['form'] == 'password':
+            form = PasswordChangeForm(request.user, data=request.POST)
+            if form.is_valid():
+                form.save()
+                mensaje = 'Clave cambiada con éxito.'
+        elif request.method == 'POST' and request.POST['form'] == 'nic':
+            nic = cuenta.nic_data if cuenta.nic_data else NIC()
+            nic_form = NICform(request.POST, instance=nic)
+            if nic_form.is_valid():
+                nic_form.save()
+                cuenta.nic_data_id = nic.id
+                cuenta.save()
+                mensaje = 'NIC actualizado con éxito.'
+            else:
+                nic_focus = True
     for (k,val) in CURRENCIES:
         if k == cuenta.currency:
             currency = val 
             break
     else:
         currency = '&euro;'
+    if 'client' in request.GET:
+        nic_focus = True
     return render_to_response('billing_home.html', {
         'cuenta': cuenta,
         'nic_form': nic_form,
+        'nic_new': False if cuenta.nic_data else True,
+        'nic_focus': nic_focus,
         'form': form,
         'dominios': Domains.objects.filter(accounts__id = cuenta.id).count(),
         'dynhosts': Dynamic.objects.filter(user_id = request.user.id).count(),
@@ -66,6 +82,8 @@ def pricing(request):
 @login_required(login_url='/')
 def purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
+    if cuenta.nic_data.nic == '':
+        return redirect(reverse('billing.views.index') + '?client')
     if request.method == 'POST':
         # check domain availability
         domain = Domains()
