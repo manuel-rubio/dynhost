@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm
+from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, NICform, NIC
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -25,6 +25,7 @@ def index(request):
             mensaje = 'Clave cambiada con éxito.'
     else:
         form = PasswordChangeForm(request.user)
+        nic_form = NICform(instance=cuenta.nic_data if cuenta.nic_data else NIC())
     for (k,val) in CURRENCIES:
         if k == cuenta.currency:
             currency = val 
@@ -33,6 +34,7 @@ def index(request):
         currency = '&euro;'
     return render_to_response('billing_home.html', {
         'cuenta': cuenta,
+        'nic_form': nic_form,
         'form': form,
         'dominios': Domains.objects.filter(accounts__id = cuenta.id).count(),
         'dynhosts': Dynamic.objects.filter(user_id = request.user.id).count(),

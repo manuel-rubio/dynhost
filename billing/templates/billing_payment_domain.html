@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>Pago del Dominio</strong>
+</div>
+
+<h1>Pago del Dominio</h1>
+
+<p>Seleccione el medio de pago que desee utilizar:</p>
+
+<div class="accordion" id="accordion-payments">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-payments" href="#collapseTransfer"><strong>Transferencia Bancaria</strong></a>
+        </div>
+        <div id="collapseTransfer" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                Para la compra del dominio por transferencia bancaria, emita una transferencia a
+                la siguiente cuenta bancaria:<br/>
+                <br/>
+                <strong>Banesto</strong><br/>
+                <strong>0000 0000 00 0000000000</strong><br/>
+                <br/>
+                <strong>Altenwald Solutions, S.L.</strong><br/>
+                Calle La Fragua, 7<br/>
+                La Carlota, Córdoba, España<br/>
+                <br/>
+                Como concepto: <strong>ES-{{ cuenta.id|stringformat:"03X" }}-{{ domain.id|stringformat:"04X" }}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-payments" href="#collapsePaypal"><strong>PayPal</strong></a>
+        </div>
+        <div id="collapsePaypal" class="accordion-body collapse">
+            <div class="accordion-inner">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

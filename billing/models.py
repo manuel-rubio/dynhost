@@ -9,6 +9,70 @@ import os
 from dynhost import settings
 from ovh import soapi
 
+LEGAL_FORM = (
+    ('corporation', 'Corporation'),
+    ('individual', 'Individual'),
+    ('association', 'Association'),
+    ('other', 'Other')
+)
+
+class NIC(models.Model):
+    name = models.TextField(null=False)
+    firstname = models.TextField(null=False)
+    password = models.TextField(null=False, default='dynhost-user-domain-ovh')
+    email = models.TextField(null=False)
+    phone = models.TextField(null=False)
+    fax = models.TextField(null=True, default=None)
+    address = models.TextField(null=False)
+    city = models.TextField(null=False)
+    area = models.TextField(null=False)
+    zipCode = models.TextField(null=False)
+    country = models.CharField(null=False, max_length=2, default='es')
+    language = models.CharField(null=False, max_length=2, default='es')
+    legalForm = models.CharField(null=False, max_length=12, default='individual', choices=LEGAL_FORM)
+    legalName = models.TextField(null=True)
+    legalNumber = models.TextField(null=True)
+    vat = models.FloatField(default=21.0)
+    nic = models.CharField(null=False, max_length=10)
+
+COUNTRIES = (
+    ('es', 'España'),
+    ('fr', 'Francia'),
+    ('uk', 'Reino Unido'),
+    ('pt', 'Portugal'),
+    ('it', 'Italia'),
+    ('us', 'Estados Unidos'),
+    ('co', 'Colombia'),
+)
+
+LANGUAGES = (
+    ('es', 'Castellano'),
+    ('en', 'Inglés'),
+)
+
+class NICform(forms.ModelForm):
+    firstname = forms.CharField(required=True, label='Nombre')
+    name = forms.CharField(required=True, label='Apellidos')
+    email = forms.EmailField(required=True, label='Email')
+    phone = forms.IntegerField(required=True, label='Teléfono')
+    fax = forms.IntegerField(required=True, label='Fax')
+    address = forms.CharField(required=True, label='Dirección')
+    city = forms.CharField(required=True, label='Ciudad')
+    area = forms.CharField(required=True, label='Provincia')
+    zipCode = forms.IntegerField(required=True, label='Código Postal')
+    country = forms.ChoiceField(label='País', required=True, choices=COUNTRIES)
+    language = forms.ChoiceField(label='Idioma', required=True, choices=LANGUAGES)
+    legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM)
+    legalName = forms.CharField(required=True, label='Empresa')
+    legalNumber = forms.CharField(required=True, label='CIF')
+
+    class Meta:
+        model = NIC
+        fields = ( 
+            'name', 'firstname', 'email', 'phone', 'fax', 'address', 'city', 
+            'area', 'zipCode', 'country', 'language', 'legalForm', 'legalName',
+            'legalNumber' )
+
 CURRENCIES = (
     ('EUR', '€'),
     ('USD', '$'),
@@ -29,7 +93,7 @@ class Accounts(models.Model):
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
-    nic = models.TextField(null=True)
+    nic_data = models.ForeignKey('NIC', null=True)
 
     def __unicode__(self):
         ret = self.user.username + " ("
