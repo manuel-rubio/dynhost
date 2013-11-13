@@ -34,6 +34,7 @@ class NIC(models.Model):
     legalNumber = models.TextField(null=True)
     vat = models.FloatField(default=21.0)
     nic = models.CharField(null=False, max_length=20)
+    removed = models.BooleanField(default=False, null=False)
 
 COUNTRIES = (
     ('es', 'España'),
@@ -44,22 +45,6 @@ COUNTRIES = (
     ('us', 'Estados Unidos'),
     ('co', 'Colombia'),
 )
-
-class NICformUpdate(forms.ModelForm):
-    legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM,
-        widget=forms.Select(attrs={'onchange': 'set_fields();'}))
-    organization = forms.CharField(required=False, label='Organización')
-    legalName = forms.CharField(required=False, label='Empresa')
-    legalNumber = forms.CharField(required=False, label='CIF')
-    firstname = forms.CharField(required=True, label='Nombre')
-    name = forms.CharField(required=True, label='Apellidos')
-    email = forms.EmailField(required=True, label='Email')
-
-    class Meta:
-        model = NIC
-        fields = ( 
-            'legalForm', 'legalNumber', 'legalName', 'organization',
-            'firstname', 'name', 'email')
 
 class NICform(forms.ModelForm):
     legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM,

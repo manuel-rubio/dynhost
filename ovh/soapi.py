@@ -34,18 +34,6 @@ def nic_create(name, firstname, password, email, phone, fax, address,
     soap.logout(session)
     return result
 
-def nic_update(nic, name, firstname, email, legalform,
-               legalName, legalNumber, organisation, vat):
-    session = login()
-    spareEmail = ''
-    res1 = soap.nicUpdate(
-        session, nic, name, firstname, legalform, organisation, 
-        legalName, legalNumber, vat)
-    res2 = soap.nicModifyEmail(
-        session, nic, email)
-    soap.logout(session)
-    return (res1, res2)
-
 def buy_domain(domain, nic):
     session = login()
     owo = 'no'
