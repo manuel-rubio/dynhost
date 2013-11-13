@@ -34,8 +34,18 @@ def nic_create(name, firstname, password, email, phone, fax, address,
     soap.logout(session)
     return result
 
+def renew_domain(domain):
+    session = login()
+    dryRun = 1 if DEBUG else 0
+    result = soap.resellerDomainRenew(
+        session, domain, dryRun)
+    soap.logout(session)
+    return result
+
 def buy_domain(domain, nic):
     session = login()
+    hosting = 'none'
+    offer = 'gold'
     owo = 'no'
     reseller_profile = 'whiteLabel' # none, whiteLabel, agent
     owner = nic
@@ -53,12 +63,42 @@ def buy_domain(domain, nic):
     birthCountry = '' # only for .fr
     dryRun = 1 if DEBUG else 0
     result = soap.resellerDomainCreate(
-        session, domain, 'none', 'gold',
+        session, domain, hosting, offer,
         reseller_profile, owo,
         owner, admin, tech, billing,
         dns1, dns2, dns3, dns4, '',
         method, legalName, legalNumber,
         afnicldent, birthDate, birthCity,
         birthDepart, birthCountry, dryRun)
+    soap.logout(session)
+    return result
+
+def transfer_domain(domain, nic, authinfo):
+    session = login()
+    hosting = 'none'
+    offer = 'gold'
+    owo = 'no'
+    reseller_profile = 'whiteLabel' # none, whiteLabel, agent
+    owner = nic
+    admin = DOMAIN_CONTACT
+    tech = DOMAIN_CONTACT
+    billing = DOMAIN_CONTACT
+    dns1, dns2, dns3, dns4 = DNS_CONFIG
+    method = ''       # only for .fr
+    legalName = ''    # only for .fr
+    legalNumber = ''  # only for .fr
+    afnicldent = ''   # only for .fr
+    birthDate = ''    # only for .fr
+    birthCity = ''    # only for .fr
+    birthDepart = ''  # only for .fr
+    birthCountry = '' # only for .fr
+    dryRun = 1 if DEBUG else 0
+    result = soap.resellerDomainTransfer(
+        session, domain, authinfo, hosting, offer,
+        reseller_profile, owo, owner, admin, tech,
+        billing, dns1, dns2, dns3, dns4, '',
+        method, legalName, legalNumber, afnicldent,
+        birthDate, birthCity, birthDepart, 
+        birthCountry, dryRun)
     soap.logout(session)
     return result

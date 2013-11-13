@@ -173,6 +173,21 @@ class DomainCheckForm(forms.ModelForm):
                 self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
         return cleaned_data
 
+class DomainTransferForm(forms.ModelForm):
+    domain = forms.RegexField(label='Nombre del Dominio', required=True, regex=r'[0-9a-z-_]+\.[a-z]{2,4}')
+    authinfo = forms.CharField(label='Auth. Info.', required=True)
+    class Meta:
+        model = Domains 
+        fields = ( 'domain', 'authinfo' )
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if cleaned_data.has_key('domain'):
+            status = soapi.check_domain(cleaned_data['domain'])
+            if not status['is_transferable'][0]:
+                self._errors['domain'] = ErrorList(['El dominio no es transferible.'])
+        return cleaned_data
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, NICform, NIC
+from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -136,7 +136,25 @@ def payment(request, dom_id):
 @login_required(login_url='/')
 def transfer(request):
     cuenta = Accounts.objects.get(user = request.user.id)
-    return render_to_response('billing_buy_domain.html', {
+    if cuenta.nic_data.nic == '':
+        return redirect(reverse('billing.views.index') + '?client')
+    if request.method == 'POST':
+        # check domain availability
+        domain = Domains()
+        domain.accounts_id = cuenta.id
+        domain.status = 'T'
+        domain.expires = date.today() + relativedelta(years=1)
+        form = DomainTransferForm(request.POST, instance=domain)
+        if form.is_valid():
+            try:
+                form.save()
+                soapi.buy_domain(domain.domain, cuenta.nic_data.nic)
+                return redirect(reverse('billing.views.payment', args=(domain.id,)))
+            except IntegrityError:
+                form._errors['domain'] = ['El dominio ya existe como zona.']
+    else:
+        form = DomainTransferForm()
+    return render_to_response('billing_transfer_domain.html', {
         'cuenta': cuenta,
-
+        'form': form
     }, context_instance=RequestContext(request))

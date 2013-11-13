@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="breadcrumbs" class="breadcrumb">
+    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>Transfiere Dominio</strong>
+</div>
+
+<h1>Transfiere Dominio</h1>
+<form class="form-horizontal" method="post">
+    {% csrf_token %}
+    <div class="control-group{% if form.domain.errors %} error{% endif %}">
+        <label class="control-label" for="id_domain">{{ form.domain.label }}</label>
+        <div class="controls">
+            {{ form.domain }}
+            {% for error in form.domain.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="control-group{% if form.authinfo.errors %} error{% endif %}">
+        <label class="control-label" for="id_authinfo">{{ form.authinfo.label }}</label>
+        <div class="controls">
+            {{ form.authinfo }}
+            {% for error in form.authinfo.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+            <span class="help-block">
+                El código de seguridad denominado <em>authinfo</em> es provisto por los registradores de dominios para asegurar que el dominio es transferido de una forma segura.
+            </span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <span class="help-block">
+                La transferencia del dominio incluye el <strong>paquete de dominio</strong> consistente en:
+                <ul>
+                    <li><strong>100 GiB</strong> de espacio en disco</li>
+                    <li><strong>100 Mbps</strong> de velocidad de red</li>
+                    <li><strong>5 TiB</strong> de transferencia mensual</li>
+                    <li><strong>1 base de datos</strong> MySQL</li>
+                    <li><strong>1000 redirecciones</strong> de correo electrónico</li>
+                    <li><strong>100 buzones</strong> de correo electrónico de <strong>1 GiB</strong></li>
+                    <li>Copias de seguridad cada 24 horas</li>
+                    <li>Gestión de <strong>incidencias en 48 horas</strong> máximo, contacto vía <strong>email</strong></li>
+                </ul>
+            </span>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <a href="{% url "dns.views.domains.index" %}" class="btn">Volver al listado</a>
+            <input type="submit" class="btn btn-primary" value="Transferir"/>
+        </div>
+    </div>
+</form>
+{% endblock %}
