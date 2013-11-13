@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<script src="/static/js/passfield.min.js"></script>
+<script src="/static/js/change_password.js"></script>
+<script src="/static/js/nic.js"></script>
+<link rel="stylesheet" href="/static/css/passfield.min.css"/>
+{% endblock %}
+
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
     <a href="/">Inicio</a> &raquo; <strong>Perfil de Usuario</strong>
@@ -94,124 +101,17 @@ $('#passwordForm').modal('show');
 
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
-
-                    <div class="control-group{% if nic_form.legalForm.errors %} error{% endif %}">
-                        <label class="control-label" for="id_legalForm">{{ nic_form.legalForm.label }}</label>
+                    {% for field in nic_form %}
+                    <div id="nic_form_{{ field.html_name }}" class="control-group{% if field.errors %} error{% endif %}">
+                        <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                         <div class="controls">
-                            {{ nic_form.legalForm }}
-                            {% for error in nic_form.legalForm.errors %}
+                            {{ field }}
+                            {% for error in field.errors %}
                             <span class="help-inline">{{ error }}</span>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="control-group{% if nic_form.legalName.errors %} error{% endif %}">
-                        <label class="control-label" for="id_legalName">{{ nic_form.legalName.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.legalName }}
-                            {% for error in nic_form.legalName.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.legalNumber.errors %} error{% endif %}">
-                        <label class="control-label" for="id_legalNumber">{{ nic_form.legalNumber.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.legalNumber }}
-                            {% for error in nic_form.legalNumber.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.firstname.errors %} error{% endif %}">
-                        <label class="control-label" for="id_firstname">{{ nic_form.firstname.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.firstname }}
-                            {% for error in nic_form.firstname.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.name.errors %} error{% endif %}">
-                        <label class="control-label" for="id_name">{{ nic_form.name.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.name }}
-                            {% for error in nic_form.name.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.email.errors %} error{% endif %}">
-                        <label class="control-label" for="id_email">{{ nic_form.email.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.email }}
-                            {% for error in nic_form.email.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.phone.errors %} error{% endif %}">
-                        <label class="control-label" for="id_phone">{{ nic_form.phone.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.phone }}
-                            {% for error in nic_form.phone.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.address.errors %} error{% endif %}">
-                        <label class="control-label" for="id_address">{{ nic_form.address.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.address }}
-                            {% for error in nic_form.address.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.city.errors %} error{% endif %}">
-                        <label class="control-label" for="id_city">{{ nic_form.city.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.city }}
-                            {% for error in nic_form.city.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.area.errors %} error{% endif %}">
-                        <label class="control-label" for="id_area">{{ nic_form.area.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.area }}
-                            {% for error in nic_form.area.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.zipCode.errors %} error{% endif %}">
-                        <label class="control-label" for="id_zipCode">{{ nic_form.zipCode.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.zipCode }}
-                            {% for error in nic_form.zipCode.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.country.errors %} error{% endif %}">
-                        <label class="control-label" for="id_country">{{ nic_form.country.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.country }}
-                            {% for error in nic_form.country.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group{% if nic_form.language.errors %} error{% endif %}">
-                        <label class="control-label" for="id_language">{{ nic_form.language.label }}</label>
-                        <div class="controls">
-                            {{ nic_form.language }}
-                            {% for error in nic_form.language.errors %}
-                            <span class="help-inline">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {% endfor %}
 
                     <input type="hidden" name="form" value="nic"/>
 

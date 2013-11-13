@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, NICform, NIC
+from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, NICform, NIC, NICformUpdate
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -14,13 +14,26 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse
 from sys import stderr
+from dynhost import settings
+from ovh import soapi
 
 @login_required(login_url='/')
 def index(request):
     cuenta = Accounts.objects.get(user = request.user.id)
     mensaje = None
     form = PasswordChangeForm(request.user)
-    nic_form = NICform(instance=cuenta.nic_data if cuenta.nic_data else NIC())
+    if not cuenta.nic_data:
+        nic = NIC()
+        if request.method == 'POST' and request.POST['form'] == 'nic':
+            nic_form = NICform(request.POST, instance=nic)
+        else:
+            nic_form = NICform(instance=nic)
+    else:
+        nic = cuenta.nic_data
+        if request.method == 'POST' and request.POST['form'] == 'nic':
+            nic_form = NICformUpdate(request.POST, instance=nic)
+        else:
+            nic_form = NICformUpdate(instance=nic)
     nic_focus = False
     if request.method == 'POST':
         if request.POST['form'] == 'password':
@@ -28,15 +41,26 @@ def index(request):
             if form.is_valid():
                 form.save()
                 mensaje = 'Clave cambiada con éxito.'
-        elif request.method == 'POST' and request.POST['form'] == 'nic':
-            nic = cuenta.nic_data if cuenta.nic_data else NIC()
-            nic_form = NICform(request.POST, instance=nic)
+        elif request.POST['form'] == 'nic':
             if nic_form.is_valid():
                 nic_form.save()
+                if not nic.nic:
+                    nic.nic = soapi.nic_create(
+                        nic.name, nic.firstname, settings.OVH_USERS_PASS, nic.email,
+                        nic.phone, '', nic.address, nic.city, nic.area,
+                        nic.zipCode, nic.country, nic.language, nic.legalForm,
+                        nic.organization, nic.legalName, nic.legalNumber, settings.IVA)
+                    nic.save()
+                else:
+                    print >>stderr, soapi.nic_update(
+                        nic.nic, nic.name, nic.firstname, nic.email, nic.legalForm,
+                        nic.legalName, nic.legalNumber, nic.organization, settings.IVA)
+
                 cuenta.nic_data_id = nic.id
                 cuenta.save()
                 mensaje = 'NIC actualizado con éxito.'
             else:
+                print >>stderr, nic_form._errors
                 nic_focus = True
     for (k,val) in CURRENCIES:
         if k == cuenta.currency:

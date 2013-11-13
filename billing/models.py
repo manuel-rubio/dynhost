@@ -19,7 +19,7 @@ LEGAL_FORM = (
 class NIC(models.Model):
     name = models.TextField(null=False)
     firstname = models.TextField(null=False)
-    password = models.TextField(null=False, default='dynhost-user-domain-ovh')
+    password = models.TextField(null=False, default=settings.OVH_USERS_PASS)
     email = models.TextField(null=False)
     phone = models.TextField(null=False)
     address = models.TextField(null=False)
@@ -29,10 +29,11 @@ class NIC(models.Model):
     country = models.CharField(null=False, max_length=2, default='es')
     language = models.CharField(null=False, max_length=2, default='es')
     legalForm = models.CharField(null=False, max_length=12, default='individual', choices=LEGAL_FORM)
+    organization = models.TextField(null=True)
     legalName = models.TextField(null=True)
     legalNumber = models.TextField(null=True)
     vat = models.FloatField(default=21.0)
-    nic = models.CharField(null=False, max_length=10)
+    nic = models.CharField(null=False, max_length=20)
 
 COUNTRIES = (
     ('es', 'España'),
@@ -44,12 +45,28 @@ COUNTRIES = (
     ('co', 'Colombia'),
 )
 
-LANGUAGES = (
-    ('es', 'Castellano'),
-    ('en', 'Inglés'),
-)
+class NICformUpdate(forms.ModelForm):
+    legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM,
+        widget=forms.Select(attrs={'onchange': 'set_fields();'}))
+    organization = forms.CharField(required=False, label='Organización')
+    legalName = forms.CharField(required=False, label='Empresa')
+    legalNumber = forms.CharField(required=False, label='CIF')
+    firstname = forms.CharField(required=True, label='Nombre')
+    name = forms.CharField(required=True, label='Apellidos')
+    email = forms.EmailField(required=True, label='Email')
+
+    class Meta:
+        model = NIC
+        fields = ( 
+            'legalForm', 'legalNumber', 'legalName', 'organization',
+            'firstname', 'name', 'email')
 
 class NICform(forms.ModelForm):
+    legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM,
+        widget=forms.Select(attrs={'onchange': 'set_fields();'}))
+    organization = forms.CharField(required=False, label='Organización')
+    legalName = forms.CharField(required=False, label='Empresa')
+    legalNumber = forms.CharField(required=False, label='CIF')
     firstname = forms.CharField(required=True, label='Nombre')
     name = forms.CharField(required=True, label='Apellidos')
     email = forms.EmailField(required=True, label='Email')
@@ -59,17 +76,13 @@ class NICform(forms.ModelForm):
     area = forms.CharField(required=True, label='Provincia')
     zipCode = forms.IntegerField(required=True, label='Código Postal')
     country = forms.ChoiceField(label='País', required=True, choices=COUNTRIES)
-    language = forms.ChoiceField(label='Idioma', required=True, choices=LANGUAGES)
-    legalForm = forms.ChoiceField(label='Formal Legal', required=True, choices=LEGAL_FORM)
-    legalName = forms.CharField(required=False, label='Empresa')
-    legalNumber = forms.CharField(required=False, label='CIF')
 
     class Meta:
         model = NIC
         fields = ( 
-            'name', 'firstname', 'email', 'phone', 'address', 'city', 
-            'area', 'zipCode', 'country', 'language', 'legalForm', 
-            'legalName', 'legalNumber' )
+            'legalForm', 'legalNumber', 'legalName', 'organization',
+            'firstname', 'name', 'email', 'phone', 'address', 'city', 
+            'area', 'zipCode', 'country' )
 
 CURRENCIES = (
     ('EUR', '€'),

@@ -1,10 +1,10 @@
 from SOAPpy import WSDL
-from dynhost.settings import WSDL_FILE, OVH_USER, OVH_PASS, DOMAIN_CONTACT, DNS_CONFIG, DEBUG
+from dynhost.settings import WSDL_FILE, OVH_USER, OVH_PASS, DOMAIN_CONTACT, DNS_CONFIG, DEBUG, OVH_USERS_PASS
 
 soap = WSDL.Proxy(WSDL_FILE)
 
-def login():
-    return soap.login(OVH_USER, OVH_PASS, 'en', 0)
+def login(username=OVH_USER, password=OVH_PASS):
+    return soap.login(username, password, 'en', 0)
 
 def check_domain(domain):
     session = login()
@@ -25,7 +25,7 @@ def nic_create(name, firstname, password, email, phone, fax, address,
                city, area, zipCode, country, language, legalform,
                organisation, legalName, legalNumber, vat):
     session = login()
-    isOwner = 1
+    isOwner = 0
     result = soap.nicCreate(
         session, name, firstname, password,
         email, phone, fax, address, city, area,
@@ -33,6 +33,18 @@ def nic_create(name, firstname, password, email, phone, fax, address,
         organisation, legalName, legalNumber, vat)
     soap.logout(session)
     return result
+
+def nic_update(nic, name, firstname, email, legalform,
+               legalName, legalNumber, organisation, vat):
+    session = login()
+    spareEmail = ''
+    res1 = soap.nicUpdate(
+        session, nic, name, firstname, legalform, organisation, 
+        legalName, legalNumber, vat)
+    res2 = soap.nicModifyEmail(
+        session, nic, email)
+    soap.logout(session)
+    return (res1, res2)
 
 def buy_domain(domain, nic):
     session = login()
