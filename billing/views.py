@@ -108,6 +108,7 @@ def purchase(request):
         if form.is_valid():
             try:
                 form.save()
+                soapi.buy_domain(domain.domain, cuenta.nic_data.nic)
                 return redirect(reverse('billing.views.payment', args=(domain.id,)))
             except IntegrityError:
                 form._errors['domain'] = ['El dominio ya existe como zona.']
@@ -123,7 +124,7 @@ def payment(request, dom_id):
     cuenta = Accounts.objects.get(user = request.user.id)
     try:
         domain = Domains.objects.get(pk = dom_id)
-        if domain.accounts_id != cuenta.id:
+        if domain.accounts_id != cuenta.id or (domain.status not in ('N', 'T')):
             return redirect(reverse('dns.views.domains.index'))
     except Domains.DoesNotExist:
         return redirect(reverse('dns.views.domains.index'))
