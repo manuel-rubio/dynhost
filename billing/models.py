@@ -165,12 +165,22 @@ class DomainCheckForm(forms.ModelForm):
     class Meta:
         model = Domains
         fields = ( 'domain', )
+
+    def _is_valid_suffix(self, domain):
+        for i in settings.TLD_GRANTED:
+            if domain[-len(i):] == i:
+                return True
+        return False
+
     def clean(self):
         cleaned_data = self.cleaned_data
         if cleaned_data.has_key('domain'):
-            status = soapi.check_domain(cleaned_data['domain'])
-            if not status['is_available'][0]:
-                self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
+            if not self._is_valid_suffix(cleaned_data['domain']):
+                self._errors['domain'] = ErrorList(['Dominio no válido.'])
+            else:
+                status = soapi.check_domain(cleaned_data['domain'])
+                if not status['is_available'][0]:
+                    self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
         return cleaned_data
 
 class DomainTransferForm(forms.ModelForm):

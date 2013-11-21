@@ -11,6 +11,15 @@ ADMINS = (
     ('Manuel Rubio', 'bombadil@bosqueviejo.net'),
 )
 
+## TODO: add .it and .fr when we have support for them
+TLD_GRANTED = (
+    '.com.es', '.org.es', '.nom.es', '.pl', '.co.uk', '.me.uk',
+    '.org.uk', '.es', '.de', '.be', '.com', '.eu', '.in', '.info',
+    '.name', '.net', '.nl', '.pm', '.re', '.tel', '.tf', '.us',
+    '.wf', '.yt', '.biz', '.org', '.ca', '.at', '.ch', '.cn', '.cz',
+    '.li', '.tn', '.asia', '.dk', '.mobi', '.pro', '.se', '.so'
+)
+
 PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")
 
 OVH_USER = ''
