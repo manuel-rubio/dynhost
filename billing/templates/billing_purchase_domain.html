@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>Compra Dominio</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <strong>Compra Dominio</strong>
 </div>
 
 <h1>Compra de Dominio</h1>

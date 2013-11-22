@@ -6,7 +6,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/{{ dom_id }}/edit/"> {{ dom }}</a>  &raquo; <a href="/mail/redirect/{{ dom_id }}/"> Redirecciones de Email</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <a href="{% url "mail.views.redirects.index" dom_id %}">Redirecciones de Email</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
 </div>
 
 <h1>Información de Redirección {{ dom }}</h1>

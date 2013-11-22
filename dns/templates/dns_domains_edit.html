@@ -7,7 +7,7 @@
 {% block content %}
 
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo Dominio {% else %} Editar Dominio{% endif %}</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
 </div>
 
 <h1>Información de Dominio</h1>

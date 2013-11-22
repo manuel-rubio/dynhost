@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/{{ dom_id }}/edit/"> {{ dom }}</a>  &raquo; <strong>Redirecciones de Email</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <strong>Redirecciones de Email</strong>
 </div>
 
 <h1>Listado de Redirecciones de Email para {{ dom }}</h1>

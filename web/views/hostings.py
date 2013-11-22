@@ -123,7 +123,7 @@ def delete(request, hosting_id):
         if hosting.record.domain.accounts.id != cuenta.id:
             return redirect(reverse('dns.views.domains.index'))
         hosting.delete()
-        return redirect(reverse('web.views.hostings.index', args=[hosting.record_id]))
+        return redirect(reverse('web.views.hostings.index', args=[hosting.record.domain_id]))
     except Hosting.DoesNotExist:
         pass
     return redirect(reverse('dns.views.domains.index'))

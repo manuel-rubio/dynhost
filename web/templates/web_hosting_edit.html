@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/{{ dom_id }}/edit/"> {{ dom }}</a>  &raquo; <a href="/web/hosting/{{ dom_id }}/">Hosting</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <a href="{% url "web.views.hostings.index" dom_id %}">Hostings Web</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
 </div>
 
 <h1>Información de Hostings Web en {{ dom }}</h1>

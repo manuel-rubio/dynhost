@@ -64,7 +64,8 @@ def new(request, rec_id):
         'total': cuenta.limit_web_redirect,
         'rec_id': rec_id,
         'dom': dynhost.getName(),
-        'tipo': 'Redirecciones Web'
+        'tipo': 'Redirecciones Web',
+        'nuevo': True
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

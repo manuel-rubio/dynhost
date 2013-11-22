@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-        <a href="/">Inicio</a> &raquo; <a href="/database/">Base de Datos</a> &raquo; <strong>Editar</strong>
+        <a href="/">Inicio</a> &raquo; <a href="{% url "database.views.databases.index" %}">Base de Datos</a> &raquo; <strong>Editar</strong>
 </div>
 
 {% if not show %}

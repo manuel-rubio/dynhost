@@ -6,7 +6,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo Registro{% else %} Editar Registro{% endif %}</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a> &raquo; <strong>{% if nuevo %} Nuevo Registro{% else %} Editar Registro{% endif %}</strong>
 </div>
 <h1>Información de Registro de {{ dom }}</h1>
 <form class="form-horizontal" method="post">
