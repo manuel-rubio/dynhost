@@ -90,6 +90,7 @@ class Accounts(models.Model):
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
     nic_data = models.ForeignKey('NIC', null=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0, blank=False)
 
     def __unicode__(self):
         ret = self.user.username + " ("
@@ -119,14 +120,39 @@ class Accounts(models.Model):
             dir += '/' + skel[relative] % {'userid':self.user.id}
         return dir + '/'
 
+CONTRACT_TYPE = (
+    ('D', 'Dominio'),
+    ('R', 'Redirecciones de Email'),
+    ('m', 'Buzones de Email Plus'),
+    ('M', 'Buzones de Email Premium'),
+    ('B', 'Base de Datos MySQL'),
+)
+
+FREQUENCY_TYPE = (
+    ('M', 'Mensual'),
+    ('T', 'Trimestral'),
+    ('A', 'Anual'),
+)
+
+class Contracts(models.Model):
+    type = models.CharField(max_length=1, default='D', choices=CONTRACT_TYPE)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    frequency = models.CharField(max_length=1, default='M', choices=FREQUENCY_TYPE)
+    accounts = models.ForeignKey('Accounts')
+    begins = models.DateField(auto_now_add=True)
+    ends = models.DateField(blank=False, default=None)
+
+PAYMENT_TYPE = (
+    ('H', 'Hosting'),
+    ('P', 'Pago'),
+)
+
 class Payments(models.Model):
     date = models.DateField()
-    type = models.CharField(max_length=1, default='H', choices=(
-        ('H', 'Hosting'),
-        ('P', 'Pago'),
-    ))
+    type = models.CharField(max_length=1, default='H', choices=PAYMENT_TYPE)
     price = models.FloatField()
-    accounts = models.ForeignKey('Accounts')
+    contract = models.ForeignKey('Contracts')
     def __unicode__(self):
         return "%(type)s: %(price).2f €" % {'type':self.type, 'price':self.price}
 

@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC
+from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC, Contracts
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -109,6 +109,10 @@ def purchase(request):
             try:
                 form.save()
                 soapi.buy_domain(domain.domain, cuenta.nic_data.nic)
+                contract = Contracts()
+                contract.price = settings.DOMAIN_PRICE
+                contract.accounts_id = cuenta.id
+                contract.save()
                 return redirect(reverse('billing.views.payment', args=(domain.id,)))
             except IntegrityError:
                 form._errors['domain'] = ['El dominio ya existe como zona.']
@@ -149,6 +153,10 @@ def transfer(request):
             try:
                 form.save()
                 soapi.buy_domain(domain.domain, cuenta.nic_data.nic)
+                contract = Contracts()
+                contract.price = settings.DOMAIN_PRICE
+                contract.accounts_id = cuenta.id
+                contract.save()
                 return redirect(reverse('billing.views.payment', args=(domain.id,)))
             except IntegrityError:
                 form._errors['domain'] = ['El dominio ya existe como zona.']

@@ -20,6 +20,8 @@ TLD_GRANTED = (
     '.li', '.tn', '.asia', '.dk', '.mobi', '.pro', '.se', '.so'
 )
 
+DOMAIN_PRICE = 12.0
+
 PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")
 
 OVH_USER = ''
