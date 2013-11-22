@@ -85,11 +85,11 @@ class Accounts(models.Model):
     limit_email_mailbox = models.IntegerField(default=0)
     limit_email_lists = models.IntegerField(default=0)
     limit_dynhost = models.IntegerField(default=5)
-    paymonth = models.FloatField(default=0.0)
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
     nic_data = models.ForeignKey('NIC', null=True)
+    amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0, blank=False)
 
     def __unicode__(self):
         ret = self.user.username + " ("
@@ -119,14 +119,38 @@ class Accounts(models.Model):
             dir += '/' + skel[relative] % {'userid':self.user.id}
         return dir + '/'
 
+CONTRACT_TYPE = (
+    ('D', 'Dominio'),
+    ('R', 'Redirecciones de Email'),
+    ('m', 'Buzones de Email Plus'),
+    ('M', 'Buzones de Email Premium'),
+    ('B', 'Base de Datos MySQL'),
+)
+
+class Contracts(models.Model):
+    type = models.CharField(max_length=1, default='D', choices=CONTRACT_TYPE)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    discount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    accounts = models.ForeignKey('Accounts')
+    begins = models.DateField(auto_now_add=True)
+    ends = models.DateField(null=True, default=None)
+    paid = models.BooleanField(default=False)
+    concept = models.CharField(max_length=100)
+
+    def total(self):
+        return self.price * self.quantity - self.discount
+
+PAYMENT_TYPE = (
+    ('H', 'Hosting'),
+    ('P', 'Pago'),
+)
+
 class Payments(models.Model):
     date = models.DateField()
-    type = models.CharField(max_length=1, default='H', choices=(
-        ('H', 'Hosting'),
-        ('P', 'Pago'),
-    ))
+    type = models.CharField(max_length=1, default='H', choices=PAYMENT_TYPE)
     price = models.FloatField()
-    accounts = models.ForeignKey('Accounts')
+    contract = models.ForeignKey('Contracts')
     def __unicode__(self):
         return "%(type)s: %(price).2f €" % {'type':self.type, 'price':self.price}
 
@@ -165,12 +189,22 @@ class DomainCheckForm(forms.ModelForm):
     class Meta:
         model = Domains
         fields = ( 'domain', )
+
+    def _is_valid_suffix(self, domain):
+        for i in settings.TLD_GRANTED:
+            if domain[-len(i):] == i:
+                return True
+        return False
+
     def clean(self):
         cleaned_data = self.cleaned_data
         if cleaned_data.has_key('domain'):
-            status = soapi.check_domain(cleaned_data['domain'])
-            if not status['is_available'][0]:
-                self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
+            if not self._is_valid_suffix(cleaned_data['domain']):
+                self._errors['domain'] = ErrorList(['Dominio no válido.'])
+            else:
+                status = soapi.check_domain(cleaned_data['domain'])
+                if not status['is_available'][0]:
+                    self._errors['domain'] = ErrorList(['El dominio no está disponible.'])
         return cleaned_data
 
 class DomainTransferForm(forms.ModelForm):
