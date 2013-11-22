@@ -20,6 +20,8 @@ TLD_GRANTED = (
     '.li', '.tn', '.asia', '.dk', '.mobi', '.pro', '.se', '.so'
 )
 
+BANK = 'Banco Español de Cŕedito'
+CCC = '0000 0000 00 0000000000'
 DOMAIN_PRICE = 12.0
 
 PROJECT_PATH = abspath(dirname(abspath(__file__)) + "/..")

@@ -145,7 +145,9 @@ def payment(request, contract_id):
     return render_to_response('billing_payment.html', {
         'cuenta': cuenta,
         'contract': contract,
-        'currency': currency
+        'currency': currency,
+        'ccc': settings.CCC,
+        'bank': settings.BANK
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

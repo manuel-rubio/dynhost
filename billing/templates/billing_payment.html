@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<script src="/static/js/payment.js"></script>
+{% endblock %}
+
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
     <a href="/">Inicio</a> &raquo; <strong>Pago de Servicio</strong>
@@ -18,7 +22,13 @@
                     {% elif contract.type == 'B' %}
                         Base de Datos MySQL
                     {% endif %} {{ contract.concept }}</strong></p>
-<p>Cantidad: <strong>{{ contract.total }} {{ currency }}</strong></p>
+<p>Tipo de Pago: <select id="paytype" name="paytype" onchange="set_value();">
+    <option value="M" selected="selected">Mensual</option>
+    <option value="T">Trimestral</option>
+    <option value="A">Anual</option>
+</select>
+</p>
+<p>Cantidad: <strong><span id="price">{{ contract.total }}</span> {{ currency }}</strong></p>
 <p>Seleccione el medio de pago que desee utilizar:</p>
 
 <div class="accordion" id="accordion-payments">
@@ -31,8 +41,8 @@
                 Para la compra del dominio por transferencia bancaria, emita una transferencia a
                 la siguiente cuenta bancaria:<br/>
                 <br/>
-                <strong>Banesto</strong><br/>
-                <strong>0000 0000 00 0000000000</strong><br/>
+                <strong>{{ bank }}</strong><br/>
+                <strong>{{ ccc }}</strong><br/>
                 <br/>
                 <strong>Altenwald Solutions, S.L.</strong><br/>
                 Calle La Fragua, 7<br/>
