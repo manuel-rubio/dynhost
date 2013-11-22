@@ -85,7 +85,6 @@ class Accounts(models.Model):
     limit_email_mailbox = models.IntegerField(default=0)
     limit_email_lists = models.IntegerField(default=0)
     limit_dynhost = models.IntegerField(default=5)
-    paymonth = models.FloatField(default=0.0)
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
@@ -128,20 +127,19 @@ CONTRACT_TYPE = (
     ('B', 'Base de Datos MySQL'),
 )
 
-FREQUENCY_TYPE = (
-    ('M', 'Mensual'),
-    ('T', 'Trimestral'),
-    ('A', 'Anual'),
-)
-
 class Contracts(models.Model):
     type = models.CharField(max_length=1, default='D', choices=CONTRACT_TYPE)
     quantity = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    frequency = models.CharField(max_length=1, default='M', choices=FREQUENCY_TYPE)
+    discount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     accounts = models.ForeignKey('Accounts')
     begins = models.DateField(auto_now_add=True)
-    ends = models.DateField(blank=False, default=None)
+    ends = models.DateField(null=True, default=None)
+    paid = models.BooleanField(default=False)
+    concept = models.CharField(max_length=100)
+
+    def total(self):
+        return self.price * self.quantity - self.discount
 
 PAYMENT_TYPE = (
     ('H', 'Hosting'),

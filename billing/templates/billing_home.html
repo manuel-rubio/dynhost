@@ -62,7 +62,7 @@ $('#passwordForm').modal('show');
 {% endif %}
 
 <ul class="nav nav-tabs">
-    <li{% if not nic_focus %} class="active"{% endif %}>
+    <li{% if not nic_focus and not contract_focus %} class="active"{% endif %}>
         <a href="#info-user" data-toggle="tab">Usuario</a>
     </li>
     <li>
@@ -72,17 +72,20 @@ $('#passwordForm').modal('show');
         <a href="#info-client" data-toggle="tab">Cliente</a>
     </li>
     <li>
-        <a href="#info-servicios" data-toggle="tab">Servicios</a>
+        <a href="#info-services" data-toggle="tab">Servicios</a>
+    </li>
+    <li{% if contract_focus %} class="active"{% endif %}>
+        <a href="#info-contracts" data-toggle="tab">Contratos</a>
     </li>
 </ul>
 <div id="profile-tab-content" class="tab-content">
-    <div class="tab-pane fade{% if not nic_focus %} in active{% endif %}" id="info-user">
+    <div class="tab-pane fade{% if not nic_focus and not contract_focus %} in active{% endif %}" id="info-user">
         <h1>Información del Usuario</h1>
         <table class="table table-condensed">
             <tr><th>Usuario</th><td>{{ cuenta.user.username }}</td></tr>
             <tr><th>eMail</th><td>{{ cuenta.user.email }}</td></tr>
             <tr><th>Alta</th><td>{{ cuenta.user.date_joined|date:"d/m/Y" }}</td></tr>
-            <tr><th>Cuota Mensual</th><td>{{ currency }} {{ cuenta.paymonth|floatformat:2 }}</td></tr>
+            <tr><th>Cuota Mensual</th><td>{{ currency }} {{ paymonth|floatformat:2|default:"0.00" }}</td></tr>
         </table>
         <br />
         <div class="pull-right">
@@ -134,7 +137,6 @@ $('#passwordForm').modal('show');
             <th colspan="2">Servicio</th>
             <th>Usados</th>
             <th>Total</th>
-            <th>Suscripción</th>
         </thead>
         <tbody>
             <tr>
@@ -142,48 +144,29 @@ $('#passwordForm').modal('show');
                 <td>DynHosts</td>
                 <td align="right">{{ dynhosts }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_dynhost }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/redirect.png" /></td>
                 <td>Redirecciones</td>
                 <td align="right">{{ redirects_mail_dynhost }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_email_redirect }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/redirect_web.png" /></td>
                 <td>Redirecciones Web</td>
                 <td align="right">{{ redirects_web_dynhost }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_web_redirect }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
         </tbody>
         </table>
     </div>
-    <div class="tab-pane fade" id="info-servicios">
+    <div class="tab-pane fade" id="info-services">
         <h1>Información de Servicios</h1>
         <table class="table table-condensed">
         <thead>
             <th colspan="2">Servicio</th>
             <th>Usados</th>
             <th>Total</th>
-            <th>Suscripción</th>
         </thead>
         <tbody>
             <tr>
@@ -191,99 +174,115 @@ $('#passwordForm').modal('show');
                 <td>Dominios</td>
                 <td align="right">{{ dominios }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_dns }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/redirect.png" /></td>
                 <td>Redirecciones</td>
                 <td align="right">{{ redirects }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_email_redirect }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/mail.png" /></td>
                 <td>Buzones de Correo</td>
                 <td align="right">{{ mailboxes }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_email_mailbox }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/datebase.png" /></td>
                 <td>Bases de Datos</td>
                 <td align="right">{{ databases }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_sql }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/db_users.png" /></td>
                 <td>Usuarios de Base de Datos</td>
                 <td align="right">{{ dbusers }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_sql_users }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/redirect_web.png" /></td>
                 <td>Redirecciones Web</td>
                 <td align="right">{{ redirects_web }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_web_redirect }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/computer.png" /></td>
                 <td>Hostings Web</td>
                 <td align="right">{{ hosting }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_web }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
             <tr>
                 <td><img src="/static/img/32/download.png" /></td>
                 <td>Accesos FTP</td>
                 <td align="right">{{ ftp }}&nbsp;</td>
                 <td align="right">{{ cuenta.limit_ftp }}&nbsp;</td>
-                <td align="center">
-                    <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-plus icon-white"></i></a>
-                        <a class="btn btn-mini btn-primary" href=""><i class="icon-minus icon-white"></i></a>
-                    </div>
-                </td>
             </tr>
         </tbody>
         </table>
+    </div>
+    <div class="tab-pane fade{% if contract_focus %} in active{% endif %}" id="info-contracts">
+        <h1>Información de Contratos</h1>
+        <table class="table table-condensed">
+        <thead>
+            <th colspan="2">Tipo</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Descuento</th>
+            <th>Total</th>
+            <th>Expiración</th>
+            <th>Opciones</th>
+        </thead>
+        <tbody>
+            {% for contract in contracts %}
+            <tr>
+                <td>{% if contract.type == 'D' %}
+                        <img src="/static/img/32/earth.png" />
+                    {% elif contract.type == 'R' %}
+                        <img src="/static/img/32/redirect.png" />
+                    {% elif contract.type == 'm' or contract.type == 'M' %}
+                        <img src="/static/img/32/mail.png" />
+                    {% elif contract.type == 'B' %}
+                        <img src="/static/img/32/datebase.png" />
+                    {% endif %}
+                </td>
+                <td>{% if contract.type == 'D' %}
+                        Dominios
+                    {% elif contract.type == 'R' %}
+                        Redirecciones de Email
+                    {% elif contract.type == 'm' %}
+                        Buzones de Email Plus
+                    {% elif contract.type == 'M' %}
+                        Buzones de Email Premium
+                    {% elif contract.type == 'B' %}
+                        Base de Datos MySQL
+                    {% endif %}</td>
+                <td align="right">{{ contract.quantity }}&nbsp;</td>
+                <td align="right">{{ contract.price }}&nbsp;</td>
+                <td align="right">{{ contract.discount }}&nbsp;</td>
+                <td align="right">{{ contract.total }}&nbsp;</td>
+                <td align="center">{{ contract.ends|default:"---" }}&nbsp;</td>
+                <td align="center">
+                    {% if not contract.paid %}
+                    <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Pagar</a>
+                    {% else %}
+                    <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Renovar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No hay contratos</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <br />
+        <div class="pull-right">
+            <a href="/" class="btn btn-success">
+                <i class="icon-money icon-white"></i>
+                Contratar
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -47,7 +47,7 @@ urlpatterns = patterns('',
 
     url(r'^account/$', 'billing.views.index'),
     url(r'^purchase/domain/$', 'billing.views.purchase'),
-    url(r'^payment/domain/(?P<dom_id>\d+)/$', 'billing.views.payment'),
+    url(r'^payment/(?P<contract_id>\d+)/$', 'billing.views.payment'),
     url(r'^transfer/domain/$', 'billing.views.transfer'),
 
     url(r'^dns/$', 'dns.views.domains.index'),
