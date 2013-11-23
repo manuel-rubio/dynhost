@@ -13,6 +13,8 @@ from django.db import IntegrityError, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse
+from django.contrib.auth import logout
+from django.core.mail import mail_admins
 from sys import stderr
 from dynhost import settings
 from ovh import soapi
@@ -269,3 +271,14 @@ def mysql_purchase(request):
     contract.concept = ""
     contract.save()
     return redirect(reverse('billing.views.payment', args=[contract.id]))
+
+@login_required(login_url='/')
+def deregister(request):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    cuenta.user.is_active = False
+    cuenta.user.save()
+    mail_admins(
+        '[DynHOST] Usuario dado de baja', 
+        'El usuario ' + cuenta.user.username + ' con email ' + cuenta.user.email + ' ha causado baja.',
+        fail_silently=(not settings.DEBUG))
+    return logout(request)

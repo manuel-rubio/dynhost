@@ -114,7 +114,7 @@ def delete(request, dom_id):
         cuenta = Accounts.objects.get(user = request.user.id)
         domain = Domains.objects.get(pk=dom_id)
         if domain.expires != None:
-            mail_admins('Eliminado ' + domain.domain, '')
+            mail_admins('Eliminado ' + domain.domain, 'Accounts: ' + str(cuenta.id))
         registros = Records.objects.filter(domain__id=domain.id)
         if domain.accounts.id != cuenta.id:
             return redirect(reverse('dns.views.domains.index'))
