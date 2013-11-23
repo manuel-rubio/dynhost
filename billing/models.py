@@ -190,6 +190,7 @@ DOMAIN_STATUS = (
 class Domains(models.Model):
     domain = models.CharField(max_length=80, unique=True)
     accounts = models.ForeignKey('Accounts')
+    contract = models.ForeignKey('Contracts', null=True)
     email_type = models.CharField(max_length=1, default='R', null=True, choices=EMAIL_TYPE)
     expires = models.DateField(default=None, null=True)
     status = models.CharField(max_length=1, default='Z', null=False, choices=DOMAIN_STATUS)

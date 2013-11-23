@@ -121,7 +121,9 @@ def purchase(request):
                 contract.accounts_id = cuenta.id
                 contract.concept = domain.domain
                 contract.save()
-                return redirect(reverse('billing.views.payment', args=(domain.id,)))
+                domain.contract_id = contract.id
+                domain.save()
+                return redirect(reverse('billing.views.payment', args=(contract.id,)))
     else:
         form = DomainCheckForm()
     return render_to_response('billing_purchase_domain.html', {
@@ -178,7 +180,9 @@ def transfer(request):
                 contract.accounts_id = cuenta.id
                 contract.concept = domain.domain
                 contract.save()
-                return redirect(reverse('billing.views.payment', args=(domain.id,)))
+                domain.contract_id = contract.id
+                domain.save()
+                return redirect(reverse('billing.views.payment', args=(contract.id,)))
     else:
         form = DomainTransferForm()
     return render_to_response('billing_transfer_domain.html', {

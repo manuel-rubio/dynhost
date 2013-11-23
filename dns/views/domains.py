@@ -121,6 +121,8 @@ def delete(request, dom_id):
         if len(registros)>0:
             for registro in registros:
                 registro.delete()
+        if domain.contract:
+            domain.contract.delete()
         domain.delete()
     except Domains.DoesNotExist:
         pass
