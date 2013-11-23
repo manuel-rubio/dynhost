@@ -1,0 +1,16 @@
+<div class="tab-pane fade{% if not nic_focus and not contract_focus %} in active{% endif %}" id="info-user">
+    <h1>Información del Usuario</h1>
+    <table class="table table-condensed">
+        <tr><th>Usuario</th><td>{{ cuenta.user.username }}</td></tr>
+        <tr><th>eMail</th><td>{{ cuenta.user.email }}</td></tr>
+        <tr><th>Alta</th><td>{{ cuenta.user.date_joined|date:"d/m/Y" }}</td></tr>
+        <tr><th>Cuota Mensual</th><td>{{ currency }} {{ paymonth|floatformat:2|default:"0.00" }}</td></tr>
+    </table>
+    <br />
+    <div class="pull-right">
+        <a href="#passwordForm" class="btn btn-danger" data-toggle="modal">
+            <i class="icon-lock icon-white"></i>
+            Cambia Clave
+        </a>
+    </div>
+</div>

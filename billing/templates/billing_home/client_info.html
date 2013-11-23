@@ -1,0 +1,35 @@
+<div class="tab-pane fade{% if nic_focus %} in active{% endif %}" id="info-client">
+    <h1>Información de Cliente</h1>
+
+    <div class="row-fluid">
+        <div class="offset2 span8">
+            <p><strong>IMPORTANTE</strong>: estos datos son obligatorios si desea darse de alta como cliente para contratar un servicio (dominios, redirecciones de email, redirecciones web, etc.) En caso de rellenar este apartado acepta las <a href="">Condiciones del Servicio para Clientes</a>.</p>
+
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                {% for field in nic_form %}
+                <div id="nic_form_{{ field.html_name }}" class="control-group{% if field.errors %} error{% endif %}">
+                    <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div class="controls">
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <span class="help-inline">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <input type="hidden" name="form" value="nic"/>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">{% if not nic_new %}Modificar{% else %}Dar de Alta{% endif %}</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

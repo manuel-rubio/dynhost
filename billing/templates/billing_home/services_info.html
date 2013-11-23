@@ -1,0 +1,60 @@
+<div class="tab-pane fade" id="info-services">
+    <h1>Información de Servicios</h1>
+    <table class="table table-condensed">
+    <thead>
+        <th colspan="2">Servicio</th>
+        <th>Usados</th>
+        <th>Total</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="/static/img/32/earth.png" /></td>
+            <td>Dominios</td>
+            <td align="right">{{ dominios }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_dns }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/redirect.png" /></td>
+            <td>Redirecciones</td>
+            <td align="right">{{ redirects }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_email_redirect }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/mail.png" /></td>
+            <td>Buzones de Correo</td>
+            <td align="right">{{ mailboxes }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_email_mailbox }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/datebase.png" /></td>
+            <td>Bases de Datos</td>
+            <td align="right">{{ databases }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_sql }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/db_users.png" /></td>
+            <td>Usuarios de Base de Datos</td>
+            <td align="right">{{ dbusers }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_sql_users }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/redirect_web.png" /></td>
+            <td>Redirecciones Web</td>
+            <td align="right">{{ redirects_web }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_web_redirect }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/computer.png" /></td>
+            <td>Hostings Web</td>
+            <td align="right">{{ hosting }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_web }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/download.png" /></td>
+            <td>Accesos FTP</td>
+            <td align="right">{{ ftp }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_ftp }}&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+</div>

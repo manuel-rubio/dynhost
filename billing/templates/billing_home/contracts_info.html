@@ -1,0 +1,82 @@
+<div class="tab-pane fade{% if contract_focus %} in active{% endif %}" id="info-contracts">
+    <h1>Información de Contratos</h1>
+    <table class="table table-condensed">
+    <thead>
+        <th colspan="2">Tipo</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Descuento</th>
+        <th>Total</th>
+        <th>Expiración</th>
+        <th>Opciones</th>
+    </thead>
+    <tbody>
+        {% for contract in contracts %}
+        <tr>
+            <td>{% if contract.type == 'D' %}
+                    <img src="/static/img/32/earth.png" />
+                {% elif contract.type == 'R' %}
+                    <img src="/static/img/32/redirect.png" />
+                {% elif contract.type == 'm' or contract.type == 'M' %}
+                    <img src="/static/img/32/mail.png" />
+                {% elif contract.type == 'B' %}
+                    <img src="/static/img/32/datebase.png" />
+                {% endif %}
+            </td>
+            <td>{% if contract.type == 'D' %}
+                    Dominios
+                {% elif contract.type == 'R' %}
+                    Redirecciones de Email
+                {% elif contract.type == 'm' %}
+                    Buzones de Email Plus
+                {% elif contract.type == 'M' %}
+                    Buzones de Email Premium
+                {% elif contract.type == 'B' %}
+                    Base de Datos MySQL
+                {% endif %}</td>
+            <td align="right">{{ contract.quantity }}&nbsp;</td>
+            <td align="right">{{ contract.price }}&nbsp;</td>
+            <td align="right">{{ contract.discount }}&nbsp;</td>
+            <td align="right">{{ contract.total }}&nbsp;</td>
+            <td align="center">{{ contract.ends|date:"Y-m-d"|default:"---" }}&nbsp;</td>
+            <td align="center">
+                {% if not contract.paid %}
+                <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Pagar</a>
+                {% if contract.type != 'D' %}
+                <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Cancelar</a>
+                {% else %}
+                <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
+                {% endif %}
+                {% else %}
+                <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Renovar</a>
+                {% if contract.type == 'R' and cuenta.can_remove_mail_redirect %}
+                <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                {% elif contract.type == 'm' and cuenta.can_remove_mail_plus %}
+                <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                {% elif contract.type == 'M' and cuenta.can_remove_mail_premium %}
+                <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                {% elif contract.type == 'B' and cuenta.can_remove_mysql_database %}
+                <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                {% elif contract.type != 'D' %}
+                <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar el contrato porque está en uso. Elimine antes el recurso en uso." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
+                {% else %}
+                <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
+                {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No hay contratos</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    <br />
+    <div class="pull-right">
+        <a href="/" class="btn btn-success">
+            <i class="icon-money icon-white"></i>
+            Contratar
+        </a>
+    </div>
+</div>

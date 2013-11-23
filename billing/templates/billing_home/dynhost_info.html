@@ -1,0 +1,30 @@
+<div class="tab-pane fade" id="info-dynhost">
+    <h1>Información de Servicios DynHost</h1>
+    <table class="table table-condensed">
+    <thead>
+        <th colspan="2">Servicio</th>
+        <th>Usados</th>
+        <th>Total</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><img src="/static/img/32/earth.png" /></td>
+            <td>DynHosts</td>
+            <td align="right">{{ dynhosts }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_dynhost }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/redirect.png" /></td>
+            <td>Redirecciones</td>
+            <td align="right">{{ redirects_mail_dynhost }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_email_redirect }}&nbsp;</td>
+        </tr>
+        <tr>
+            <td><img src="/static/img/32/redirect_web.png" /></td>
+            <td>Redirecciones Web</td>
+            <td align="right">{{ redirects_web_dynhost }}&nbsp;</td>
+            <td align="right">{{ cuenta.limit_web_redirect }}&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
