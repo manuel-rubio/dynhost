@@ -183,3 +183,93 @@ def transfer(request):
         'cuenta': cuenta,
         'form': form
     }, context_instance=RequestContext(request))
+
+@login_required(login_url='/')
+def revoke(request, contract_id):
+    try:
+        contract = Contracts.objects.get(pk=contract_id)
+    except Contracts.DoesNotExist:
+        return redirect(reverse('billing.views.index'))
+    if contract.type == 'D':
+        return redirect(reverse('billing.views.index'))
+    cuenta = Accounts.objects.get(user = request.user.id)
+    if contract.accounts_id != cuenta.id:
+        return redirect(reverse('billing.views.index'))
+    if contract.paid:
+        if contract.type == 'M':
+            usados = Mailbox.objects.filter(domain__accounts__id = cuenta.id).count()
+            if usados >= cuenta.limit_email_mailbox:
+                # TODO: mensaje de error
+                return redirect(reverse('billing.views.index'))
+            cuenta.limit_email_mailbox -= settings.PREMIUM_MAIL_QTY
+            cuenta.save()
+        elif contract.type == 'm':
+            usados = Mailbox.objects.filter(domain__accounts__id = cuenta.id).count()
+            if usados >= cuenta.limit_email_mailbox:
+                # TODO: mensaje de error
+                return redirect(reverse('billing.views.index'))
+            cuenta.limit_email_mailbox -= settings.PLUS_MAIL_QTY
+            cuenta.save()
+        elif contract.type == 'R':
+            usados = Redirect.objects.filter(domain__accounts__id = cuenta.id).count()
+            if usados >= cuenta.limit_email_redirect:
+                # TODO: mensaje de error
+                return redirect(reverse('billing.views.index'))
+            cuenta.limit_email_redirect -= settings.REDIRECT_MAIL_QTY
+            cuenta.save()
+        elif contract.type == 'B':
+            usados = Databases.objects.filter(domain__accounts__id = cuenta.id).count()
+            if usados >= cuenta.limit_sql:
+                # TODO: mensaje de error
+                return redirect(reverse('billing.views.index'))
+            cuenta.limit_sql -= 1
+            cuenta.save()
+    contract.delete()
+    return redirect(reverse('billing.views.index') + '?contract')
+
+@login_required(login_url='/')
+def mail_plus_purchase(request):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    contract = Contracts()
+    contract.type = 'm'
+    contract.quantity = settings.PLUS_MAIL_QTY
+    contract.price = settings.PLUS_MAIL_PRICE
+    contract.accounts_id = cuenta.id
+    contract.concept = ""
+    contract.save()
+    return redirect(reverse('billing.views.payment', args=[contract.id]))
+
+@login_required(login_url='/')
+def mail_premium_purchase(request):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    contract = Contracts()
+    contract.type = 'M'
+    contract.quantity = settings.PREMIUM_MAIL_QTY
+    contract.price = settings.PREMIUM_MAIL_PRICE
+    contract.accounts_id = cuenta.id
+    contract.concept = ""
+    contract.save()
+    return redirect(reverse('billing.views.payment', args=[contract.id]))
+
+@login_required(login_url='/')
+def mail_redirect_purchase(request):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    contract = Contracts()
+    contract.type = 'R'
+    contract.quantity = settings.REDIRECT_MAIL_QTY
+    contract.price = settings.REDIRECT_MAIL_PRICE
+    contract.accounts_id = cuenta.id
+    contract.concept = ""
+    contract.save()
+    return redirect(reverse('billing.views.payment', args=[contract.id]))
+
+@login_required(login_url='/')
+def mysql_purchase(request):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    contract = Contracts()
+    contract.type = 'B'
+    contract.price = settings.MYSQL_DB_PRICE
+    contract.accounts_id = cuenta.id
+    contract.concept = ""
+    contract.save()
+    return redirect(reverse('billing.views.payment', args=[contract.id]))

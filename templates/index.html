@@ -78,8 +78,8 @@
             {% else %}
             <p>¿Necesitas más buzones de correo electrónico? Puedes adquirir <strong>10 buzones premium</strong> de 1 GiB por <strong>3 &euro;/mes + IVA</strong> o <strong>10 buzones plus</strong> de 300 MiB por <strong>1 &euro;/mes + IVA</strong>.</p>
             <div class="pull-right">
-                <a class="btn btn-success" href="">Compra 10 Buzones Plus</a>
-                <a class="btn btn-success" href="">Compra 10 Buzones Premium</a>
+                <a class="btn btn-success" href="{% url "billing.views.mail_plus_purchase" %}">Compra 10 Buzones Plus</a>
+                <a class="btn btn-success" href="{% url "billing.views.mail_premium_purchase" %}">Compra 10 Buzones Premium</a>
             </div>
             {% endif %}
         </div>
@@ -113,8 +113,8 @@
             {% else %}
             <p>Agrega más redirecciones de correo si las requieres a través de los paquetes de redirecciones. Los podrás emplear en cualquiera de los dominios que tengas.</p>
             <div class="pull-right">
-                <strong>0,50 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="">Compra 1000 Redirecciones</a>
+                <strong>1,00 &euro;/mes + IVA</strong>
+                <a class="btn btn-success" href="{% url "billing.views.mail_redirect_purchase" %}">Compra 100 Redirecciones</a>
             </div>
             {% endif %}
         </div>
@@ -129,7 +129,7 @@
             <p>¿Necesitas de una base de datos MySQL adicional? Puedes adquirir el <strong>paquete MySQL</strong> tantas como necesites para adquirir cada vez una base de datos.</p>
             <div class="pull-right">
                 <strong>3 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="">Compra Paquete MySQL</a>
+                <a class="btn btn-success" href="{% url "billing.views.mysql_purchase" %}">Compra Paquete MySQL</a>
             </div>
             {% endif %}
         </div>

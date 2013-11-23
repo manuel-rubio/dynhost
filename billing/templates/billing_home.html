@@ -264,8 +264,14 @@ $('#passwordForm').modal('show');
                 <td align="center">
                     {% if not contract.paid %}
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Pagar</a>
+                    {% if contract.type != 'D' %}
+                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Cancelar</a>
+                    {% endif %}
                     {% else %}
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Renovar</a>
+                    {% if contract.type != 'D' %}
+                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                    {% endif %}
                     {% endif %}
                 </td>
             </tr>
