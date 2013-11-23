@@ -4,6 +4,7 @@
 <script src="/static/js/passfield.min.js"></script>
 <script src="/static/js/change_password.js"></script>
 <script src="/static/js/nic.js"></script>
+<script src="/static/js/contracts.js"></script>
 <link rel="stylesheet" href="/static/css/passfield.min.css"/>
 {% endblock %}
 
@@ -260,17 +261,29 @@ $('#passwordForm').modal('show');
                 <td align="right">{{ contract.price }}&nbsp;</td>
                 <td align="right">{{ contract.discount }}&nbsp;</td>
                 <td align="right">{{ contract.total }}&nbsp;</td>
-                <td align="center">{{ contract.ends|default:"---" }}&nbsp;</td>
+                <td align="center">{{ contract.ends|date:"Y-m-d"|default:"---" }}&nbsp;</td>
                 <td align="center">
                     {% if not contract.paid %}
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Pagar</a>
                     {% if contract.type != 'D' %}
                     <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Cancelar</a>
+                    {% else %}
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
                     {% endif %}
                     {% else %}
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-success btn-small">Renovar</a>
-                    {% if contract.type != 'D' %}
+                    {% if contract.type == 'R' and cuenta.can_remove_mail_redirect %}
                     <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                    {% elif contract.type == 'm' and cuenta.can_remove_mail_plus %}
+                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                    {% elif contract.type == 'M' and cuenta.can_remove_mail_premium %}
+                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                    {% elif contract.type == 'B' and cuenta.can_remove_mysql_database %}
+                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger btn-small">Eliminar</a>
+                    {% elif contract.type != 'D' %}
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar el contrato porque está en uso. Elimine antes el recurso en uso." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
+                    {% else %}
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-danger btn-small">Eliminar</a>
                     {% endif %}
                     {% endif %}
                 </td>

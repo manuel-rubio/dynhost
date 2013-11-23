@@ -218,7 +218,7 @@ def revoke(request, contract_id):
             cuenta.limit_email_redirect -= settings.REDIRECT_MAIL_QTY
             cuenta.save()
         elif contract.type == 'B':
-            usados = Databases.objects.filter(domain__accounts__id = cuenta.id).count()
+            usados = Databases.objects.filter(accounts__id = cuenta.id).count()
             if usados >= cuenta.limit_sql:
                 # TODO: mensaje de error
                 return redirect(reverse('billing.views.index'))

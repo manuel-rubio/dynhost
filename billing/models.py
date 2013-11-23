@@ -5,7 +5,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django import forms
 from django.forms.util import ErrorList
+from database.models import Databases
+from mail.models import Redirect, Mailbox
 import os
+import sys
 from dynhost import settings
 from ovh import soapi
 
@@ -90,6 +93,22 @@ class Accounts(models.Model):
     user = models.OneToOneField(User)
     nic_data = models.ForeignKey('NIC', null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0, blank=False)
+
+    def can_remove_mail_redirects(self):
+        usados = Redirect.objects.filter(domain__accounts__id = self.id).count()
+        return (self.limit_email_redirect - settings.REDIRECT_MAIL_QTY) - usados >= 0
+
+    def can_remove_mail_plus(self):
+        usados = Mailbox.objects.filter(domain__accounts__id = self.id).count()
+        return (self.limit_email_mailbox - settings.PLUS_MAIL_QTY) - usados >= 0
+
+    def can_remove_mail_premium(self):
+        usados = Mailbox.objects.filter(domain__accounts__id = self.id).count()
+        return (self.limit_email_mailbox - settings.PREMIUM_MAIL_QTY) - usados >= 0
+
+    def can_remove_mysql_database(self):
+        usados = Databases.objects.filter(accounts__id = self.id).count()
+        return ((self.limit_sql - 1 - usados) >= 0)
 
     def __unicode__(self):
         ret = self.user.username + " ("
