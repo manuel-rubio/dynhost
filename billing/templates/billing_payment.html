@@ -11,24 +11,41 @@
 
 <h1>Pago de Servicio</h1>
 
-<p>Proceder al pago de: <strong>{% if contract.type == 'D' %}
-                        Dominio
-                    {% elif contract.type == 'R' %}
-                        Redirecciones de Email
-                    {% elif contract.type == 'm' %}
-                        Buzones de Email Plus
-                    {% elif contract.type == 'M' %}
-                        Buzones de Email Premium
-                    {% elif contract.type == 'B' %}
-                        Base de Datos MySQL
-                    {% endif %} {{ contract.concept }}</strong></p>
-<p>Tipo de Pago: <select id="paytype" name="paytype" onchange="set_value();">
-    <option value="M" selected="selected">Mensual</option>
-    <option value="T">Trimestral</option>
-    <option value="A">Anual</option>
-</select>
-</p>
-<p>Cantidad: <strong><span id="price">{{ contract.total }}</span> {{ currency }}</strong></p>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Proceder al pago de:</label>
+        <div class="controls">
+            <span class="uneditable-input">{% if contract.type == 'D' %}
+                Dominio
+            {% elif contract.type == 'R' %}
+                Redirecciones de Email
+            {% elif contract.type == 'm' %}
+                Buzones de Email Plus
+            {% elif contract.type == 'M' %}
+                Buzones de Email Premium
+            {% elif contract.type == 'B' %}
+                Base de Datos MySQL
+            {% endif %} {{ contract.concept }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Tipo de Pago:</label>
+        <div class="controls">
+            <select id="paytype" name="paytype" onchange="set_value();">
+                <option value="M" selected="selected">Mensual</option>
+                <option value="T">Trimestral</option>
+                <option value="A">Anual</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Cantidad:</label>
+        <div class="controls">
+            <strong><span class="uneditable-input"><span id="price">{{ contract.total }}</span> {{ currency }}</span></strong>
+        </div>
+    </div>
+</form>
+
 <p>Seleccione el medio de pago que desee utilizar:</p>
 
 <div class="accordion" id="accordion-payments">
