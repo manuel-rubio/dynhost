@@ -73,14 +73,6 @@
     </div>
     </form>
     {% endif %}
-
-    {% if form.username.errors or form.password.errors %}
-    <script type="text/javascript"><!--
-
-    $('#loginForm').modal('show');
-
-    // --></script>
-    {% endif %}
     {% endblock %}
 
     <div class="navbar navbar-fixed-top">
@@ -92,7 +84,7 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div id="logo">
-                    <a href="/"><img alt="DynHOST" src="/static/img/dynhost.png" width="175px" /></a>
+                    <a href="{% if user.is_authenticated %}{% url "billing.views.index" %}{% else %}/{% endif %}"><img alt="DynHOST" src="/static/img/dynhost.png" width="175px" /></a>
                 </div>
                 <div id="borrador"><img src="/static/img/draft.png" /></div>
                 <div class="nav-collapse">
@@ -139,8 +131,8 @@
                                     <img src="{% gravatar_for_user user 32 %}"/>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="/">Contratar</a></li>
                                     <li><a href="{% url "billing.views.index" %}">Perfil de Usuario</a></li>
+                                    <li><a href="/">Contratar</a></li>
                                     <li><a href="/logout">Cerrar Sesión</a></li>
                                 </ul>
                             </li>

@@ -199,28 +199,24 @@ def revoke(request, contract_id):
         if contract.type == 'M':
             usados = Mailbox.objects.filter(domain__accounts__id = cuenta.id).count()
             if usados >= cuenta.limit_email_mailbox:
-                # TODO: mensaje de error
                 return redirect(reverse('billing.views.index'))
             cuenta.limit_email_mailbox -= settings.PREMIUM_MAIL_QTY
             cuenta.save()
         elif contract.type == 'm':
             usados = Mailbox.objects.filter(domain__accounts__id = cuenta.id).count()
             if usados >= cuenta.limit_email_mailbox:
-                # TODO: mensaje de error
                 return redirect(reverse('billing.views.index'))
             cuenta.limit_email_mailbox -= settings.PLUS_MAIL_QTY
             cuenta.save()
         elif contract.type == 'R':
             usados = Redirect.objects.filter(domain__accounts__id = cuenta.id).count()
             if usados >= cuenta.limit_email_redirect:
-                # TODO: mensaje de error
                 return redirect(reverse('billing.views.index'))
             cuenta.limit_email_redirect -= settings.REDIRECT_MAIL_QTY
             cuenta.save()
         elif contract.type == 'B':
             usados = Databases.objects.filter(accounts__id = cuenta.id).count()
             if usados >= cuenta.limit_sql:
-                # TODO: mensaje de error
                 return redirect(reverse('billing.views.index'))
             cuenta.limit_sql -= 1
             cuenta.save()
