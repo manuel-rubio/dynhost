@@ -49,7 +49,7 @@
                     <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/remove.png" title="Eliminar"/></a>
                     {% endif %}
                     {% else %}
-                    <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/money.png" title="Renovar"/></a>
+                    <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/renew.png" title="Renovar"/></a>
                     {% if contract.type == 'R' and cuenta.can_remove_mail_redirect %}
                     <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
                     {% elif contract.type == 'm' and cuenta.can_remove_mail_plus %}
