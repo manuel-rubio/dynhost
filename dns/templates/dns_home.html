@@ -122,7 +122,7 @@
         <a class="btn btn-success" href="{% url "billing.views.purchase" %}">Comprar</a>
         <a class="btn btn-success" href="{% url "billing.views.transfer" %}">Transferir</a>
         {% if disponibles == 0 %}
-        <a class="btn btn-success" href="{% url "billing.views.index" %}">Compra Zona DNS</a>
+        <a class="btn btn-success" href="/">Compra Zona DNS</a>
         {% else %}
         <a class="btn btn-primary" href="{% url "dns.views.domains.new" %}">Crea Zona DNS</a>
         {% endif %}

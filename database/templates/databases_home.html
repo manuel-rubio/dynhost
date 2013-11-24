@@ -51,12 +51,19 @@
     <button class="btn btn-default disabled">
         <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/datebase.png"/>
     </button>
-    <a class="btn btn-default" href="{% url "billing.views.index" %}">
+    <a class="btn btn-default" href="/">
         <img src="/static/img/32/money.png" title="Comprar" />
     </a>
 </div>
 {% else %}
-<a class="btn pull-right btn-primary" href="#new_database" data-toggle="modal"><i class="icon-file"></i> Nueva Base de Datos</a>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/datebase.png"/>
+    </button>
+    <a class="btn btn-default" href="#new_database" data-toggle="modal">
+        <img src="/static/img/32/new.png" title="Nueva Base de Datos" />
+    </a>
+</div>
 <form class="form-horizontal" method="post" action="{% url "database.views.databases.new" %}">
     <div class="modal hide fade" id="new_database">
         <div class="modal-header">Nueva Base de Datos</div>
