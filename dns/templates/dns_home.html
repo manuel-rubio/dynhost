@@ -101,29 +101,6 @@
 </tbody>
 </table>
 
-{% if disponibles == 0 %}
-<div id="noNewDomains" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noNewDomainsLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-        <h3 id="noNewDomainsLabel">No hay más dominios</h3>
-    </div>
-    <div class="modal-body">
-        <p>Se han acabado los dominios disponibles, pero puede adquirir nuevos, solo tiene que ampliar su número de dominios.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-        <a class="btn btn-primary" href="{% url "billing.views.index" %}">Comprar</a>
-    </div>
-</div>
-<div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
-    </button>
-    <a class="btn btn-default disabled" role="button" data-toggle="modal" href="#noNewDomains">
-        <img src="/static/img/32/new.png" title="Nuevo Dominio / Zona" />
-    </a>
-</div>
-{% else %}
 <div id="selectNewDomains" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="selectNewDomainsLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -136,12 +113,19 @@
             <li><strong>Transferir Dominio</strong>: transferir desde otro registrar el dominio y gestionar su zona DNS.</li>
             <li><strong>Zona DNS</strong>: crea solo una zona para albergar los registros de su dominio.</li>
         </ol>
+        {% if disponibles == 0 %}
+        <div class="alert"><strong>Zonas acabadas</strong>: no hay disponibles más zonas DNS, debe de adquirir nuevas zonas DNS para poder crearlas.</div>
+        {% endif %}
     </div>
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
         <a class="btn btn-success" href="{% url "billing.views.purchase" %}">Comprar</a>
         <a class="btn btn-success" href="{% url "billing.views.transfer" %}">Transferir</a>
-        <a class="btn btn-primary" href="{% url "dns.views.domains.new" %}">Zona DNS</a>
+        {% if disponibles == 0 %}
+        <a class="btn btn-success" href="{% url "billing.views.index" %}">Compra Zona DNS</a>
+        {% else %}
+        <a class="btn btn-primary" href="{% url "dns.views.domains.new" %}">Crea Zona DNS</a>
+        {% endif %}
     </div>
 </div>
 <div class="btn-group pull-right">
@@ -152,5 +136,4 @@
         <img src="/static/img/32/new.png" title="Nuevo Dominio / Zona" />
     </a>
 </div>
-{% endif %}
 {% endblock %}

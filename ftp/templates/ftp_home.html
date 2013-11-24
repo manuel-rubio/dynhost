@@ -14,13 +14,13 @@
     {% for servicio in servicios %}
     <tr>
         <td>{{ servicio.userid }}</td>
-        <td>
+        <td width="103px">
             <div class="btn-group">
-                <a class="btn btn-mini btn-info" title="editar" href="{% url "ftp.views.edit" servicio.id %}">
-                    <i class="icon-edit"></i>
+                <a class="btn btn-small" title="editar" href="{% url "ftp.views.edit" servicio.id %}">
+                    <img src="/static/img/32/notepad.png"/>
                 </a>
-                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
-                    <i class="icon-remove"></i>
+                <a class="btn btn-small" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <img src="/static/img/32/remove.png"/>
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
@@ -44,8 +44,35 @@
 </table>
 
 {% if servicios|length >= total %}
-<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más usuarios FTP.')"><i class="icon-file"></i> Nuevo Usuario</a>
+<div id="noNewFTP" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noNewFTPLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="noNewFTPLabel">No hay más accesos FTP</h3>
+    </div>
+    <div class="modal-body">
+        <p>Se han acabado los accesos FTP disponibles, pero puede adquirir nuevos, solo tiene que ampliar su número de accesos FTP.</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+        <a class="btn btn-primary" href="{% url "billing.views.index" %}">Comprar</a>
+    </div>
+</div>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>
+    </button>
+    <a class="btn btn-default disabled" role="button" data-toggle="modal" href="#noNewFTP">
+        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    </a>
+</div>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url "ftp.views.new" %}"><i class="icon-file"></i> Nuevo Usuario</a>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>
+    </button>
+    <a class="btn btn-default" href="{% url "ftp.views.new" %}">
+        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    </a>
+</div>
 {% endif %}
 {% endblock %}

@@ -16,19 +16,19 @@
     <tr>
         <td>{{ servicio.domain }}.dynhost.es</td>
         <td>{{ servicio.ip }}</td>
-        <td align="center">
+        <td align="center" width="210px">
             <div class="btn-group">
-                <a class="btn btn-mini" title="redirección de email" href="{% url "mail.views.redirects_dynamic.index" servicio.record.id %}">
-                    <i class="icon-envelope"></i>
+                <a class="btn btn-small" title="redirección de email" href="{% url "mail.views.redirects_dynamic.index" servicio.record.id %}">
+                    <img src="/static/img/32/redirect.png"/>
                 </a>
-                <a class="btn btn-mini" title="redirección web" href="{% url "web.views.redirects_dynamic.index" servicio.record.id %}">
-                    <i class="icon-share"></i>
+                <a class="btn btn-small" title="redirección web" href="{% url "web.views.redirects_dynamic.index" servicio.record.id %}">
+                    <img src="/static/img/32/redirect_web.png"/>
                 </a>
-                <a class="btn btn-mini btn-info" title="editar" href="{% url "dynamic.views.domains.edit" servicio.id %}">
-                    <i class="icon-edit"></i>
+                <a class="btn btn-small" title="editar" href="{% url "dynamic.views.domains.edit" servicio.id %}">
+                    <img src="/static/img/32/notepad.png"/>
                 </a>
-                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
-                    <i class="icon-remove"></i>
+                <a class="btn btn-small" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <img src="/static/img/32/remove.png"/>
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
@@ -52,8 +52,35 @@
 </table>
 
 {% if servicios|length >= total %}
-<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más dynhost.')"><i class="icon-file"></i> Nuevo DynHOST</a>
+<div id="noNewDynamic" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noNewDynamicLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="noNewDynamicLabel">No hay más DynHosts</h3>
+    </div>
+    <div class="modal-body">
+        <p>Se han acabado los DynHosts disponibles, pero puede adquirir nuevos, solo tiene que ampliar su número de DynHosts.</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+        <a class="btn btn-primary" href="{% url "billing.views.index" %}">Comprar</a>
+    </div>
+</div>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
+    </button>
+    <a class="btn btn-default disabled" role="button" data-toggle="modal" href="#noNewDynamic">
+        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    </a>
+</div>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url "dynamic.views.domains.new" %}"><i class="icon-file"></i> Nuevo DynHOST</a>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
+    </button>
+    <a class="btn btn-default" href="{% url "dynamic.views.domains.new" %}">
+        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    </a>
+</div>
 {% endif %}
 {% endblock %}
