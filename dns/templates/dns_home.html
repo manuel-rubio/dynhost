@@ -13,14 +13,15 @@
 <h1>Listado de Dominios</h1>
 <table class="table table-condensed">
 <thead>
-    <th>Tipo</th>
     <th>Zona / Dominio</th>
+    <th>Tipo</th>
     <th>Estado</th>
     <th align="center">acciones</th>
 </thead>
 <tbody>
     {% for servicio in servicios %}
     <tr>
+        <td>{{ servicio.domain }}</td>
         <td align="center">
             {% if servicio.expires %}
                 Dominio
@@ -28,7 +29,6 @@
                 Zona
             {% endif %}
         </td>
-        <td>{{ servicio.domain }}</td>
         <td>
             {% if servicio.status == 'B' %}
                 Bloqueado
@@ -38,37 +38,37 @@
                 Activo
             {% endif %}
         </td>
-        <td align="center">
+        <td align="center" width="315px">
             <div class="btn-group">
                 {% if servicio.email_type == 'R' %}
-                <a class="btn btn-mini btn-inverse disabled" title="buzones de email" href="{% url "mail.views.mailboxes.index" servicio.id %}">
-                    <i class="icon-envelope"></i>
+                <a class="btn btn-small" title="buzones de email" href="{% url "mail.views.mailboxes.index" servicio.id %}">
+                    <img src="/static/img/32/mail.png"/>
                 </a>
                 {% else %}
-                <button class="btn btn-mini btn-inverse disabled" title="buzones de email">
-                    <i class="icon-envelope"></i>
+                <button class="btn btn-small btn-inverse disabled" title="buzones de email">
+                    <img src="/static/img/32/mail.png"/>
                 </button>
                 {% endif %}
                 {% if servicio.email_type %}
-                <a class="btn btn-mini" title="redirección de email" href="{% url "mail.views.redirects.index" servicio.id %}">
-                    <i class="icon-envelope"></i>
+                <a class="btn btn-small" title="redirección de email" href="{% url "mail.views.redirects.index" servicio.id %}">
+                    <img src="/static/img/32/redirect.png"/>
                 </a>
                 {% else %}
-                <button class="btn btn-mini btn-inverse disabled" title="redirección de email">
-                    <i class="icon-envelope"></i>
+                <button class="btn btn-small btn-inverse disabled" title="redirección de email">
+                    <img src="/static/img/32/redirect.png"/>
                 </button>
                 {% endif %}
-                <a class="btn btn-mini" title="hosting web" href="{% url "web.views.hostings.index" servicio.id %}">
-                    <i class="icon-share"></i>
+                <a class="btn btn-small" title="hosting web" href="{% url "web.views.hostings.index" servicio.id %}">
+                    <img src="/static/img/32/computer.png"/>
                 </a>
-                <a class="btn btn-mini" title="redirección web" href="{% url "web.views.redirects.index" servicio.id %}">
-                    <i class="icon-share"></i>
+                <a class="btn btn-small" title="redirección web" href="{% url "web.views.redirects.index" servicio.id %}">
+                    <img src="/static/img/32/redirect_web.png"/>
                 </a>
-                <a class="btn btn-mini btn-info" title="editar" href="{% url "dns.views.domains.edit" servicio.id %}">
-                    <i class="icon-edit"></i>
+                <a class="btn btn-small btn-default" title="editar" href="{% url "dns.views.domains.edit" servicio.id %}">
+                    <img src="/static/img/32/notepad.png"/>
                 </a>
-                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
-                    <i class="icon-remove"></i>
+                <a class="btn btn-small btn-default" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <img src="/static/img/32/remove.png"/>
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
@@ -115,7 +115,14 @@
         <a class="btn btn-primary" href="{% url "billing.views.index" %}">Comprar</a>
     </div>
 </div>
-<a class="btn pull-right btn-inverse disabled" role="button" data-toggle="modal" href="#noNewDomains"><i class="icon-file"></i> Nuevo Dominio <span class="badge">{{ disponibles }}</span></a>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
+    </button>
+    <a class="btn btn-default disabled" role="button" data-toggle="modal" href="#noNewDomains">
+        <img src="/static/img/32/new.png" title="Nuevo Dominio / Zona" />
+    </a>
+</div>
 {% else %}
 <div id="selectNewDomains" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="selectNewDomainsLabel" aria-hidden="true">
     <div class="modal-header">
@@ -137,6 +144,13 @@
         <a class="btn btn-primary" href="{% url "dns.views.domains.new" %}">Zona DNS</a>
     </div>
 </div>
-<a class="btn pull-right btn-primary" role="button" data-toggle="modal" href="#selectNewDomains"><i class="icon-file"></i> Nuevo Dominio <span class="badge badge-inverse">{{ disponibles }}</span></a>
+<div class="btn-group pull-right">
+    <button class="btn btn-default disabled">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
+    </button>
+    <a class="btn btn-default" role="button" data-toggle="modal" href="#selectNewDomains">
+        <img src="/static/img/32/new.png" title="Nuevo Dominio / Zona" />
+    </a>
+</div>
 {% endif %}
 {% endblock %}
