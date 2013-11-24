@@ -206,6 +206,7 @@ class DomainsForm(forms.ModelForm):
 
 class DomainCheckForm(forms.ModelForm):
     domain = forms.RegexField(label='Nombre del Dominio', required=True, regex=r'[0-9a-z-_]+\.[a-z]{2,4}')
+    tos = forms.BooleanField(label='', required=True)
     class Meta:
         model = Domains
         fields = ( 'domain', )

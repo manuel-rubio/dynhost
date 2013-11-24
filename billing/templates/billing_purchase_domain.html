@@ -34,6 +34,16 @@
             </span>
         </div>
     </div>
+    <div class="control-group{% if form.domain.errors %} error{% endif %}">
+        <label class="control-label" for="id_tos"></label>
+        <div class="controls">
+            {{ form.tos }}
+            He leído y acepto las <a href="/avisos-legales/condiciones-particulares-dominios">Condiciones Particulares de Registro de Dominios</a>.
+            {% for error in form.tos.errors %}
+            <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+        </div>
+    </div>
     <div class="control-group">
         <div class="controls">
             <a href="{% url "dns.views.domains.index" %}" class="btn">Volver al listado</a>
