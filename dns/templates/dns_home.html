@@ -128,11 +128,10 @@
         {% endif %}
     </div>
 </div>
+
 <div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>
-    </button>
-    <a class="btn btn-default" role="button" data-toggle="modal" href="#selectNewDomains">
+    <a class="btn btn-{% if disponibles == 0 %}success{% else %}info{% endif %}" role="button" data-toggle="modal" href="#selectNewDomains">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>&nbsp;
         <img src="/static/img/32/new.png" title="Nuevo Dominio / Zona" />
     </a>
 </div>

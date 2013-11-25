@@ -12,6 +12,8 @@
 <h1>Información de Redirección en {{ dom }}</h1>
 <form class="form-horizontal" method="post">
     {% csrf_token %}
+    <!-- Si ya existe una redirección de todo, no se vuelve a mostrar -->
+    {% if exist_all_redirect == False %} 
     <div class="control-group{% if form.all_domain.errors %} error{% endif %}">
         <label class="control-label" for="id_all_domain">{{ form.all_domain.label }}</label>
         <div class="controls">
@@ -21,6 +23,7 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
     <div class="control-group{% if form.username.errors %} error{% endif %}">
         <label class="control-label" for="id_username">{{ form.username.label }}</label>
         <div class="controls">

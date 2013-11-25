@@ -46,7 +46,14 @@ def new(request, rec_id):
     usados = RedirectDynHost.objects.filter(dynamic__record__id=rec_id).count()
     dynhost = DynHosts.objects.filter(record__id = rec_id)[0]
     redir = RedirectDynHost()
+    # Cuento cuantos usuarios nulos existe, para comprar si ya ha 
+    # marcado el checkbox de "Redireccionar todo"
+    if RedirectDynHost.objects.filter(dynamic__record__id=rec_id).filter(username='').count() == 1 :
+        exist_all_redirect = True
+    else:
+        exist_all_redirect = False        
     redir.dynamic_id = dynhost.id
+
     if request.method == 'POST':
         form = RedirectDynHostForm(request.POST, instance=redir, auto_id=False)
         if form.is_valid():
@@ -68,7 +75,8 @@ def new(request, rec_id):
         'rec_id': rec_id,
         'dom': dynhost.getName(),
         'tipo': 'Redirecciones',
-        'nuevo': True
+        'nuevo': True,
+        'exist_all_redirect': exist_all_redirect
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')

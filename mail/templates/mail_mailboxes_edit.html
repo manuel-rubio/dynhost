@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="/dns/{{ dom_id }}/edit/"> {{ dom }}</a>  &raquo; <a href="/mailboxes/{{ dom_id }}/">Buzones</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dns.views.domains.index" %}">Listado de Dominios</a>  &raquo; <a href="{% url "mail.views.mailboxes.index" dom_id %}">Listado de Buzones</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
 </div>
 <br />
 <h1>Información de Buzón en {{ dom }}</h1>

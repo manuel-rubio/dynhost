@@ -59,7 +59,7 @@ def new(request, rec_id):
     return render_to_response('web_redirects_dynhost_edit.html', {
         'form': form,
         'cuenta': cuenta,
-        'usados': usados,
+        'usados': usados,        
         'disponibles': cuenta.limit_web_redirect - usados,
         'total': cuenta.limit_web_redirect,
         'rec_id': rec_id,

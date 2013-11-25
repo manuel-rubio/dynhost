@@ -16,13 +16,13 @@
     <tr>
         <td>{{ servicio.name }}</td>
         <td>{{ servicio.uri }}</td>
-        <td align="center">
+        <td align="center" width="103px">
             <div class="btn-group">
-                <a class="btn btn-mini btn-info" title="editar" href="{% url "web.views.redirects_dynamic.edit" servicio.id %}">
-                    <i class="icon-edit"></i>
+                <a class="btn btn-small" title="editar" href="{% url "web.views.redirects_dynamic.edit" servicio.id %}">
+                    <img src="/static/img/32/notepad.png"/>
                 </a>
-                <a class="btn btn-mini btn-danger" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
-                    <i class="icon-remove"></i>
+                <a class="btn btn-small" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
+                    <img src="/static/img/32/remove.png"/>
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
@@ -46,9 +46,19 @@
 </table>
 
 {% if servicios|length >= total %}
-<a class="btn pull-right" type="button" href="#" onclick="alert('Ha superado el máximo, no puede crear más redirecciones web.')"><i class="icon-file"></i> Nueva Redirección</a>
+<div class="btn-group pull-right">
+    <a class="btn btn-success" href="/">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/redirect_web.png"/>&nbsp;
+        <img src="/static/img/32/money.png" title="Comprar" />
+    </a>
+</div>
 {% else %}
-<a class="btn pull-right btn-primary" href="{% url "web.views.redirects_dynamic.new" rec_id %}"><i class="icon-file"></i>Nueva Redirección</a>
+<div class="btn-group pull-right">
+    <a class="btn btn-info" href="{% url "web.views.redirects_dynamic.new" rec_id %}">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>&nbsp;
+        <img src="/static/img/32/new.png" title="Nueva Redirección" />
+    </a>
+</div>
 {% endif %}
 
 {% endblock %}
