@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC, Contracts
+from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC, Contracts, COUNTRIES
 from mail.models import Redirect, RedirectDynHost, Mailbox
 from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
 from database.models import Databases, Users as DBUsers
@@ -18,6 +18,9 @@ from django.core.mail import mail_admins
 from sys import stderr
 from dynhost import settings
 from ovh import soapi
+from billing import delivery_note, invoice as billing_invoice
+from django.template import Context
+from django.http import HttpResponse
 
 @login_required(login_url='/')
 def index(request):
@@ -286,3 +289,34 @@ def deregister(request):
         'El usuario ' + cuenta.user.username + ' con email ' + cuenta.user.email + ' ha causado baja.',
         fail_silently=(not settings.DEBUG))
     return logout(request)
+
+@login_required(login_url='/')
+def invoice(request, contract_id, type):
+    cuenta = Accounts.objects.get(user = request.user.id)
+    contract = Contracts.objects.get(pk=contract_id)
+    data = {
+        'company_name': settings.COMPANY_NAME,
+        'company_id': settings.COMPANY_ID,
+        'company_addr': settings.COMPANY_ADDR,
+        'company_zip': settings.COMPANY_ZIP,
+        'company_city': settings.COMPANY_CITY,
+        'company_state': settings.COMPANY_STATE,
+        'company_country': settings.COMPANY_COUNTRY,
+        'company_phone': settings.COMPANY_PHONE,
+        'company_web': settings.COMPANY_WEB,
+        'company_email': settings.COMPANY_EMAIL,
+
+        'nic_data': cuenta.nic_data,
+        'cuenta': cuenta,
+        'contract': contract
+    }
+    response = HttpResponse(content_type='application/pdf')
+    if contract.invoice_id:
+        #response['Content-Disposition'] = 'attachment; filename="factura_%05d.pdf"' % contract.invoice_id
+        response['Content-Disposition'] = 'inline; filename="factura_%05d.pdf"' % contract.invoice_id
+        billing_invoice.draw_pdf(response, data)
+    else:
+        #response['Content-Disposition'] = 'attachment; filename="albaran_%s.pdf"' % contract.begins.strftime('%Y%m%d')
+        response['Content-Disposition'] = 'inline; filename="albaran_%s.pdf"' % contract.begins.strftime('%Y%m%d')
+        delivery_note.draw_pdf(response, data)
+    return response

@@ -60,7 +60,7 @@ class NICform(forms.ModelForm):
         widget=forms.Select(attrs={'onchange': 'set_fields();'}))
     organization = forms.CharField(required=False, label='Organización')
     legalName = forms.CharField(required=False, label='Empresa')
-    legalNumber = forms.CharField(required=False, label='CIF')
+    legalNumber = forms.CharField(required=True, label='CIF/NIF/NIE')
     firstname = forms.CharField(required=True, label='Nombre')
     name = forms.CharField(required=True, label='Apellidos')
     email = forms.EmailField(required=True, label='Email')

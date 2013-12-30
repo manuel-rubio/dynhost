@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^purchase/db/mysql/$', 'billing.views.mysql_purchase'),
     url(r'^purchase/revoke/(?P<contract_id>\d+)/$', 'billing.views.revoke'),
     url(r'^deregister/$', 'billing.views.deregister'),
+    url(r'^invoice/(?P<contract_id>\d+)/(?P<type>[a-z]+)/$', 'billing.views.invoice'),
 
     url(r'^dns/$', 'dns.views.domains.index'),
     url(r'^dns/(?P<page_id>\d+)/$', 'dns.views.domains.index'),

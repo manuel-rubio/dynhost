@@ -42,13 +42,15 @@
             <td align="center">
                 <div class="btn-group">
                     {% if not contract.paid %}
+                    <a href="{% url "billing.views.invoice" contract.id "pdf" %}" class="btn btn-default btn-small"><img src="/static/img/32/tag.png" title="Albarán"/></a>
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-small"><img src="/static/img/32/money.png" title="Pagar"/></a>
                     {% if contract.type != 'D' %}
-                    <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-small"><img src="/static/img/32/error.png" title="Cancelar"/></a>
+                    <a href="#confirm_{{ contract.id }}" data-toggle="modal" class="btn btn-small"><img src="/static/img/32/error.png" title="Cancelar"/></a>
                     {% else %}
-                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/remove.png" title="Eliminar"/></a>
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="bottom" data-content="No se puede cancelar este contrato. El dominio debe darse de baja en la sección de dominios." data-original-title="Cancelar" class="btn btn-default btn-small"><img src="/static/img/remove.png" title="Cancelar"/></a>
                     {% endif %}
                     {% else %}
+                    <a href="{% url "billing.views.invoice" contract.id "pdf" %}" class="btn btn-default btn-small"><img src="/static/img/32/tag.png" title="Factura"/></a>
                     <a href="{% url "billing.views.payment" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/renew.png" title="Renovar"/></a>
                     {% if contract.type == 'R' and cuenta.can_remove_mail_redirect %}
                     <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
@@ -59,11 +61,21 @@
                     {% elif contract.type == 'B' and cuenta.can_remove_mysql_database %}
                     <a href="{% url "billing.views.revoke" contract.id %}" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
                     {% elif contract.type != 'D' %}
-                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar el contrato porque está en uso. Elimine antes el recurso en uso." data-origintal-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="bottom" data-content="No se puede eliminar el contrato porque está en uso. Elimine antes el recurso en uso." data-original-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
                     {% else %}
-                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="left" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-origintal-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
+                    <a id="eliminar_{{contract.id}}" href="#" data-toggle="popover" data-placement="bottom" data-content="No se puede eliminar este contrato. El dominio debe darse de baja en la sección de dominios." data-original-title="Eliminar" class="btn btn-default btn-small"><img src="/static/img/32/remove.png" title="Eliminar"/></a>
                     {% endif %}
                     {% endif %}
+                </div>
+                <div class="modal hide fade" id="confirm_{{ contract.id }}">
+                    <div class="modal-header">Cancelar contrato</div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea cancelar el contrato?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn" data-dismiss="modal">Cancela</a>
+                        <a id="elimina_{{contract.id}}" href="{% url "billing.views.revoke" contract.id %}" class="btn btn-danger">Elimina</a>
+                    </div>
                 </div>
             </td>
         </tr>
