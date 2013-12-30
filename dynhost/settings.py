@@ -20,8 +20,20 @@ TLD_GRANTED = (
     '.li', '.tn', '.asia', '.dk', '.mobi', '.pro', '.se', '.so'
 )
 
-BANK = 'Banco Español de Cŕedito'
-CCC = '0000 0000 00 0000000000'
+BANK = 'ING Direct'
+CCC = '1465 0100 92 6000285598'
+
+COMPANY_NAME = u'Altenwald Solutions, S.L.'
+COMPANY_ID = u'ESB14985659'
+COMPANY_ADDR = u'Calle La Fragua, 7'
+COMPANY_ZIP = u'14100'
+COMPANY_CITY = u'La Carlota'
+COMPANY_STATE = u'Córdoba'
+COMPANY_COUNTRY = u'España'
+COMPANY_PHONE = u'+34651108590'
+COMPANY_WEB = u'http://altenwald.com'
+COMPANY_EMAIL = u'info@altenwald.com'
+COMPANY_LOGO = 'static/img/altenwald_logo.png'
 
 DOMAIN_PRICE = 12.0
 
@@ -49,7 +61,7 @@ DNS_CONFIG = (
     'ns4.bosqueviejo.net'
 )
 
-IVA = ''
+IVA = 'ESB14985659'
 
 WSDL_FILE = PROJECT_PATH + "/ovh/soapi-re-1.61.wsdl"
 # WSDL = 'https://www.ovh.com/soapi/soapi-re-1.61.wsdl'

@@ -15,17 +15,7 @@
     <div class="control-group">
         <label class="control-label">Proceder al pago de:</label>
         <div class="controls">
-            <span class="uneditable-input">{% if contract.type == 'D' %}
-                Dominio
-            {% elif contract.type == 'R' %}
-                Redirecciones de Email
-            {% elif contract.type == 'm' %}
-                Buzones de Email Plus
-            {% elif contract.type == 'M' %}
-                Buzones de Email Premium
-            {% elif contract.type == 'B' %}
-                Base de Datos MySQL
-            {% endif %} {{ contract.concept }}</span>
+            <span class="uneditable-input">{{ contract.type_text }} {{ contract.concept }}</span>
         </div>
     </div>
     <div class="control-group">
@@ -65,7 +55,7 @@
                 Calle La Fragua, 7<br/>
                 La Carlota, Córdoba, España<br/>
                 <br/>
-                Como concepto: <strong>ES-{{ cuenta.id|stringformat:"03X" }}-{{ contract.id|stringformat:"04X" }}</strong>
+                Como concepto: <strong>{{ contract.transfer_concept }}</strong>
             </div>
         </div>
     </div>

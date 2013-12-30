@@ -39,6 +39,12 @@ class NIC(models.Model):
     nic = models.CharField(null=False, max_length=20)
     removed = models.BooleanField(default=False, null=False)
 
+    def country_text(self):
+        for (code, text) in COUNTRIES:
+            if code == self.country:
+                return text
+        return None
+
 COUNTRIES = (
     ('es', 'España'),
     ('fr', 'Francia'),
@@ -110,6 +116,12 @@ class Accounts(models.Model):
         usados = Databases.objects.filter(accounts__id = self.id).count()
         return ((self.limit_sql - 1 - usados) >= 0)
 
+    def currency_symbol(self):
+        for (i, symbol) in CURRENCIES:
+            if i == self.currency:
+                return symbol
+        return '€'
+
     def __unicode__(self):
         ret = self.user.username + " ("
         ret += "virtual" if not self.homedir else "real"
@@ -156,6 +168,24 @@ class Contracts(models.Model):
     ends = models.DateField(null=True, default=None)
     paid = models.BooleanField(default=False)
     concept = models.CharField(max_length=100)
+    invoice_id = models.IntegerField(null=True)
+
+    def total_vat(self):
+        vat = self.accounts.nic_data.vat / 100.0
+        return float(self.price * self.quantity - self.discount) * vat
+
+    def total_incl_vat(self):
+        vat = self.accounts.nic_data.vat / 100.0 + 1
+        return float(self.price * self.quantity - self.discount) * vat
+
+    def type_text(self):
+        for (i,text) in CONTRACT_TYPE:
+            if i == self.type:
+                return text
+        return self.type
+
+    def transfer_concept(self):
+        return "ES-%03X-%04X" % (self.accounts_id, self.id)
 
     def total(self):
         return self.price * self.quantity - self.discount
