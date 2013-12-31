@@ -8,11 +8,12 @@ from invoice import format_currency, draw_address, draw_client_address, draw_bod
 
 def draw_header(canvas):
     """ Draws the invoice header """
-    canvas.setStrokeColorRGB(0.9, 0.5, 0.2)
+    canvas.setStrokeColorRGB(0.9, 0.9, 0.9)
     canvas.setFillColorRGB(0.2, 0.2, 0.2)
     canvas.setFont('Helvetica', 16)
-    canvas.drawString(18 * cm, -0.85 * cm, 'ALBARÁN')
-    canvas.drawInlineImage(settings.COMPANY_LOGO, 1 * cm, -1.15 * cm)
+    canvas.drawString(17.5 * cm, -0.85 * cm, 'ALBARÁN')
+    canvas.drawInlineImage(settings.COMPANY_LOGO, -5 * cm, -1.15 * cm,
+        preserveAspectRatio=True, height=1*cm)
     canvas.setLineWidth(4)
     canvas.line(0, -1.25 * cm, 21.7 * cm, -1.25 * cm)
 

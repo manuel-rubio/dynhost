@@ -33,7 +33,7 @@ COMPANY_COUNTRY = u'España'
 COMPANY_PHONE = u'+34651108590'
 COMPANY_WEB = u'http://altenwald.com'
 COMPANY_EMAIL = u'info@altenwald.com'
-COMPANY_LOGO = 'static/img/altenwald_logo.png'
+COMPANY_LOGO = 'static/img/dynhost_logo.png'
 
 DOMAIN_PRICE = 12.0
 
