@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.TextField')(unique=True, max_length=60)),
             ('url', self.gf('django.db.models.fields.TextField')()),
-            ('dynhost', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dynhost.Domains'])),
+            ('dynhost', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['billing.Domains'])),
         ))
         db.send_create_signal('web', ['RedirectDynHost'])
 

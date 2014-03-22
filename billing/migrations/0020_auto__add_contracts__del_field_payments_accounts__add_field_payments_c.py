@@ -31,7 +31,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Accounts.amount'
         db.add_column(u'billing_accounts', 'amount',
-                      self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=2),
+                      self.gf('django.db.models.fields.DecimalField')(default='0.0', max_digits=6, decimal_places=2),
                       keep_default=False)
 
 

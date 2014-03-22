@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Contracts.discount'
         db.add_column(u'billing_contracts', 'discount',
-                      self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=2),
+                      self.gf('django.db.models.fields.DecimalField')(default='0.0', max_digits=6, decimal_places=2),
                       keep_default=False)
 
 
