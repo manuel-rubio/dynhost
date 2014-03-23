@@ -61,11 +61,7 @@
             <p>¿Necesitas comprar un dominio y <strong>gestionar los registros a todos los niveles y sin restricciones</strong>? ¡Aquí puedes! Entra con tu cuenta y elige el dominio que quieras.</p>
             {% else %}
             <p>¿Necesitas comprar un dominio y <strong>gestionar los registros a todos los niveles y sin restricciones</strong>? Puedes comprar un dominio o transferirlo desde otro proveedor.</p>
-            <div class="pull-right">
-                <strong>12 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.purchase" %}">Comprar</a>
-                <a class="btn btn-success" href="{% url "billing.views.transfer" %}">Transferir</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -76,11 +72,8 @@
             {% if not user.is_authenticated %}
             <p>Tu dominio con buzones de correo electrónico incluidos. Podrás configurar <strong>buzones de correo</strong> accesibles mediante protocolo <strong>POP3 o IMAP</strong> o empleando nuestro sistema de <strong>webmail</strong>.</p>
             {% else %}
-            <p>¿Necesitas más buzones de correo electrónico? Puedes adquirir <strong>10 buzones premium</strong> de 1 GiB por <strong>3 &euro;/mes + IVA</strong> o <strong>10 buzones plus</strong> de 300 MiB por <strong>1 &euro;/mes + IVA</strong>.</p>
-            <div class="pull-right">
-                <a class="btn btn-success" href="{% url "billing.views.mail_plus_purchase" %}">Compra 10 Buzones Plus</a>
-                <a class="btn btn-success" href="{% url "billing.views.mail_premium_purchase" %}">Compra 10 Buzones Premium</a>
-            </div>
+            <p>¿Necesitas más buzones de correo electrónico?</p>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -112,10 +105,7 @@
             <p>Para cualquier dominio (e incluso <strong>dynhost.es</strong>) podrás crear redirecciones de email, de modo que cualquier email recibido a través de esa cuenta, sea redirigido a donde tú quieras.</p>
             {% else %}
             <p>Agrega más redirecciones de correo si las requieres a través de los paquetes de redirecciones. Los podrás emplear en cualquiera de los dominios que tengas.</p>
-            <div class="pull-right">
-                <strong>1,00 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.mail_redirect_purchase" %}">Compra 100 Redirecciones</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -127,19 +117,9 @@
             <p>Si tienes una web dinámica, necesitarás de una base de datos. Adquiriendo el paquete básico tienes disponible una base de datos MySQL.</p>
             {% else %}
             <p>¿Necesitas de una base de datos MySQL adicional? Puedes adquirir el <strong>paquete MySQL</strong> tantas como necesites para adquirir cada vez una base de datos.</p>
-            <div class="pull-right">
-                <strong>3 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.mysql_purchase" %}">Compra Paquete MySQL</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
 </div>
-{% if user.is_authenticated %}
-<div class="row-fluid">
-    <div class="span10 offset1">
-        <p><strong>NOTA IMPORTANTE</strong>: los productos adquiridos se cobrarán con período mínimo de un mes, aunque la cancelación se realice antes de que transcurra el mes. Las devoluciones no se realizarán en forma monetaria, sino que serán agregadas en forma de pago adelantado para otros productos que tenga contratados o que quiera contratar.</p>
-    </div>
-</div>
-{% endif %}
 {% endblock %}

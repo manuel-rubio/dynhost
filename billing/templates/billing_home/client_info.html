@@ -3,31 +3,9 @@
 
     <div class="row-fluid">
         <div class="offset2 span8">
-            <p><strong>IMPORTANTE</strong>: estos datos son obligatorios si desea darse de alta como cliente para contratar un servicio (dominios, redirecciones de email, redirecciones web, etc.) En caso de rellenar este apartado acepta las <a href="">Condiciones del Servicio para Clientes</a>.</p>
+            <p><strong>IMPORTANTE</strong>: estamos desarrollando aún la nueva interfaz, el servicio para clientes se presta de momento de forma manual (contratación, facturación, ...). Si tiene interés en probar las características profesionales puede ponerse en contacto con nosotros y estaremos encantados de actualizar su suscripción y que pueda emplear las herramientas profesionales disponibles. Gracias.</p>
 
-            <form class="form-horizontal" method="post">
-                {% csrf_token %}
-                {% for field in nic_form %}
-                <div id="nic_form_{{ field.html_name }}" class="control-group{% if field.errors %} error{% endif %}">
-                    <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    <div class="controls">
-                        {{ field }}
-                        {% for error in field.errors %}
-                        <span class="help-inline">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endfor %}
-
-                <input type="hidden" name="form" value="nic"/>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-primary">{% if not nic_new %}Modificar{% else %}Dar de Alta{% endif %}</button>
-                    </div>
-                </div>
-
-            </form>
+            <p>Puede escribir a: <strong><a href="mailto:manuel@altenwald.com">manuel@altenwald.com</a></strong></p>
 
         </div>
     </div>
