@@ -101,7 +101,7 @@ def pricing(request):
 @login_required(login_url='/')
 def purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
-    if cuenta.nic_data.nic == '':
+    if cuenta.nic_data == None:
         return redirect(reverse('billing.views.index') + '?client')
     if request.method == 'POST':
         # check domain availability
@@ -160,7 +160,7 @@ def payment(request, contract_id):
 @login_required(login_url='/')
 def transfer(request):
     cuenta = Accounts.objects.get(user = request.user.id)
-    if cuenta.nic_data.nic == '':
+    if cuenta.nic_data == None:
         return redirect(reverse('billing.views.index') + '?client')
     if request.method == 'POST':
         # check domain availability
@@ -235,6 +235,8 @@ def revoke(request, contract_id):
 @login_required(login_url='/')
 def mail_plus_purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
+    if cuenta.nic_data == None:
+        return redirect(reverse('billing.views.index') + '?client')
     contract = Contracts()
     contract.type = 'm'
     contract.quantity = settings.PLUS_MAIL_QTY
@@ -247,6 +249,8 @@ def mail_plus_purchase(request):
 @login_required(login_url='/')
 def mail_premium_purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
+    if cuenta.nic_data == None:
+        return redirect(reverse('billing.views.index') + '?client')
     contract = Contracts()
     contract.type = 'M'
     contract.quantity = settings.PREMIUM_MAIL_QTY
@@ -259,6 +263,8 @@ def mail_premium_purchase(request):
 @login_required(login_url='/')
 def mail_redirect_purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
+    if cuenta.nic_data == None:
+        return redirect(reverse('billing.views.index') + '?client')
     contract = Contracts()
     contract.type = 'R'
     contract.quantity = settings.REDIRECT_MAIL_QTY
@@ -271,6 +277,8 @@ def mail_redirect_purchase(request):
 @login_required(login_url='/')
 def mysql_purchase(request):
     cuenta = Accounts.objects.get(user = request.user.id)
+    if cuenta.nic_data == None:
+        return redirect(reverse('billing.views.index') + '?client')
     contract = Contracts()
     contract.type = 'B'
     contract.price = settings.MYSQL_DB_PRICE
