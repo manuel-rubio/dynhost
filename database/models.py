@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 import MySQLdb as mysql
-from dynhost import settings
+from dymmer import settings
 import re
 import sys
 

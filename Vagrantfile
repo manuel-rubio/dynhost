@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 1080, host: 1080
 
-  config.vm.synced_folder ".", "/var/www/dynhost", create: true
+  config.vm.synced_folder ".", "/var/www/dymmer", create: true
 
   config.vm.provision :shell do |shell|
     shell.inline = "mkdir -p /etc/puppet/modules;
@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "manifests"
-    puppet.manifest_file  = "dynhost.pp"
+    puppet.manifest_file  = "dymmer.pp"
   end
 
 end

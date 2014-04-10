@@ -69,7 +69,7 @@ class Migration(SchemaMigration):
             'homedir': ('django.db.models.fields.TextField', [], {'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'limit_dns': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'limit_dynhost': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
+            'limit_dynamic': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
             'limit_email_lists': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_mailbox': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_redirect': ('django.db.models.fields.IntegerField', [], {'default': '0'}),

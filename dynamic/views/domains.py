@@ -12,20 +12,20 @@ def index(request):
     servicios = Domains.objects.filter(user_id = request.user.id)
     empleados = servicios.count()
     cuenta = Accounts.objects.get(user = request.user.id)
-    return render_to_response('dynhost_home.html', {
+    return render_to_response('dynamic_home.html', {
         'cuenta': cuenta,
         'servicios': servicios,
         'empleados': empleados,
-        'disponibles': cuenta.limit_dynhost - empleados,
-        'total': cuenta.limit_dynhost,
-        'tipo': '<strong>DynHost</strong>'
+        'disponibles': cuenta.limit_dynamic - empleados,
+        'total': cuenta.limit_dynamic,
+        'tipo': '<strong>dinámico</strong>'
     }, context_instance=RequestContext(request))
 
 @login_required(login_url='/')
 def new(request):
     cuenta = Accounts.objects.get(user = request.user.id)
     empleados = Domains.objects.filter(user_id = request.user.id).count()
-    if empleados >= cuenta.limit_dynhost:
+    if empleados >= cuenta.limit_dynamic:
         return redirect(reverse('dynamic.views.domains.index'))
     domain = Domains()
     domain.user_id = request.user.id
@@ -37,14 +37,14 @@ def new(request):
     else:
         domain.ip = request.META['REMOTE_ADDR']
         form = DomainsForm(instance=domain, auto_id=True)
-    return render_to_response('dynhost_edit.html', {
+    return render_to_response('dynamic_edit.html', {
         'cuenta': cuenta,
         'form': form,
         'myip': request.META['REMOTE_ADDR'],
         'empleados': empleados,
-        'disponibles': cuenta.limit_dynhost - empleados,
-        'total': cuenta.limit_dynhost,
-        'tipo': '<strong>DynHost</strong>',
+        'disponibles': cuenta.limit_dynamic - empleados,
+        'total': cuenta.limit_dynamic,
+        'tipo': '<strong>dinámico</strong>',
         'nuevo': True
     }, context_instance=RequestContext(request))
 
@@ -63,14 +63,14 @@ def edit(request, dom_id):
                 return redirect(reverse('dynamic.views.domains.index'))
         else:
             form = DomainsForm(instance=domain, auto_id=True)
-        return render_to_response('dynhost_edit.html', {
+        return render_to_response('dynamic_edit.html', {
             'cuenta': cuenta,
             'form': form,
             'myip': request.META['REMOTE_ADDR'],
             'empleados': empleados,
-            'disponibles': cuenta.limit_dynhost - empleados,
-            'total': cuenta.limit_dynhost,
-            'tipo': '<strong>DynHost</strong>'
+            'disponibles': cuenta.limit_dynamic - empleados,
+            'total': cuenta.limit_dynamic,
+            'tipo': '<strong>dinámico</strong>'
         }, context_instance=RequestContext(request))
     except Domains.DoesNotExist:
         return redirect(reverse('dynamic.views.domains.index'))

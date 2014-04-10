@@ -26,29 +26,29 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'Hosting', fields ['uri', 'record']
         db.create_unique(u'web_hosting', ['uri', 'record_id'])
 
-        # Adding model 'RedirectDynHost'
-        db.create_table(u'web_redirectdynhost', (
+        # Adding model 'RedirectDynamic'
+        db.create_table(u'web_redirectdynamic', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.TextField')(unique=True, max_length=60)),
             ('url', self.gf('django.db.models.fields.TextField')()),
             ('uri', self.gf('django.db.models.fields.TextField')(default='/')),
-            ('dynamic', self.gf('django.db.models.fields.related.ForeignKey')(related_name='dynamic.Domains_RedirectDynHost', to=orm['dynamic.Domains'])),
+            ('dynamic', self.gf('django.db.models.fields.related.ForeignKey')(related_name='dynamic.Domains_RedirectDynamic', to=orm['dynamic.Domains'])),
         ))
-        db.send_create_signal(u'web', ['RedirectDynHost'])
+        db.send_create_signal(u'web', ['RedirectDynamic'])
 
-        # Adding unique constraint on 'RedirectDynHost', fields ['name', 'dynamic']
-        db.create_unique(u'web_redirectdynhost', ['name', 'dynamic_id'])
+        # Adding unique constraint on 'RedirectDynamic', fields ['name', 'dynamic']
+        db.create_unique(u'web_redirectdynamic', ['name', 'dynamic_id'])
 
-        # Adding unique constraint on 'RedirectDynHost', fields ['uri', 'dynamic']
-        db.create_unique(u'web_redirectdynhost', ['uri', 'dynamic_id'])
+        # Adding unique constraint on 'RedirectDynamic', fields ['uri', 'dynamic']
+        db.create_unique(u'web_redirectdynamic', ['uri', 'dynamic_id'])
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'RedirectDynHost', fields ['uri', 'dynamic']
-        db.delete_unique(u'web_redirectdynhost', ['uri', 'dynamic_id'])
+        # Removing unique constraint on 'RedirectDynamic', fields ['uri', 'dynamic']
+        db.delete_unique(u'web_redirectdynamic', ['uri', 'dynamic_id'])
 
-        # Removing unique constraint on 'RedirectDynHost', fields ['name', 'dynamic']
-        db.delete_unique(u'web_redirectdynhost', ['name', 'dynamic_id'])
+        # Removing unique constraint on 'RedirectDynamic', fields ['name', 'dynamic']
+        db.delete_unique(u'web_redirectdynamic', ['name', 'dynamic_id'])
 
         # Removing unique constraint on 'Hosting', fields ['uri', 'record']
         db.delete_unique(u'web_hosting', ['uri', 'record_id'])
@@ -59,8 +59,8 @@ class Migration(SchemaMigration):
         # Deleting model 'Hosting'
         db.delete_table(u'web_hosting')
 
-        # Deleting model 'RedirectDynHost'
-        db.delete_table(u'web_redirectdynhost')
+        # Deleting model 'RedirectDynamic'
+        db.delete_table(u'web_redirectdynamic')
 
 
     models = {
@@ -100,7 +100,7 @@ class Migration(SchemaMigration):
             'homedir': ('django.db.models.fields.TextField', [], {'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'limit_dns': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'limit_dynhost': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
+            'limit_dynamic': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
             'limit_email_lists': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_mailbox': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_redirect': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
@@ -199,9 +199,9 @@ class Migration(SchemaMigration):
             'uri': ('django.db.models.fields.TextField', [], {}),
             'url': ('django.db.models.fields.TextField', [], {'null': 'True'})
         },
-        u'web.redirectdynhost': {
-            'Meta': {'unique_together': "(('name', 'dynamic'), ('uri', 'dynamic'))", 'object_name': 'RedirectDynHost'},
-            'dynamic': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'dynamic.Domains_RedirectDynHost'", 'to': u"orm['dynamic.Domains']"}),
+        u'web.redirectdynamic': {
+            'Meta': {'unique_together': "(('name', 'dynamic'), ('uri', 'dynamic'))", 'object_name': 'RedirectDynamic'},
+            'dynamic': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'dynamic.Domains_RedirectDynamic'", 'to': u"orm['dynamic.Domains']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.TextField', [], {'unique': 'True', 'max_length': '60'}),
             'uri': ('django.db.models.fields.TextField', [], {'default': "'/'"}),

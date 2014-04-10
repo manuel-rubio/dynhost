@@ -3,7 +3,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Table
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
-from dynhost import settings
+from dymmer import settings
 import locale
 
 def format_currency(amount, currency):

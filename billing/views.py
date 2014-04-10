@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from billing.models import Accounts, Domains, CURRENCIES, DomainCheckForm, DomainTransferForm, NICform, NIC, Contracts, COUNTRIES
-from mail.models import Redirect, RedirectDynHost, Mailbox
-from web.models import RedirectDynHost as RedirectWebDynHost, Hosting
+from mail.models import Redirect, RedirectDynamic, Mailbox
+from web.models import RedirectDynamic as RedirectWebDynamic, Hosting
 from database.models import Databases, Users as DBUsers
 from dynamic.models import Domains as Dynamic
 from ftp.models import Users as FTPUsers
@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import logout
 from django.core.mail import mail_admins
 from sys import stderr
-from dynhost import settings
+from dymmer import settings
 from ovh import soapi
 from billing import delivery_note, invoice as billing_invoice
 from django.template import Context
@@ -69,15 +69,15 @@ def index(request):
         'nic_focus': 'client' in request.GET,
         'form': form,
         'dominios': Domains.objects.filter(accounts__id = cuenta.id).count(),
-        'dynhosts': Dynamic.objects.filter(user_id = request.user.id).count(),
+        'dynamics': Dynamic.objects.filter(user_id = request.user.id).count(),
         'redirects': Redirect.objects.filter(domain__accounts__id = cuenta.id).count(),
-        'redirects_mail_dynhost': RedirectDynHost.objects.filter(dynamic__user_id = request.user.id).count(),
+        'redirects_mail_dynamic': RedirectDynamic.objects.filter(dynamic__user_id = request.user.id).count(),
         'mailboxes': Mailbox.objects.filter(domain__accounts__id = cuenta.id).count(),
         'databases': Databases.objects.filter(accounts__id = cuenta.id).count(),
         'dbusers': DBUsers.objects.filter(accounts__id = cuenta.id).count(),
         'redirects_web': Hosting.objects.filter(record__domain__accounts__id=cuenta.id, type='R').count(),
         'hosting': Hosting.objects.filter(record__domain__accounts__id=cuenta.id, type='H').count(),
-        'redirects_web_dynhost': RedirectWebDynHost.objects.filter(dynamic__user_id = request.user.id).count(),
+        'redirects_web_dynamic': RedirectWebDynamic.objects.filter(dynamic__user_id = request.user.id).count(),
         'ftp': FTPUsers.objects.filter(accounts__id = cuenta.id).count(),
         'mensaje': mensaje,
         'currency': currency,
@@ -293,7 +293,7 @@ def deregister(request):
     cuenta.user.is_active = False
     cuenta.user.save()
     mail_admins(
-        '[DynHOST] Usuario dado de baja', 
+        '[Dymmer] Usuario dado de baja', 
         'El usuario ' + cuenta.user.username + ' con email ' + cuenta.user.email + ' ha causado baja.',
         fail_silently=(not settings.DEBUG))
     return logout(request)

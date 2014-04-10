@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-        <a href="/">Inicio</a>  &raquo; <a href="{% url "dynamic.views.domains.index" %}">Listado de DynHost</a> &raquo; <a href="{% url "web.views.redirects_dynamic.index" rec_id %}">Redirecciones Web</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
+        <a href="/">Inicio</a>  &raquo; <a href="{% url "dynamic.views.domains.index" %}">Listado de Dinámicos</a> &raquo; <a href="{% url "web.views.redirects_dynamic.index" rec_id %}">Redirecciones Web</a> &raquo; <strong>{% if nuevo %} Nuevo {% else %} Editar {% endif %}</strong>
 </div>
 <h1>Información de Redirecciones Web en {{ dom }}</h1>
 <form class="form-horizontal" method="post">

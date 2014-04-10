@@ -8,17 +8,17 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'RedirectDynHost'
-        db.create_table(u'mail_redirectdynhost', (
+        # Adding model 'RedirectDynamic'
+        db.create_table(u'mail_redirectdynamic', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('username', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('destin', self.gf('django.db.models.fields.TextField')(max_length=250)),
             ('dynamic', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dynamic.Domains'])),
         ))
-        db.send_create_signal(u'mail', ['RedirectDynHost'])
+        db.send_create_signal(u'mail', ['RedirectDynamic'])
 
-        # Adding unique constraint on 'RedirectDynHost', fields ['username', 'dynamic']
-        db.create_unique(u'mail_redirectdynhost', ['username', 'dynamic_id'])
+        # Adding unique constraint on 'RedirectDynamic', fields ['username', 'dynamic']
+        db.create_unique(u'mail_redirectdynamic', ['username', 'dynamic_id'])
 
         # Adding model 'Redirect'
         db.create_table(u'mail_redirect', (
@@ -52,11 +52,11 @@ class Migration(SchemaMigration):
         # Removing unique constraint on 'Redirect', fields ['username', 'domain']
         db.delete_unique(u'mail_redirect', ['username', 'domain_id'])
 
-        # Removing unique constraint on 'RedirectDynHost', fields ['username', 'dynamic']
-        db.delete_unique(u'mail_redirectdynhost', ['username', 'dynamic_id'])
+        # Removing unique constraint on 'RedirectDynamic', fields ['username', 'dynamic']
+        db.delete_unique(u'mail_redirectdynamic', ['username', 'dynamic_id'])
 
-        # Deleting model 'RedirectDynHost'
-        db.delete_table(u'mail_redirectdynhost')
+        # Deleting model 'RedirectDynamic'
+        db.delete_table(u'mail_redirectdynamic')
 
         # Deleting model 'Redirect'
         db.delete_table(u'mail_redirect')
@@ -102,7 +102,7 @@ class Migration(SchemaMigration):
             'homedir': ('django.db.models.fields.TextField', [], {'null': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'limit_dns': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'limit_dynhost': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
+            'limit_dynamic': ('django.db.models.fields.IntegerField', [], {'default': '5'}),
             'limit_email_lists': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_mailbox': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'limit_email_redirect': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
@@ -205,7 +205,7 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'username': ('django.db.models.fields.TextField', [], {'max_length': '50'})
         },
-        u'mail.redirectdynhost': {
+        u'mail.redirectdynamic': {
             'Meta': {'unique_together': "(('username', 'dynamic'),)", 'object_name': 'RedirectDynHost'},
             'destin': ('django.db.models.fields.TextField', [], {'max_length': '250'}),
             'dynamic': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dynamic.Domains']"}),

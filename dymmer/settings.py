@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for dynhost project.
+# Django settings for dymmer project.
 from os.path import dirname, abspath
 from os import makedirs
 import sys
@@ -33,7 +33,7 @@ COMPANY_COUNTRY = u'España'
 COMPANY_PHONE = u'+34651108590'
 COMPANY_WEB = u'http://altenwald.com'
 COMPANY_EMAIL = u'info@altenwald.com'
-COMPANY_LOGO = '/var/www/dynhost/static/img/dynhost_logo.png'
+COMPANY_LOGO = '/var/www/dymmer/static/img/dymmer.png'
 
 DOMAIN_PRICE = 12.0
 
@@ -88,11 +88,11 @@ DATABASES = {
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/dynhost.sqlite'
+        'NAME': '/tmp/dymmer.sqlite'
     }
 
 USER_SKEL = {
-    'dynhost': 'apache/conf.d/dynhosts/%(userid)d',
+    'dynamic': 'apache/conf.d/dynamics/%(userid)d',
     'redirect': 'apache/conf.d/redirects/%(userid)d',
     'hosting': 'apache/conf.d/hostings/%(userid)d',
     'base': 'apache/conf.d/base/%(userid)d',
@@ -101,7 +101,7 @@ USER_SKEL = {
     'ftp': 'ftp',
 }
 REAL_USER_SKEL = {
-    'dynhost': 'apache/conf.d/dynhosts',
+    'dinamic': 'apache/conf.d/dynamics',
     'redirect': 'apache/conf.d/redirects',
     'hosting': 'apache/conf.d/hostings',
     'base': 'apache/conf.d/base',
@@ -109,13 +109,13 @@ REAL_USER_SKEL = {
     'logs': 'apache/log',
     'ftp': 'ftp',
 }
-HOMEDIR_BASE = '/home/dynhost'
+HOMEDIR_BASE = '/home/dymmer'
 
 if 'test' in sys.argv:
     import shutil
-    HOMEDIR_BASE = '/tmp/dynhost'
-    shutil.rmtree("/tmp/dynhost", True)
-    makedirs("/tmp/dynhost")
+    HOMEDIR_BASE = '/tmp/dynamic'
+    shutil.rmtree("/tmp/dynamic", True)
+    makedirs("/tmp/dynamic")
     
 MARIADB_HOST = 'localhost'
 MARIADB_USER = 'root'
@@ -258,7 +258,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/home/bombadil/www-data/dynhost.es/htdocs/static'
+STATIC_ROOT = '/home/bombadil/www-data/dymmer.com/htdocs/static'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -301,10 +301,10 @@ MIDDLEWARE_CLASSES = (
     'axes.middleware.FailedLoginMiddleware',
 )
 
-ROOT_URLCONF = 'dynhost.urls'
+ROOT_URLCONF = 'dymmer.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'dynhost.wsgi.application'
+WSGI_APPLICATION = 'dymmer.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -349,7 +349,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_OPEN = True
 EMAIL_HOST = 'localhost'
-DEFAULT_FROM_EMAIL = 'noreply@dynhost.es'
+DEFAULT_FROM_EMAIL = 'no-reply@dymmer.com'
 LOGIN_REDIRECT_URL = '/'
 
 GRAVATAR_DEFAULT_IMAGE = 'mm'

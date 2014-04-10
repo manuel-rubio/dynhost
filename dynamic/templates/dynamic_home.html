@@ -2,19 +2,19 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <strong>Listado de DynHost</strong>
+    <a href="/">Inicio</a> &raquo; <strong>Listado de Dinámicos</strong>
 </div>
-<h1>Listado de DynHost</h1>
+<h1>Listado de Dinámicos</h1>
 <table class="table table-condensed">
 <thead>
-    <th>dynhost</th>
+    <th>dinámico</th>
     <th>IP</th>
     <th align="center">acciones</th>
 </thead>
 <tbody>
     {% for servicio in servicios %}
     <tr>
-        <td>{{ servicio.domain }}.dynhost.es</td>
+        <td>{{ servicio.domain }}.dymmer.com</td>
         <td>{{ servicio.ip }}</td>
         <td align="center" width="210px">
             <div class="btn-group">
