@@ -23,23 +23,22 @@ apache::vhost { 'dymmer.com':
 }
 
 # PostgreSQL: database and role
-class { 'postgresql::server':
-    ipv4acls => ['host all dynhost 127.0.0.1/32 md5'],
-}
-
-postgresql::server::role { 'dynhost':
-    password_hash => postgresql_password('dynhost', 'dynhost2014'),
-}
-
-postgresql::server::db { 'ring':
-    user     => 'ring',
-    password => postgresql_password('ring', 'ring1234'),
-}
-
-class pgsql-devel {
+class postgresql-install {
     include postgresql::lib::devel
+    class { 'postgresql::server':
+        ipv4acls => ['host all dynhost 127.0.0.1/32 md5'],
+    }
+
+    postgresql::server::role { 'dynhost':
+        password_hash => postgresql_password('dynhost', 'dynhost2014'),
+    }
+
+    postgresql::server::db { 'ring':
+        user     => 'ring',
+        password => postgresql_password('ring', 'ring1234'),
+    }
 }
-class { 'pgsql-devel': }
+class { 'postgresql-install': }
 
 # MySQL: database and root user config
 class { 'mysql::server':
@@ -54,7 +53,7 @@ class deps {
     python::requirements { '/var/www/dynhost/requirements.txt':
         require => [
             Package['libmysqlclient-dev'],
-            Class['pgsql-devel'],
+            Class['postgresql-install'],
         ]
     }
 }
