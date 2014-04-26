@@ -45,19 +45,15 @@
 
 {% if servicios|length >= total %}
 <div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/db_users.png"/>
-    </button>
-    <a class="btn btn-default" href="/">
+    <a class="btn btn-success" href="/">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/db_users.png"/>&nbsp;
         <img src="/static/img/32/money.png" title="Comprar" />
     </a>
 </div>
 {% else %}
 <div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/db_users.png"/>
-    </button>
-    <a class="btn btn-default" href="#new_user" data-toggle="modal">
+    <a class="btn btn-info" href="#new_user" data-toggle="modal">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/db_users.png"/>&nbsp;
         <img src="/static/img/32/new.png" title="Nuevo Usuario de Base de Datos" />
     </a>
 </div>

@@ -44,34 +44,17 @@
 </table>
 
 {% if servicios|length >= total %}
-<div id="noNewFTP" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="noNewFTPLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-        <h3 id="noNewFTPLabel">No hay más accesos FTP</h3>
-    </div>
-    <div class="modal-body">
-        <p>Se han acabado los accesos FTP disponibles, pero puede adquirir nuevos, solo tiene que ampliar su número de accesos FTP.</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-        <a class="btn btn-primary" href="/">Comprar</a>
-    </div>
-</div>
 <div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>
-    </button>
-    <a class="btn btn-default disabled" role="button" data-toggle="modal" href="#noNewFTP">
-        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    <a class="btn btn-success" href="/">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>&nbsp;
+        <img src="/static/img/32/money.png" title="Comprar" />
     </a>
 </div>
 {% else %}
 <div class="btn-group pull-right">
-    <button class="btn btn-default disabled">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>
-    </button>
-    <a class="btn btn-default" href="{% url "ftp.views.new" %}">
-        <img src="/static/img/32/new.png" title="Nuevo Dynamic" />
+    <a class="btn btn-info" href="{% url "ftp.views.new" %}">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/download.png"/>&nbsp;
+        <img src="/static/img/32/new.png" title="Nuevo Acceso FTP" />
     </a>
 </div>
 {% endif %}
