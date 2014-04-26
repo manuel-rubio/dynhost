@@ -70,15 +70,7 @@ class fixtures {
         path => "/usr/local/bin:/usr/bin:/bin",
         cwd => '/var/www/dymmer/',
         command => 'python manage.py migrate',
-    }
-    file { 'initial_data.json':
-        path => '/vagrant/manifests/initial_data.json'
-    }
-    exec { 'load data':
-        path => "/usr/local/bin:/usr/bin:/bin",
-        cwd => '/var/www/dymmer/',
-        command => 'python manage.py migrate',
-        require => File['initial_data.json'],
+        require => Exec['syncdb']
     }
 }
 class { 'fixtures':
