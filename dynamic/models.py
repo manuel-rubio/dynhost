@@ -41,11 +41,11 @@ class DomainsForm(forms.ModelForm):
 @receiver(pre_save, sender=Domains)
 def create_dynamic(sender, instance, **kwargs):
     if not instance.id:
-        dynamic = BillingDomains.objects.filter(domain='dymmer.com')[0]
+        dynamic = BillingDomains.objects.filter(domain='dynhost.es')[0]
         record = Records()
         record.data = instance.ip
         record.host = instance.domain
-        record.domain = dymmer
+        record.domain = dynamic
         record.ttl = 3600
         record.type = 'A'
         record.save()
