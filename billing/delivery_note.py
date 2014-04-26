@@ -2,7 +2,7 @@
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
-from dynhost import settings
+from dymmer import settings
 
 from invoice import format_currency, draw_address, draw_client_address, draw_body
 

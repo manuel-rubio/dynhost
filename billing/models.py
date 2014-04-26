@@ -9,7 +9,7 @@ from database.models import Databases
 from mail.models import Redirect, Mailbox
 import os
 import sys
-from dynhost import settings
+from dymmer import settings
 from ovh import soapi
 
 LEGAL_FORM = (
@@ -93,7 +93,7 @@ class Accounts(models.Model):
     limit_email_redirect = models.IntegerField(default=0)
     limit_email_mailbox = models.IntegerField(default=0)
     limit_email_lists = models.IntegerField(default=0)
-    limit_dynhost = models.IntegerField(default=5)
+    limit_dynamic = models.IntegerField(default=5)
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
     homedir = models.TextField(null=True)
     user = models.OneToOneField(User)

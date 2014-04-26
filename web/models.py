@@ -6,7 +6,7 @@ from django.dispatch import receiver
 from billing.models import Accounts
 import sys
 import os
-from dynhost import settings
+from dymmer import settings
 
 #--- Models
 
@@ -27,11 +27,11 @@ class Hosting(models.Model):
     class Meta:
         unique_together = (('name', 'record'), ('uri', 'record'))
 
-class RedirectDynHost(models.Model):
+class RedirectDynamic(models.Model):
     name = models.TextField(unique=True, max_length=60)
     url = models.TextField()
     uri = models.TextField(default='/')
-    dynamic = models.ForeignKey('dynamic.Domains', related_name="dynamic.Domains_RedirectDynHost")
+    dynamic = models.ForeignKey('dynamic.Domains', related_name="dynamic.Domains_RedirectDynamic")
     def __unicode__(self):
         return self.name
     class Meta:
@@ -57,12 +57,12 @@ class HostingForm(forms.ModelForm):
         model = Hosting
         exclude = ( 'url', 'type', )
 
-class RedirectDynHostForm(forms.ModelForm):
+class RedirectDynamicForm(forms.ModelForm):
     name = forms.SlugField(label='Nombre')
     url = forms.URLField(label='URL', initial='http://')
     uri = forms.CharField(label='URI', initial='/')
     class Meta:
-        model = RedirectDynHost
+        model = RedirectDynamic
         exclude = ( 'dynamic', )
 
 #--- Triggers
@@ -112,18 +112,18 @@ def create_config_hosting(sender, instance, **kwargs):
     # recargamos la configuración
     os.system(settings.APACHE_RELOAD_CMD + " &> /dev/null")
 
-@receiver(pre_save, sender=RedirectDynHost)
-def create_config_dynhost(sender, instance, **kwargs):
+@receiver(pre_save, sender=RedirectDynamic)
+def create_config_dynamic(sender, instance, **kwargs):
     try:
-        old = RedirectDynHost.objects.get(pk=instance.id)
+        old = RedirectDynamic.objects.get(pk=instance.id)
         cuenta = Accounts.objects.get(user__id=old.dynamic.user_id)
-        filepart_old = cuenta.getPath('dynhost') + old.name + "." + old.dynamic.getName()
+        filepart_old = cuenta.getPath('dynamic') + old.name + "." + old.dynamic.getName()
         if os.path.exists(filepart_old):
             os.unlink(filepart_old)
-    except RedirectDynHost.DoesNotExist:
+    except RedirectDynamic.DoesNotExist:
         pass
     cuenta = Accounts.objects.get(user__id=instance.dynamic.user_id)
-    filepart = cuenta.getPath('dynhost') + instance.name + "." + instance.dynamic.getName()
+    filepart = cuenta.getPath('dynamic') + instance.name + "." + instance.dynamic.getName()
     # guardamos el fichero específico
     outfile = open(filepart, "w")
     outfile.write(settings.APACHE_REDIRECT_PART % {
@@ -133,7 +133,7 @@ def create_config_dynhost(sender, instance, **kwargs):
     outfile.close()
     # regeneramos el base
     record = instance.dynamic.record
-    base = cuenta.getPath('dynhost')
+    base = cuenta.getPath('dynamic')
     print >>sys.stderr, "Base: " + base
     filebase = base + record.getName()
     if not os.path.exists(base):
@@ -144,7 +144,7 @@ def create_config_dynhost(sender, instance, **kwargs):
     outfile.write(settings.APACHE_BASE % {
         'name': record.getName(),
         'email': cuenta.user.email,
-        'dyndir': cuenta.getPath('dynhost')[:-1],
+        'dyndir': cuenta.getPath('dynamic')[:-1],
         'reddir': cuenta.getPath('redirect')[:-1],
         'hosdir': cuenta.getPath('hosting')[:-1],
         'logdir': cuenta.getPath('logs')[:-1],
@@ -169,10 +169,10 @@ def remove_config_hosting(sender, instance, **kwargs):
         os.unlink(filepart)
         os.system(settings.APACHE_RELOAD_CMD + " &> /dev/null")
 
-@receiver(post_delete, sender=RedirectDynHost)
-def remove_config_dynhost(sender, instance, **kwargs):
+@receiver(post_delete, sender=RedirectDynamic)
+def remove_config_dynamic(sender, instance, **kwargs):
     cuenta = Accounts.objects.get(user = instance.dynamic.user_id)
-    filepart = cuenta.getPath('dynhost') + \
+    filepart = cuenta.getPath('dynamic') + \
         instance.name + '.' + instance.dynamic.getName()
     os.unlink(filepart)
     os.system(settings.APACHE_RELOAD_CMD + " &> /dev/null")

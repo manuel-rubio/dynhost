@@ -13,11 +13,11 @@
 {% endblock %}
 
 {% block content %}
-<h1>¿Qué es DynHost?</h1>
+<h1>¿Qué es Dymmer?</h1>
 
 <div class="row-fluid">
     <div class="span6">
-        <p><strong>DynHost</strong> es un sitio que permite la creación de nombres de máquina, de modo que, si tienes un servidor o una máquina en Internet con <strong>IP dinámica</strong> (que cambia cada poco tiempo), puedes crear un nombre que se vaya actualizando con los cambios de IP que vaya teniendo tu máquina de cara a Internet.</p>
+        <p><strong>Dymmer</strong> es un sitio que permite la creación de nombres de máquina, de modo que, si tienes un servidor o una máquina en Internet con <strong>IP dinámica</strong> (que cambia cada poco tiempo), puedes crear un nombre que se vaya actualizando con los cambios de IP que vaya teniendo tu máquina de cara a Internet.</p>
 
         <p>Esto es útil para:</p>
         <ul>
@@ -31,7 +31,7 @@
         <div class="banner">
             <img src="/static/img/32/users.png" />
             <h2>Alta Gratuita</h2>
-            <p><strong>DynHost</strong> es un servicio gratuito, pero limitado, por cada usuario no se permiten crear más de <strong>5 nombres de máquinas</strong>. Si quieres darte de alta solo tienes que:</p>
+            <p><strong>Dymmer</strong> es un servicio gratuito, pero limitado, por cada usuario no se permiten crear más de <strong>5 nombres de máquinas</strong>. Si quieres darte de alta solo tienes que:</p>
             
             <a class="btn btn-success" href="/user/register"><strong>Darte de Alta</strong></a>
         </div>
@@ -50,7 +50,7 @@
 
 <h1>Uso profesional</h1>
 
-<p><strong>DynHost</strong> ha agregado funcionalidades específicas para permitirte gestionar dominios reales, no solo <em>dynhost.es</em>. En general:</p>
+<p><strong>Dymmer</strong> ha agregado funcionalidades específicas para permitirte gestionar dominios reales, no solo <em>dymmer.com</em>. En general:</p>
 
 <div class="row-fluid">
     <div class="span6">
@@ -61,11 +61,7 @@
             <p>¿Necesitas comprar un dominio y <strong>gestionar los registros a todos los niveles y sin restricciones</strong>? ¡Aquí puedes! Entra con tu cuenta y elige el dominio que quieras.</p>
             {% else %}
             <p>¿Necesitas comprar un dominio y <strong>gestionar los registros a todos los niveles y sin restricciones</strong>? Puedes comprar un dominio o transferirlo desde otro proveedor.</p>
-            <div class="pull-right">
-                <strong>12 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.purchase" %}">Comprar</a>
-                <a class="btn btn-success" href="{% url "billing.views.transfer" %}">Transferir</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -76,11 +72,8 @@
             {% if not user.is_authenticated %}
             <p>Tu dominio con buzones de correo electrónico incluidos. Podrás configurar <strong>buzones de correo</strong> accesibles mediante protocolo <strong>POP3 o IMAP</strong> o empleando nuestro sistema de <strong>webmail</strong>.</p>
             {% else %}
-            <p>¿Necesitas más buzones de correo electrónico? Puedes adquirir <strong>10 buzones premium</strong> de 1 GiB por <strong>3 &euro;/mes + IVA</strong> o <strong>10 buzones plus</strong> de 300 MiB por <strong>1 &euro;/mes + IVA</strong>.</p>
-            <div class="pull-right">
-                <a class="btn btn-success" href="{% url "billing.views.mail_plus_purchase" %}">Compra 10 Buzones Plus</a>
-                <a class="btn btn-success" href="{% url "billing.views.mail_premium_purchase" %}">Compra 10 Buzones Premium</a>
-            </div>
+            <p>¿Necesitas más buzones de correo electrónico?</p>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -109,13 +102,10 @@
             <img src="/static/img/32/redirect.png" />
             <h2>Manejar Redirecciones de Correo</h2>
             {% if not user.is_authenticated %}
-            <p>Para cualquier dominio (e incluso <strong>dynhost.es</strong>) podrás crear redirecciones de email, de modo que cualquier email recibido a través de esa cuenta, sea redirigido a donde tú quieras.</p>
+            <p>Para cualquier dominio (e incluso <strong>dymmer.com</strong>) podrás crear redirecciones de email, de modo que cualquier email recibido a través de esa cuenta, sea redirigido a donde tú quieras.</p>
             {% else %}
             <p>Agrega más redirecciones de correo si las requieres a través de los paquetes de redirecciones. Los podrás emplear en cualquiera de los dominios que tengas.</p>
-            <div class="pull-right">
-                <strong>1,00 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.mail_redirect_purchase" %}">Compra 100 Redirecciones</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
@@ -127,19 +117,9 @@
             <p>Si tienes una web dinámica, necesitarás de una base de datos. Adquiriendo el paquete básico tienes disponible una base de datos MySQL.</p>
             {% else %}
             <p>¿Necesitas de una base de datos MySQL adicional? Puedes adquirir el <strong>paquete MySQL</strong> tantas como necesites para adquirir cada vez una base de datos.</p>
-            <div class="pull-right">
-                <strong>3 &euro;/mes + IVA</strong>
-                <a class="btn btn-success" href="{% url "billing.views.mysql_purchase" %}">Compra Paquete MySQL</a>
-            </div>
+            <p><strong><em>Próximamente</em></strong></p>
             {% endif %}
         </div>
     </div>
 </div>
-{% if user.is_authenticated %}
-<div class="row-fluid">
-    <div class="span10 offset1">
-        <p><strong>NOTA IMPORTANTE</strong>: los productos adquiridos se cobrarán con período mínimo de un mes, aunque la cancelación se realice antes de que transcurra el mes. Las devoluciones no se realizarán en forma monetaria, sino que serán agregadas en forma de pago adelantado para otros productos que tenga contratados o que quiera contratar.</p>
-    </div>
-</div>
-{% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ from django import forms
 import hashlib
 from django.forms.util import ErrorList
 
-class RedirectDynHost(models.Model):
+class RedirectDynamic(models.Model):
     username = models.CharField(max_length=50)
     destin = models.TextField(max_length=250)
     dynamic = models.ForeignKey('dynamic.Domains')
@@ -12,12 +12,12 @@ class RedirectDynHost(models.Model):
         unique_together = ("username", "dynamic")
 
     def user(self):
-        return self.username + "@" + self.dynamic.record.host + ".dynhost.es"
+        return self.username + "@" + self.dynamic.record.host + ".dymmer.com"
 
     def __unicode__(self):
         return self.user()
 
-class RedirectDynHostForm(forms.ModelForm):
+class RedirectDynamicForm(forms.ModelForm):
     all_domain = forms.BooleanField(label="¿Redirecciona todo?", required=False,
         widget=forms.CheckboxInput(attrs={'onchange': 'set_redirect_user();', 'id': 'id_type'})
     )
@@ -26,7 +26,7 @@ class RedirectDynHostForm(forms.ModelForm):
     )
     destin = forms.CharField(max_length=250, label="Destinos")
     class Meta:
-        model = RedirectDynHost
+        model = RedirectDynamic
         fields = ("all_domain", "username", "destin")
 
 class Redirect(models.Model):

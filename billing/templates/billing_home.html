@@ -68,16 +68,13 @@ $('#passwordForm').modal('show');
         <a href="#info-user" data-toggle="tab">Usuario</a>
     </li>
     <li>
-        <a href="#info-dynhost" data-toggle="tab">DynHOST</a>
+        <a href="#info-dynamic" data-toggle="tab">Dinámicos</a>
     </li>
     <li{% if nic_focus %} class="active"{% endif %}>
         <a href="#info-client" data-toggle="tab">Cliente</a>
     </li>
     <li>
         <a href="#info-services" data-toggle="tab">Servicios</a>
-    </li>
-    <li{% if contract_focus %} class="active"{% endif %}>
-        <a href="#info-contracts" data-toggle="tab">Contratos</a>
     </li>
     <li>
         <a href="#info-deregister" data-toggle="tab">Baja</a>
@@ -87,8 +84,7 @@ $('#passwordForm').modal('show');
     {% include "billing_home/deregister.html" %}
     {% include "billing_home/user_info.html" %}
     {% include "billing_home/client_info.html" %}
-    {% include "billing_home/dynhost_info.html" %}
+    {% include "billing_home/dynamic_info.html" %}
     {% include "billing_home/services_info.html" %}
-    {% include "billing_home/contracts_info.html" %}
 </div>
 {% endblock %}

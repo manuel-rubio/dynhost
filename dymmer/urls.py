@@ -2,8 +2,8 @@
 from django.conf.urls import patterns, include, url
 from registration.backends.default.views import RegistrationView
 from django.views.generic import TemplateView
-from dynhost.forms import RecaptchaRegistrationForm, RecaptchaPasswordResetForm
-from dynhost import settings
+from dymmer.forms import RecaptchaRegistrationForm, RecaptchaPasswordResetForm
+from dymmer import settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -11,8 +11,8 @@ from dynhost import settings
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'dynhost.views.home', name='home'),
-    # url(r'^dynhost/', include('dynhost.foo.urls')),
+    # url(r'^$', 'dymmer.views.home', name='home'),
+    # url(r'^dymmer/', include('dymmer.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -136,7 +136,7 @@ urlpatterns = patterns('',
     url(r'^dynamic/(?P<dom_id>\d+)/delete/$', 'dynamic.views.domains.delete'),
     url(r'^dynamic/new/$', 'dynamic.views.domains.new'),
     url(r'^dynamic/help/$', TemplateView.as_view(
-        template_name='dynhost_help.html'
+        template_name='dynamic_help.html'
     )),
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}),

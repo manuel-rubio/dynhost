@@ -15,31 +15,30 @@ class { 'apache':
 apache::mod { 'wsgi': }
 apache::vhost { 'dymmer.com':
     port => 80,
-    docroot => '/var/www/dynhost/static',
-    wsgi_script_aliases => {'/' => '/var/www/dynhost/dynhost/wsgi.py'},
+    docroot => '/var/www/dymmer/static',
+    wsgi_script_aliases => {'/' => '/var/www/dymmer/dymmer/wsgi.py'},
     aliases => [
-        {alias => '/static/', path => '/var/www/dynhost/static/'}
+        {alias => '/static/', path => '/var/www/dymmer/static/'}
     ]
 }
 
 # PostgreSQL: database and role
-class { 'postgresql::server':
-    ipv4acls => ['host all dynhost 127.0.0.1/32 md5'],
-}
-
-postgresql::server::role { 'dynhost':
-    password_hash => postgresql_password('dynhost', 'dynhost2014'),
-}
-
-postgresql::server::db { 'ring':
-    user     => 'ring',
-    password => postgresql_password('ring', 'ring1234'),
-}
-
-class pgsql-devel {
+class postgresql-install {
     include postgresql::lib::devel
+    class { 'postgresql::server':
+        ipv4acls => ['host all dymmer 127.0.0.1/32 md5'],
+    }
+
+    postgresql::server::role { 'dymmer':
+        password_hash => postgresql_password('dymmer', 'dymmer2014'),
+    }
+
+    postgresql::server::db { 'dymmer':
+        user     => 'dymmer',
+        password => postgresql_password('dymmer', 'dymmer1234'),
+    }
 }
-class { 'pgsql-devel': }
+class { 'postgresql-install': }
 
 # MySQL: database and root user config
 class { 'mysql::server':
@@ -51,10 +50,10 @@ class deps {
     package { "libmysqlclient-dev":
         ensure => installed
     }
-    python::requirements { '/var/www/dynhost/requirements.txt':
+    python::requirements { '/var/www/dymmer/requirements.txt':
         require => [
             Package['libmysqlclient-dev'],
-            Class['pgsql-devel'],
+            Class['postgresql-install'],
         ]
     }
 }
@@ -64,30 +63,22 @@ class { "deps": }
 class fixtures {
     exec { 'syncdb':
         path => "/usr/local/bin:/usr/bin:/bin",
-        cwd => '/var/www/dynhost/',
+        cwd => '/var/www/dymmer/',
         command => 'python manage.py syncdb --noinput'
     }
     exec { 'migrate':
         path => "/usr/local/bin:/usr/bin:/bin",
-        cwd => '/var/www/dynhost/',
+        cwd => '/var/www/dymmer/',
         command => 'python manage.py migrate',
-    }
-    file { 'initial_data.json':
-        path => '/vagrant/manifests/initial_data.json'
-    }
-    exec { 'load data':
-        path => "/usr/local/bin:/usr/bin:/bin",
-        cwd => '/var/www/dynhost/',
-        command => 'python manage.py migrate',
-        require => File['initial_data.json'],
+        require => Exec['syncdb']
     }
 }
 class { 'fixtures':
     require => Class['deps']
 }
 
-# DynHost directory
-file { '/home/dynhost':
+# Dymmer directory
+file { '/home/dymmer':
     ensure => "directory",
     owner => 'www-data',
     recurse => true,
@@ -97,3 +88,8 @@ file { '/home/dynhost':
 class {'mailcatcher': 
     smtp_port => 25
 }
+exec {'mailcatcher-service':
+    command => "/usr/local/bin/mailcatcher --smtp-port 25 --http-ip 0.0.0.0",
+    require => Class['mailcatcher']
+}
+

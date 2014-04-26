@@ -7,7 +7,7 @@ from dns.models import Records
 from billing.models import Domains as BillingDomains
 
 def clean_unique(form, field, exclude_initial=True,
-                 format="Dynhost %(value)s ocupado."):
+                 format="Dinámico %(value)s ocupado."):
     value = form.cleaned_data.get(field)
     if value:
         qs = form._meta.model._default_manager.filter(**{field:value})
@@ -30,7 +30,7 @@ class Domains(models.Model):
                str(self.record) + " " + self.ip 
 
 class DomainsForm(forms.ModelForm):
-    domain = forms.SlugField(label='DynHost', required=True)
+    domain = forms.SlugField(label='Dinámico', required=True)
     ip = forms.IPAddressField(label='Dirección IP', required=True)
     class Meta:
         model = Domains
@@ -39,13 +39,13 @@ class DomainsForm(forms.ModelForm):
         return clean_unique(self, 'domain')
 
 @receiver(pre_save, sender=Domains)
-def create_dynhost(sender, instance, **kwargs):
+def create_dynamic(sender, instance, **kwargs):
     if not instance.id:
-        dynhost = BillingDomains.objects.filter(domain='dynhost.es')[0]
+        dynamic = BillingDomains.objects.filter(domain='dynhost.es')[0]
         record = Records()
         record.data = instance.ip
         record.host = instance.domain
-        record.domain = dynhost
+        record.domain = dynamic
         record.ttl = 3600
         record.type = 'A'
         record.save()
@@ -56,5 +56,5 @@ def create_dynhost(sender, instance, **kwargs):
         instance.record.save()
 
 @receiver(post_delete, sender=Domains)
-def delete_dynhost(sender, instance, **kwargs):
+def delete_dynamic(sender, instance, **kwargs):
     Records.objects.get(pk=instance.record_id).delete()

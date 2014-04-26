@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.forms.util import ErrorList
 from datetime import datetime
-from dynhost import settings
+from dymmer import settings
 import socket
 import re
 

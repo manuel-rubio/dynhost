@@ -1,5 +1,5 @@
 from SOAPpy import WSDL
-from dynhost.settings import WSDL_FILE, OVH_USER, OVH_PASS, DOMAIN_CONTACT, DNS_CONFIG, DEBUG, OVH_USERS_PASS
+from dymmer.settings import WSDL_FILE, OVH_USER, OVH_PASS, DOMAIN_CONTACT, DNS_CONFIG, DEBUG, OVH_USERS_PASS
 
 soap = WSDL.Proxy(WSDL_FILE)
 

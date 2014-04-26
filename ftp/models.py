@@ -6,7 +6,7 @@ from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 from django.forms.util import ErrorList
 import os
-from dynhost import settings
+from dymmer import settings
 import hashlib
 
 #--- Validations

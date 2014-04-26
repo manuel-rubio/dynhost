@@ -7,12 +7,12 @@
     <a href="/">Inicio</a> &raquo; <strong>Ayuda de API</strong>
 </div>
 
-<h1>Servicios Web de DynHost</h1>
+<h1>Servicios Web de Dymmer</h1>
 
-<p>DynHost proporciona servicios web para poder realizar tareas automatizadas desde otros programas automatizados. Estas tareas, se definen a continuaci&oacute;n:</p>
+<p>Dymmer proporciona servicios web para poder realizar tareas automatizadas desde otros programas automatizados. Estas tareas, se definen a continuaci&oacute;n:</p>
 
 <ul>
-<li><a href="#update">Actualizaci&oacute;n DynHost</a></li>
+<li><a href="#update">Actualizaci&oacute;n de Dinámicos</a></li>
 <li><a href="#checkip">Direcci&oacute;n IP</a></li>
 <li><a href="#mailpass">Actualizaci&oacute;n de clave de email</a></li>
 <li><a href="#ftppass">Actualizaci&oacute;n de clave de FTP</a></li>
@@ -23,14 +23,14 @@
 <hr />
 
 <a name="update"></a>
-<h2>Actualizaci&oacute;n de DynHost</h2>
+<h2>Actualizaci&oacute;n de Dinámicos</h2>
 
 <p>El sistema de actualizaci&oacute;n se ha basado en el protocolo propuesto por la empresa DynDNS<sup>&reg;</sup> de actualizaci&oacute;n autom&aacute;tica, que est&aacute; implementado en clientes para Windows, Linux y MacOS, as&iacute; como en algunos routers y/o modems de acceso ADSL. El sistema se basa en el protocolo HTTP (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">RFC 2616</a>).</p>
 
 <p>Una prueba que puede emplearse es:</p>
 
 <pre>
-http://usuario:clave@dynhost.es/nic/update/?hostname=mihost
+http://usuario:clave@dymmer.com/nic/update/?hostname=mihost
 </pre>
 
 <p>El <em>usuario</em> y la <em>clave</em> pueden ser introducidos v&iacute;a di&aacute;logo de autenticaci&oacute;n en caso de querer actualizar por navegador web. La forma m&aacute;s sencilla de actualizar la IP, en sistemas basados en Unix (tipo Linux, BSD y MacOS), ser&iacute;a <a href="http://bosqueviejo.net/2011/11/25/cron-programando-tareas/">configurando un proceso <tt>cron</tt></a> que cada poco tiempo hiciera la petici&oacute;n.</p>
@@ -64,7 +64,7 @@ http://usuario:clave@dynhost.es/nic/update/?hostname=mihost
 <p>Este servicio web proporciona la direcci&oacute;n IP desde la que se realiza la consulta. Se puede probar desde el propio navegador a trav&eacute;s de la siguiente URL:</p>
 
 <pre>
-<a href="http://dynhost.es/nic/checkip/">http://dynhost.es/nic/checkip/</a>
+<a href="http://dymmer.com/nic/checkip/">http://dymmer.com/nic/checkip/</a>
 </pre>
 
 <p><a href="/{% if user.is_authenticated %}account{% endif %}">Volver</a></p>
@@ -74,7 +74,7 @@ http://usuario:clave@dynhost.es/nic/update/?hostname=mihost
 <a name="mailpass"></a>
 <h2>Actualizaci&oacute;n de clave de email</h2>
 
-<p>DynHost proporciona buzones de email que pueden configurarse dentro de los dominios reales (en este caso no servirían para dominios DynHost), y a través de este servicio web, la clave puede ser modificada.</p>
+<p>Dymmer proporciona buzones de email que pueden configurarse dentro de los dominios reales (en este caso no servirían para dominios dinámicos), y a través de este servicio web, la clave puede ser modificada.</p>
 
 <p>Este servicio web está pensado para poder implementarse como plugin o similar dentro de un sistema webmail o similar, incluso a través de una web de gestión propia de la empresa, con lo que puedan unificarse las claves que se dan en los accesos de los equipos (o sistemas CRM o ERP) y la que se tiene en el webmail.</p>
 
@@ -100,7 +100,7 @@ http://usuario:clave@dynhost.es/nic/update/?hostname=mihost
 <p>Un ejemplo:</p>
 
 <pre>
-http://usuario:clave@dynhost.es/nic/mail/password/?username=miusuario&amp;newpass=123456
+http://usuario:clave@dymmer.com/nic/mail/password/?username=miusuario&amp;newpass=123456
 </pre>
 
 <p><a href="/{% if user.is_authenticated %}account{% endif %}">Volver</a></p>
@@ -110,7 +110,7 @@ http://usuario:clave@dynhost.es/nic/mail/password/?username=miusuario&amp;newpas
 <a name="ftppass"></a>
 <h2>Actualizaci&oacute;n de clave de FTP</h2>
 
-<p>DynHost proporciona a los usuarios que disponen de espacio de hosting, la posibilidad de acceder a este espacio a través de cuentas FTP. Las cuentas pueden crearse desde el panel de administración, pero si se desea integrar el cambio de clave de un usuario específico en otra interfaz o programa, este servicio web le permite realizar esa tarea.</p>
+<p>Dymmer proporciona a los usuarios que disponen de espacio de hosting, la posibilidad de acceder a este espacio a través de cuentas FTP. Las cuentas pueden crearse desde el panel de administración, pero si se desea integrar el cambio de clave de un usuario específico en otra interfaz o programa, este servicio web le permite realizar esa tarea.</p>
 
 <p>Los par&aacute;metros que se pueden pasar a la URL son los siguientes:</p>
 
@@ -134,7 +134,7 @@ http://usuario:clave@dynhost.es/nic/mail/password/?username=miusuario&amp;newpas
 <p>Un ejemplo:</p>
 
 <pre>
-http://usuario:clave@dynhost.es/nic/ftp/password/?username=miusuario&amp;newpass=123456
+http://usuario:clave@dymmer.com/nic/ftp/password/?username=miusuario&amp;newpass=123456
 </pre>
 
 <p><a href="/{% if user.is_authenticated %}account{% endif %}">Volver</a></p>

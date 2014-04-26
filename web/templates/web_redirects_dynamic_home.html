@@ -2,22 +2,23 @@
 
 {% block content %}
 <div id="breadcrumbs" class="breadcrumb">
-    <a href="/">Inicio</a> &raquo; <a href="{% url "dynamic.views.domains.index" %}">Listado de DynHost</a>  &raquo; <strong>Redirecciones de email</strong>
+    <a href="/">Inicio</a> &raquo; <a href="{% url "dynamic.views.domains.index" %}">Listado de Dinámicos</a> &raquo; <strong>Redirecciones Web</strong>
 </div>
-<br />
-<h1>Listado de Redirecciones de {{ dom }}</h1>
+<h1>Listado de Redirecciones Web en {{ dom }}</h1>
 <table class="table table-condensed">
 <thead>
-    <th>Redirección</th>
+    <th>Redirección web</th>
+    <th>URI</th>
     <th align="center">acciones</th>
 </thead>
 <tbody>
     {% for servicio in servicios %}
     <tr>
-        <td>{{ servicio.username|default:"*" }}@{{ dom }}</td>
+        <td>{{ servicio.name }}</td>
+        <td>{{ servicio.uri }}</td>
         <td align="center" width="103px">
             <div class="btn-group">
-                <a class="btn btn-small" title="editar" href="{% url "mail.views.redirects_dynamic.edit" servicio.id %}">
+                <a class="btn btn-small" title="editar" href="{% url "web.views.redirects_dynamic.edit" servicio.id %}">
                     <img src="/static/img/32/notepad.png"/>
                 </a>
                 <a class="btn btn-small" title="eliminar" href="#confirm_{{ servicio.id }}" data-toggle="modal">
@@ -25,20 +26,20 @@
                 </a>
             </div>
             <div class="modal hide fade" id="confirm_{{ servicio.id }}">
-                <div class="modal-header">Eliminar Redirección</div>
+                <div class="modal-header">Eliminar Redirección Web</div>
                 <div class="modal-body">
-                    ¿Está seguro de que desea eliminar esta redirección <strong>{{ servicio.username|default:"*" }}@{{ dom }}</strong>?
+                    ¿Está seguro de que desea eliminar esta redirección web <strong>{{ servicio.name }}</strong>?
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn" data-dismiss="modal">Cancela</a>
-                    <a href="{% url "mail.views.redirects_dynamic.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
+                    <a href="{% url "web.views.redirects_dynamic.delete" servicio.id %}" class="btn btn-danger">Elimina</a>
                 </div>
             </div>
         </td>
     <tr>
     {% empty %}
     <tr>
-        <td colspan="3" align="center">No hay redirecciones</td>
+        <td colspan="3" align="center">No hay redirecciones web</td>
     </tr>
     {% endfor %}
 </tbody>
@@ -47,14 +48,14 @@
 {% if servicios|length >= total %}
 <div class="btn-group pull-right">
     <a class="btn btn-success" href="/">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/redirect.png"/>&nbsp;
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/redirect_web.png"/>&nbsp;
         <img src="/static/img/32/money.png" title="Comprar" />
     </a>
 </div>
 {% else %}
-<div class="btn-group pull-right">    
-    <a class="btn btn-info" href="{% url "mail.views.redirects_dynamic.new" rec_id %}">
-        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/redirect.png"/>&nbsp;
+<div class="btn-group pull-right">
+    <a class="btn btn-info" href="{% url "web.views.redirects_dynamic.new" rec_id %}">
+        <span class="badge badge-inverse">{{ disponibles }}</span> x <img src="/static/img/32/earth.png"/>&nbsp;
         <img src="/static/img/32/new.png" title="Nueva Redirección" />
     </a>
 </div>
