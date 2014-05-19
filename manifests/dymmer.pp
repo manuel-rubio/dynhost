@@ -85,11 +85,14 @@ file { '/home/dymmer':
 }
 
 # Email server
+service { 'exim4':
+    ensure => 'stopped'
+}
 class {'mailcatcher': 
-    smtp_port => 25
+    smtp_port => 25,
+    require => Service['exim4']
 }
 exec {'mailcatcher-service':
     command => "/usr/local/bin/mailcatcher --smtp-port 25 --http-ip 0.0.0.0",
     require => Class['mailcatcher']
 }
-

@@ -5,9 +5,10 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "Debian7"
+  config.vm.box = "puppetlabs/debian-7.4-64-puppet"
 
   config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
   config.vm.network :forwarded_port, guest: 1080, host: 1080
 
   config.vm.synced_folder ".", "/var/www/dymmer", create: true
