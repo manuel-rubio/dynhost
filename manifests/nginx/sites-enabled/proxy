@@ -1,0 +1,16 @@
+ server {
+        location / {
+            eval_subrequest_in_memory  off;
+
+            eval $backend {
+                postgres_escape  $esc_uri $request_uri;
+                postgres_escape  $esc_host $host;
+                postgres_pass    database;
+                postgres_query   "select url || substring($esc_uri,length(uri)+1,length($esc_uri)) as url from dynamic_domains dd join web_redirectdynamic wr on dd.id = wr.dynamic_id where substring($esc_host,1,length(domain)) = domain and substring($esc_uri,1,length(uri)) = uri order by length(uri) desc limit 1";
+                postgres_output  value;
+            }
+
+            resolver    8.8.8.8;
+            proxy_pass  $backend;
+        }
+    }
