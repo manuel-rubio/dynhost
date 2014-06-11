@@ -22,21 +22,17 @@ LEGAL_FORM = (
 class NIC(models.Model):
     name = models.TextField(null=False)
     firstname = models.TextField(null=False)
-    password = models.TextField(null=False, default=settings.OVH_USERS_PASS)
-    email = models.TextField(null=False)
     phone = models.TextField(null=False)
     address = models.TextField(null=False)
     city = models.TextField(null=False)
     area = models.TextField(null=False)
     zipCode = models.TextField(null=False)
     country = models.CharField(null=False, max_length=2, default='es')
-    language = models.CharField(null=False, max_length=2, default='es')
     legalForm = models.CharField(null=False, max_length=12, default='individual', choices=LEGAL_FORM)
     organization = models.TextField(null=True)
     legalName = models.TextField(null=True)
     legalNumber = models.TextField(null=True)
     vat = models.FloatField(default=21.0)
-    nic = models.CharField(null=False, max_length=20)
     removed = models.BooleanField(default=False, null=False)
 
     def country_text(self):
@@ -63,7 +59,6 @@ class NICform(forms.ModelForm):
     legalNumber = forms.CharField(required=True, label='CIF/NIF/NIE')
     firstname = forms.CharField(required=True, label='Nombre')
     name = forms.CharField(required=True, label='Apellidos')
-    email = forms.EmailField(required=True, label='Email')
     phone = forms.IntegerField(required=True, label='Teléfono')
     address = forms.CharField(required=True, label='Dirección')
     city = forms.CharField(required=True, label='Ciudad')
@@ -75,7 +70,7 @@ class NICform(forms.ModelForm):
         model = NIC
         fields = ( 
             'legalForm', 'legalNumber', 'legalName', 'organization',
-            'firstname', 'name', 'email', 'phone', 'address', 'city', 
+            'firstname', 'name', 'phone', 'address', 'city', 
             'area', 'zipCode', 'country' )
 
 CURRENCIES = (
@@ -84,37 +79,10 @@ CURRENCIES = (
 )
 
 class Accounts(models.Model):
-    limit_web = models.IntegerField(default=0)
-    limit_web_redirect = models.IntegerField(default=0)
-    limit_sql = models.IntegerField(default=0)
-    limit_sql_users = models.IntegerField(default=0)
-    limit_dns = models.IntegerField(default=0)
-    limit_ftp = models.IntegerField(default=0)
-    limit_email_redirect = models.IntegerField(default=0)
-    limit_email_mailbox = models.IntegerField(default=0)
-    limit_email_lists = models.IntegerField(default=0)
-    limit_dynamic = models.IntegerField(default=5)
     currency = models.CharField(max_length=3, default='EUR', choices=CURRENCIES)
-    homedir = models.TextField(null=True)
     user = models.OneToOneField(User)
     nic_data = models.ForeignKey('NIC', null=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0, blank=False)
-
-    def can_remove_mail_redirects(self):
-        usados = Redirect.objects.filter(domain__accounts__id = self.id).count()
-        return (self.limit_email_redirect - settings.REDIRECT_MAIL_QTY) - usados >= 0
-
-    def can_remove_mail_plus(self):
-        usados = Mailbox.objects.filter(domain__accounts__id = self.id).count()
-        return (self.limit_email_mailbox - settings.PLUS_MAIL_QTY) - usados >= 0
-
-    def can_remove_mail_premium(self):
-        usados = Mailbox.objects.filter(domain__accounts__id = self.id).count()
-        return (self.limit_email_mailbox - settings.PREMIUM_MAIL_QTY) - usados >= 0
-
-    def can_remove_mysql_database(self):
-        usados = Databases.objects.filter(accounts__id = self.id).count()
-        return ((self.limit_sql - 1 - usados) >= 0)
 
     def currency_symbol(self):
         for (i, symbol) in CURRENCIES:
@@ -123,35 +91,11 @@ class Accounts(models.Model):
         return '€'
 
     def __unicode__(self):
-        ret = self.user.username + " ("
-        ret += "virtual" if not self.homedir else "real"
-        ret += ")"
-        return ret
-
-    def dirs(self, relative='www-data'):
-        base = self.getPath(relative)
-        return { '/': {'content': self._dirs(base, base), 'id':'/' }}
-
-    def _dirs(self, hd, base):
-        data = {}
-        for name in os.listdir(hd):
-            subdir = os.path.join(hd, name)
-            if os.path.isdir(subdir):
-                data[name] = { 'id': subdir[len(base)-1:], 'content': self._dirs(subdir, base) }
-        return data
-
-    def getPath(self, relative=None):
-        dir = self.homedir
-        skel = settings.REAL_USER_SKEL
-        if not dir:
-            dir = settings.HOMEDIR_BASE
-            skel = settings.USER_SKEL
-        if relative:
-            dir += '/' + skel[relative] % {'userid':self.user.id}
-        return dir + '/'
+        return self.user.username
 
 CONTRACT_TYPE = (
     ('D', 'Dominio'),
+    ('H', 'Disco'),
     ('R', 'Redirecciones de Email'),
     ('m', 'Buzones de Email Plus'),
     ('M', 'Buzones de Email Premium'),
@@ -166,7 +110,6 @@ class Contracts(models.Model):
     accounts = models.ForeignKey('Accounts')
     begins = models.DateField(auto_now_add=True)
     ends = models.DateField(null=True, default=None)
-    paid = models.BooleanField(default=False)
     concept = models.CharField(max_length=100)
     invoice_id = models.IntegerField(null=True)
 
@@ -191,17 +134,26 @@ class Contracts(models.Model):
         return self.price * self.quantity - self.discount
 
 PAYMENT_TYPE = (
-    ('H', 'Hosting'),
-    ('P', 'Pago'),
+    ('P', 'PayPal'),
+    ('T', 'Transferencia'),
 )
 
 class Payments(models.Model):
     date = models.DateField()
-    type = models.CharField(max_length=1, default='H', choices=PAYMENT_TYPE)
-    price = models.FloatField()
-    contract = models.ForeignKey('Contracts')
+    amount = models.FloatField()
+    accounts = models.ForeignKey('Accounts')
+    provider = models.CharField(max_length=1, default='P', null=False, choices=PAYMENT_TYPE)
+    tax = models.FloatField()
+
     def __unicode__(self):
-        return "%(type)s: %(price).2f €" % {'type':self.type, 'price':self.price}
+        return "%(type)s: %(price).2f €" % {'type':self.provider_text(), 'price':self.amount}
+
+    def provider_text(self):
+        for (i,text) in PAYMENT_TYPE:
+            if i == self.provider:
+                return text
+        return self.type
+
 
 EMAIL_TYPE = (
     ('R', 'Activa Buzones y Redirecciones'),
@@ -277,15 +229,3 @@ class DomainTransferForm(forms.ModelForm):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Accounts.objects.create(user=instance)
-    cuenta = Accounts.objects.filter(user__id=instance.id)[0]
-    if not cuenta.homedir:
-        base = settings.HOMEDIR_BASE + "/"
-        skel = settings.USER_SKEL
-    else:
-        base = cuenta.homedir + "/"
-        skel = settings.REAL_USER_SKEL
-    for i in skel:
-        v = skel[i]
-        dir = base + (v % { 'userid': instance.id })
-        if not os.path.exists(dir):
-            os.makedirs(dir)
